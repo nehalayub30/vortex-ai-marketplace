@@ -178,7 +178,7 @@ class Vortex_AI_Marketplace {
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/post-types/class-vortex-huraii-template.php';
         
         // Initialize post type objects
-        $artwork = new Vortex_Artwork();
+        $artwork = new Vortex_Artwork( $this->get_plugin_name(), $this->get_version() );
         $huraii_template = new Vortex_Huraii_Template();
 
         // Register post types on WordPress init
