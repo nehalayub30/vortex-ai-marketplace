@@ -207,10 +207,10 @@ class Vortex_AI_Marketplace {
      * @access   private
      */
     private function define_huraii_hooks() {
-        $huraii = new Vortex_Huraii($this->get_plugin_name(), $this->get_version());
+        // $huraii = new Vortex_Huraii($this->get_plugin_name(), $this->get_version());
         $image_processor = new Vortex_Image_Processor($this->get_plugin_name(), $this->get_version());
 
-        $this->loader->add_action('init', $huraii, 'initialize_huraii');
+        // $this->loader->add_action('init', $huraii, 'initialize_huraii');
         $this->loader->add_action('init', $image_processor, 'initialize_processor');
     }
 
