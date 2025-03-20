@@ -1,0 +1,397 @@
+# Copyright (C) 2023 VortexArtec
+# This file is distributed under the same license as the VORTEX AI Marketplace plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: VORTEX AI Marketplace 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/vortex-ai-marketplace\n"
+"POT-Creation-Date: 2023-08-15T12:00:00+00:00\n"
+"PO-Revision-Date: 2023-08-15T12:00:00+00:00\n"
+"Last-Translator: Marianne Nems <Marianne@VortexArtec.com>\n"
+"Language-Team: VORTEX AI Marketplace Team\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.2.2\n"
+"X-Domain: vortex-ai-marketplace\n"
+
+#. Plugin Name of the plugin
+msgid "VORTEX AI Marketplace"
+msgstr "Marché d'IA VORTEX"
+
+#. Plugin URI of the plugin
+msgid "https://vortexartec.com/marketplace"
+msgstr "https://vortexartec.com/marketplace"
+
+#. Description of the plugin
+msgid "A comprehensive marketplace for AI-generated artwork, with blockchain integration, artist profiles, and TOLA token support."
+msgstr "Un marché complet pour les œuvres d'art générées par IA, avec intégration blockchain, profils d'artistes et support des jetons TOLA."
+
+#. Author of the plugin
+msgid "VortexArtec"
+msgstr "VortexArtec"
+
+#. Author URI of the plugin
+msgid "https://vortexartec.com"
+msgstr "https://vortexartec.com"
+
+#: admin/class-vortex-admin.php:112
+msgid "Dashboard"
+msgstr "Tableau de Bord"
+
+#: admin/class-vortex-admin.php:113
+msgid "Artworks"
+msgstr "Œuvres d'Art"
+
+#: admin/class-vortex-admin.php:114
+msgid "Artists"
+msgstr "Artistes"
+
+#: admin/class-vortex-admin.php:115
+msgid "Orders"
+msgstr "Commandes"
+
+#: admin/class-vortex-admin.php:116
+msgid "Settings"
+msgstr "Paramètres"
+
+#: admin/class-vortex-admin.php:117
+msgid "Tools"
+msgstr "Outils"
+
+#: admin/class-vortex-admin.php:118
+msgid "Status"
+msgstr "Statut"
+
+#: admin/class-vortex-admin.php:161
+msgid "VORTEX AI Marketplace"
+msgstr "Marché d'IA VORTEX"
+
+#: admin/class-vortex-admin.php:187
+msgid "General"
+msgstr "Général"
+
+#: admin/class-vortex-admin.php:188
+msgid "Artwork"
+msgstr "Œuvre d'Art"
+
+#: admin/class-vortex-admin.php:189
+msgid "Artists"
+msgstr "Artistes"
+
+#: admin/class-vortex-admin.php:190
+msgid "Payments"
+msgstr "Paiements"
+
+#: admin/class-vortex-admin.php:191
+msgid "Blockchain"
+msgstr "Blockchain"
+
+#: admin/class-vortex-admin.php:192
+msgid "AI Models"
+msgstr "Modèles d'IA"
+
+#: admin/class-vortex-admin.php:193
+msgid "Advanced"
+msgstr "Avancé"
+
+#: admin/partials/vortex-admin-dashboard.php:20
+msgid "Marketplace Overview"
+msgstr "Aperçu du Marché"
+
+#: admin/partials/vortex-admin-dashboard.php:24
+msgid "Total Artworks"
+msgstr "Total des Œuvres"
+
+#: admin/partials/vortex-admin-dashboard.php:31
+msgid "Total Artists"
+msgstr "Total des Artistes"
+
+#: admin/partials/vortex-admin-dashboard.php:38
+msgid "Recent Sales"
+msgstr "Ventes Récentes"
+
+#: admin/partials/vortex-admin-dashboard.php:45
+msgid "Total Revenue"
+msgstr "Revenu Total"
+
+#: admin/partials/vortex-admin-dashboard.php:59
+msgid "Recent Activity"
+msgstr "Activité Récente"
+
+#: admin/partials/vortex-admin-dashboard.php:77
+msgid "Top Selling Artworks"
+msgstr "Œuvres les Plus Vendues"
+
+#: admin/partials/vortex-admin-dashboard.php:96
+msgid "AI Generation Statistics"
+msgstr "Statistiques de Génération IA"
+
+#: admin/partials/settings/general-settings.php:22
+msgid "Marketplace Title"
+msgstr "Titre du Marché"
+
+#: admin/partials/settings/general-settings.php:31
+msgid "Marketplace Description"
+msgstr "Description du Marché"
+
+#: admin/partials/settings/general-settings.php:40
+msgid "Currency"
+msgstr "Devise"
+
+#: admin/partials/settings/general-settings.php:61
+msgid "Commission Rate (%)"
+msgstr "Taux de Commission (%)"
+
+#: includes/class-vortex-marketplace.php:344
+msgid "Added to Cart"
+msgstr "Ajouté au Panier"
+
+#: includes/class-vortex-marketplace.php:345
+msgid "View Cart"
+msgstr "Voir le Panier"
+
+#: includes/class-vortex-marketplace.php:380
+msgid "Item removed"
+msgstr "Article supprimé"
+
+#: includes/class-vortex-marketplace.php:381
+msgid "Undo"
+msgstr "Annuler"
+
+#: includes/class-vortex-marketplace.php:416
+msgid "Cart updated"
+msgstr "Panier mis à jour"
+
+#: includes/class-vortex-shortcodes.php:341
+msgid "No artwork ID provided."
+msgstr "Aucun ID d'œuvre fourni."
+
+#: includes/class-vortex-shortcodes.php:472
+msgid "No artist ID provided."
+msgstr "Aucun ID d'artiste fourni."
+
+#: includes/class-vortex-shortcodes.php:495
+msgid "Artist not found."
+msgstr "Artiste non trouvé."
+
+#: includes/class-vortex-shortcodes.php:617
+msgid "Continue Shopping"
+msgstr "Continuer les Achats"
+
+#: includes/class-vortex-shortcodes.php:619
+msgid "Proceed to Checkout"
+msgstr "Procéder au Paiement"
+
+#: includes/class-vortex-shortcodes.php:620
+msgid "Your cart is empty."
+msgstr "Votre panier est vide."
+
+#: includes/class-vortex-shortcodes.php:665
+msgid "Your cart is empty. Please add items before proceeding to checkout."
+msgstr "Votre panier est vide. Veuillez ajouter des articles avant de procéder au paiement."
+
+#: includes/class-vortex-shortcodes.php:666
+msgid "Return to Cart"
+msgstr "Retourner au Panier"
+
+#: includes/class-vortex-shortcodes.php:688
+msgid "You must be logged in to checkout."
+msgstr "Vous devez être connecté pour effectuer le paiement."
+
+#: includes/class-vortex-shortcodes.php:690
+msgid "Login"
+msgstr "Connexion"
+
+#: includes/class-vortex-shortcodes.php:723
+msgid "Thank you for your order!"
+msgstr "Merci pour votre commande !"
+
+#: includes/class-vortex-shortcodes.php:724
+msgid "Continue Shopping"
+msgstr "Continuer les Achats"
+
+#: includes/class-vortex-shortcodes.php:747
+msgid "No order found."
+msgstr "Aucune commande trouvée."
+
+#: includes/class-vortex-shortcodes.php:758
+msgid "Order not found."
+msgstr "Commande non trouvée."
+
+#: includes/class-vortex-shortcodes.php:764
+msgid "You do not have permission to view this order."
+msgstr "Vous n'avez pas la permission de voir cette commande."
+
+#: includes/class-vortex-shortcodes.php:791
+msgid "Search artworks, artists..."
+msgstr "Rechercher des œuvres, des artistes..."
+
+#: includes/class-vortex-artists.php:223
+msgid "Artist saved successfully."
+msgstr "Artiste enregistré avec succès."
+
+#: includes/class-vortex-artists.php:225
+msgid "Error saving artist."
+msgstr "Erreur lors de l'enregistrement de l'artiste."
+
+#: includes/class-vortex-artists.php:275
+msgid "Wallet verified successfully."
+msgstr "Portefeuille vérifié avec succès."
+
+#: includes/class-vortex-artists.php:277
+msgid "Error verifying wallet."
+msgstr "Erreur lors de la vérification du portefeuille."
+
+#: public/partials/vortex-cart-display.php:91
+msgid "Item"
+msgstr "Article"
+
+#: public/partials/vortex-cart-display.php:92
+msgid "Price"
+msgstr "Prix"
+
+#: public/partials/vortex-cart-display.php:93
+msgid "Quantity"
+msgstr "Quantité"
+
+#: public/partials/vortex-cart-display.php:94
+msgid "Subtotal"
+msgstr "Sous-total"
+
+#: public/partials/vortex-cart-display.php:141
+msgid "Update Cart"
+msgstr "Mettre à Jour le Panier"
+
+#: public/partials/vortex-cart-display.php:156
+msgid "Cart Totals"
+msgstr "Totaux du Panier"
+
+#: public/partials/vortex-cart-display.php:162
+msgid "Subtotal"
+msgstr "Sous-total"
+
+#: public/partials/vortex-cart-display.php:169
+msgid "Tax"
+msgstr "Taxe"
+
+#: public/partials/vortex-cart-display.php:176
+msgid "Total"
+msgstr "Total"
+
+#: public/partials/vortex-checkout-display.php:34
+msgid "Billing Details"
+msgstr "Détails de Facturation"
+
+#: public/partials/vortex-checkout-display.php:38
+msgid "Full Name"
+msgstr "Nom Complet"
+
+#: public/partials/vortex-checkout-display.php:47
+msgid "Email Address"
+msgstr "Adresse Email"
+
+#: public/partials/vortex-checkout-display.php:56
+msgid "Phone (optional)"
+msgstr "Téléphone (optionnel)"
+
+#: public/partials/vortex-checkout-display.php:70
+msgid "Payment Method"
+msgstr "Méthode de Paiement"
+
+#: public/partials/vortex-checkout-display.php:77
+msgid "TOLA Token"
+msgstr "Jeton TOLA"
+
+#: public/partials/vortex-checkout-display.php:85
+msgid "Credit Card"
+msgstr "Carte de Crédit"
+
+#: public/partials/vortex-checkout-display.php:94
+msgid "Connect Wallet"
+msgstr "Connecter le Portefeuille"
+
+#: public/partials/vortex-checkout-display.php:100
+msgid "Please connect your wallet to pay with TOLA tokens."
+msgstr "Veuillez connecter votre portefeuille pour payer avec des jetons TOLA."
+
+#: public/partials/vortex-checkout-display.php:142
+msgid "I agree to the terms and conditions"
+msgstr "J'accepte les termes et conditions"
+
+#: public/partials/vortex-checkout-display.php:152
+msgid "Place Order"
+msgstr "Passer la Commande"
+
+#: blocks/artwork-search/index.js:46
+msgid "Artwork Search"
+msgstr "Recherche d'Œuvres"
+
+#: blocks/artwork-search/index.js:47
+msgid "Display an artwork search interface with advanced filters."
+msgstr "Affiche une interface de recherche d'œuvres avec des filtres avancés."
+
+#: blocks/shopping-cart/index.js:47
+msgid "Shopping Cart"
+msgstr "Panier d'Achat"
+
+#: blocks/shopping-cart/index.js:48
+msgid "Display the current shopping cart with options to update quantities and checkout."
+msgstr "Affiche le panier d'achat actuel avec des options pour mettre à jour les quantités et payer."
+
+#: blocks/checkout/index.js:46
+msgid "Checkout"
+msgstr "Paiement"
+
+#: blocks/checkout/index.js:47
+msgid "Display a checkout form for users to complete their purchase."
+msgstr "Affiche un formulaire de paiement pour que les utilisateurs finalisent leur achat."
+
+#: blocks/user-dashboard/index.js:46
+msgid "User Dashboard"
+msgstr "Tableau de Bord Utilisateur"
+
+#: blocks/user-dashboard/index.js:47
+msgid "Display the user dashboard with account information and purchased artworks."
+msgstr "Affiche le tableau de bord utilisateur avec les informations du compte et les œuvres achetées."
+
+#: blocks/artwork-generator/index.js:46
+msgid "Artwork Generator"
+msgstr "Générateur d'Œuvres"
+
+#: blocks/artwork-generator/index.js:47
+msgid "Display the AI artwork generator interface."
+msgstr "Affiche l'interface du générateur d'œuvres IA."
+
+#: includes/ai/class-vortex-huraii.php:208
+msgid "AI Generation Error"
+msgstr "Erreur de Génération IA"
+
+#: includes/ai/class-vortex-huraii.php:209
+msgid "Please try again with a different prompt."
+msgstr "Veuillez réessayer avec un prompt différent."
+
+#: includes/blockchain/class-vortex-blockchain-integration.php:152
+msgid "Wallet Connected"
+msgstr "Portefeuille Connecté"
+
+#: includes/blockchain/class-vortex-blockchain-integration.php:153
+msgid "Your wallet has been successfully connected."
+msgstr "Votre portefeuille a été connecté avec succès."
+
+#: includes/blockchain/class-vortex-blockchain-integration.php:172
+msgid "Wallet Disconnected"
+msgstr "Portefeuille Déconnecté"
+
+#: includes/blockchain/class-vortex-blockchain-integration.php:173
+msgid "Your wallet has been disconnected."
+msgstr "Votre portefeuille a été déconnecté."
+
+#: includes/blockchain/class-vortex-tola.php:146
+msgid "Not enough TOLA tokens"
+msgstr "Pas assez de Tokens TOLA"
+
+#: includes/blockchain/class-vortex-tola.php:147
+msgid "You need more TOLA tokens to complete this transaction."
+msgstr "Vous avez besoin de plus de Tokens TOLA pour finaliser cette transaction." 
