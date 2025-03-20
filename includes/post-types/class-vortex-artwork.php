@@ -693,8 +693,8 @@ class Vortex_Artwork {
             update_post_meta( $post_id, '_vortex_artwork_ai_guidance_scale', sanitize_text_field( $_POST['vortex_artwork_ai_guidance_scale'] ) );
         }
 
-        if ( isset( $_POST['vortex_artwork_ai_steps'] ) ) ) {
-            update_post_meta( $post_id, '_vortex_artwork_ai_steps', absint( $_POST['vortex_artwork_ai_steps'] ) ) );
+        if ( isset( $_POST['vortex_artwork_ai_steps'] ) ) {
+            update_post_meta( $post_id, '_vortex_artwork_ai_steps', absint( $_POST['vortex_artwork_ai_steps'] ) );
         }
     }
 } 
