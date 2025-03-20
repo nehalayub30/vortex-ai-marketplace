@@ -85,7 +85,7 @@ class Vortex_Public {
      */
     private function load_dependencies() {
         // Load template functions
-        require_once plugin_dir_path(dirname(__FILE__)) . 'public/vortex-template-functions.php';
+        // require_once plugin_dir_path(dirname(__FILE__)) . 'public/vortex-template-functions.php';
     }
 
     /**
@@ -936,3 +936,5 @@ class Vortex_Public {
      * @param    string    $page    The page type (e.g., 'shop', 'cart', 'checkout').
      * @
 </rewritten_file>
+*/
+}
