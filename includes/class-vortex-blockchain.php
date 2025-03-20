@@ -52,6 +52,24 @@ class Vortex_Blockchain {
     private $tola;
 
     /**
+     * Blockchain instance.
+     *
+     * @since    1.0.0
+     * @access   private
+     * @var      Vortex_Blockchain    $blockchain    The Blockchain instance.
+     */
+    private $blockchain;
+
+    /**
+     * Wallet instance.
+     *
+     * @since    1.0.0
+     * @access   private
+     * @var      Vortex_Wallet    $wallet    The Wallet instance.
+     */
+    private $wallet;
+
+    /**
      * Initialize the class and set its properties.
      *
      * @since    1.0.0
@@ -75,8 +93,18 @@ class Vortex_Blockchain {
         // Load TOLA token integration
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/blockchain/class-vortex-tola.php';
         
+        // Load Blockchain Integration
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/blockchain/class-vortex-blockchain-integration.php';
+        
+        // Load Wallet 
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/blockchain/class-vortex-wallet-connect.php';
+
+        $this->blockchain = new Vortex_Blockchain_Integration();
+        $this->wallet = new Vortex_Wallet_Connect($this->blockchain);
+        
+
         // Initialize TOLA instance
-        $this->tola = new Vortex_TOLA();
+        $this->tola = new Vortex_TOLA( $this->plugin_name, $this->version, $this->blockchain, $this->wallet, true);
     }
 
     /**
