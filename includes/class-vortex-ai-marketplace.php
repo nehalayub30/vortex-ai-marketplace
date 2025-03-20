@@ -85,6 +85,9 @@ class Vortex_AI_Marketplace {
      * @access   private
      */
     private function load_dependencies() {
+
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-vortex-theme-compatibility.php';
+
         // The class responsible for orchestrating the actions and filters of the core plugin.
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-vortex-loader.php';
 
@@ -115,7 +118,7 @@ class Vortex_AI_Marketplace {
         // Load TOLA token integration
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/blockchain/class-vortex-tola.php';
 
-        $this->loader = new Vortex_Loader();
+        $this->loader = new Vortex_Loader( $this->get_plugin_name(), $this->get_version() );
     }
 
     /**

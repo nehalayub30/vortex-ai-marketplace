@@ -57,11 +57,31 @@ class Vortex_Loader {
     protected $theme_compatibility;
 
     /**
+     * The ID of this plugin.
+     *
+     * @since    1.0.0
+     * @access   private
+     * @var      string    $plugin_name    The ID of this plugin.
+     */
+    private $plugin_name;
+
+    /**
+     * The version of this plugin.
+     *
+     * @since    1.0.0
+     * @access   private
+     * @var      string    $version    The current version of this plugin.
+     */
+    private $version;
+
+    /**
      * Initialize the class and set its properties.
      *
      * @since    1.0.0
      */
-    public function __construct() {
+    public function __construct( $plugin_name, $version ) {
+        $this->plugin_name = $plugin_name;
+        $this->version = $version;
         $this->set_theme_compatibility();
     }
 
@@ -72,7 +92,7 @@ class Vortex_Loader {
      * @access   private
      */
     private function set_theme_compatibility() {
-        $this->theme_compatibility = new Vortex_Theme_Compatibility( $this->get_plugin_name(), $this->get_version() );
+        $this->theme_compatibility = new Vortex_Theme_Compatibility( $this->plugin_name, $this->version );
     }
 
     /**
