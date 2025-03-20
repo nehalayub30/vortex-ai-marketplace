@@ -801,5 +801,6 @@ class Vortex_Metrics {
         $date_key = str_replace( '-', '', $date );
         
         // Update daily active users
-        $active_users = get_option( 'vortex_daily_active_users_' . $date_key, array
+        // $active_users = get_option( 'vortex_daily_active_users_' . $date_key, array
+    }
 } 

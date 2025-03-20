@@ -909,17 +909,19 @@ class Vortex_Image_Processor {
         $operations = isset( $_POST['operations'] ) ? (array) $_POST['operations'] : array();
         $results = array();
         
-        try {
-            // Optimize
-            if ( in_array( 'optimize', $operations ) ) {
-                $results['optimize'] = $this->optimize_image( $file_path );
-            }
+        // try {
+        //     // Optimize
+        //     if ( in_array( 'optimize', $operations ) ) {
+        //         $results['optimize'] = $this->optimize_image( $file_path );
+        //     }
             
-            // Watermark
-            if ( in_array( 'watermark', $operations ) ) {
-                $artist_name = isset( $_POST['artist_name'] ) ? sanitize_text_field( $_POST['artist_name'] ) : null;
-                $results['watermark'] = $this->add_watermark( $file_path, $artist_name );
-            }
+        //     // Watermark
+        //     if ( in_array( 'watermark', $operations ) ) {
+        //         $artist_name = isset( $_POST['artist_name'] ) ? sanitize_text_field( $_POST['artist_name'] ) : null;
+        //         $results['watermark'] = $this->add_watermark( $file_path, $artist_name );
+        //     }
             
-            // Resize
-            if ( in_
+        //     // Resize
+        //     if ( in_
+    }
+}

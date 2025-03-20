@@ -1546,5 +1546,6 @@ class Vortex_TOLA {
 
         // Get staking rates
         $staking_rate = get_option( 'vortex_tola_staking_rate', '0.05' );
-        $annual_
+        // $annual_
+    }
 } 
