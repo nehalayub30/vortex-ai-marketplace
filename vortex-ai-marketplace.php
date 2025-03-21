@@ -25,7 +25,7 @@ define('VORTEX_AI_MARKETPLACE_PLUGIN_URL', plugin_dir_url(__FILE__));
 // Activation and deactivation hooks
 function activate_vortex_ai_marketplace() {
     require_once VORTEX_AI_MARKETPLACE_PLUGIN_DIR . 'includes/class-vortex-activator.php';
-    Vortex_Activator::activate();
+    Vortex\Vortex_Activator::activate();
 }
 
 function deactivate_vortex_ai_marketplace() {
