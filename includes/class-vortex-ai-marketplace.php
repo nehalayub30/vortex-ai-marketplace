@@ -200,7 +200,7 @@ class Vortex_AI_Marketplace {
         $huraii_template = new Vortex_Huraii_Template();
 
         // Register post types on WordPress init
-        $this->loader->add_action('init', $artwork, 'register');
+        $this->loader->add_action('init', $artwork, 'register_post_type');
         $this->loader->add_action('init', $huraii_template, 'register');
     }
 
