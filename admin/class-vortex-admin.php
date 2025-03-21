@@ -101,7 +101,7 @@ class Vortex_Admin {
         add_action( 'wp_dashboard_setup', array( $this, 'add_dashboard_widgets' ) );
         
         // Admin footer text
-        add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 10, 1 );
+        // add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 10, 1 );
         
         // Admin customizations
         // add_action( 'current_screen', array( $this, 'customize_admin_screens' ) );
@@ -765,7 +765,7 @@ class Vortex_Admin {
      * @since    1.0.0
      */
     public function display_status_page() {
-        include_once plugin_dir_path( __FILE__ ) . 'partials/vortex-admin-status.php';
+        // include_once plugin_dir_path( __FILE__ ) . 'partials/vortex-admin-status.php';
     }
 
     /**
