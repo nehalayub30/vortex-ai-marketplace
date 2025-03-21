@@ -264,7 +264,7 @@ class Vortex_Theme_Compatibility {
     public function maybe_use_plugin_template( $template ) {
         // Get template file name
         $template_name = basename( $template );
-        $template_path = VORTEX_PLUGIN_DIR . 'templates/';
+        $template_path = VORTEX_AI_MARKETPLACE_PLUGIN_DIR . 'templates/';
         
         // Check for single artwork template
         if ( is_singular( 'vortex_artwork' ) ) {
