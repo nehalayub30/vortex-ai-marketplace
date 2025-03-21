@@ -69,7 +69,7 @@ class Vortex_Artwork {
         add_filter( 'enter_title_here', array( $this, 'change_title_placeholder' ) );
         add_filter( 'post_updated_messages', array( $this, 'custom_updated_messages' ) );
         add_filter( 'bulk_post_updated_messages', array( $this, 'custom_bulk_updated_messages' ), 10, 2 );
-        add_action( 'admin_head', array( $this, 'add_admin_styles' ) );
+        // add_action( 'admin_head', array( $this, 'add_admin_styles' ) );
         add_action( 'rest_api_init', array( $this, 'register_rest_fields' ) );
         // add_filter( 'pre_get_posts', array( $this, 'modify_admin_query' ) );
         
