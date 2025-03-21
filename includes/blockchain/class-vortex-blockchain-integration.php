@@ -64,7 +64,7 @@ class Vortex_Blockchain_Integration {
      * Load contract ABI from JSON file
      */
     private function load_contract_abi() {
-        $abi_file = VORTEX_AI_AGENTS_PLUGIN_PATH . 'includes/blockchain/contract-abi.json';
+        $abi_file = VORTEX_AI_MARKETPLACE_PLUGIN_DIR . 'includes/blockchain/contract-abi.json';
         
         if ( file_exists( $abi_file ) ) {
             $abi_json = file_get_contents( $abi_file );
