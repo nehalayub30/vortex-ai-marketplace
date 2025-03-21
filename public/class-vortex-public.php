@@ -130,14 +130,16 @@ class Vortex_Public {
         );
 
         // Cart and checkout stylesheet
-        if (is_cart() || is_checkout() || has_shortcode(get_post()->post_content, 'vortex_shopping_cart') || has_shortcode(get_post()->post_content, 'vortex_checkout')) {
-            wp_enqueue_style(
-                $this->plugin_name . '-cart',
-                plugin_dir_url(__FILE__) . 'css/vortex-cart.css',
-                array($this->plugin_name),
-                $this->version,
-                'all'
-            );
+        if (function_exists('is_cart') && function_exists('is_checkout')) {
+            if (is_cart() || is_checkout() || has_shortcode(get_post()->post_content, 'vortex_shopping_cart') || has_shortcode(get_post()->post_content, 'vortex_checkout')) {
+                wp_enqueue_style(
+                    $this->plugin_name . '-cart',
+                    plugin_dir_url(__FILE__) . 'css/vortex-cart.css',
+                    array($this->plugin_name),
+                    $this->version,
+                    'all'
+                );
+            }            
         }
 
         // Artwork details stylesheet
@@ -244,14 +246,16 @@ class Vortex_Public {
         );
 
         // Cart and checkout scripts
-        if (is_cart() || is_checkout() || has_shortcode(get_post()->post_content, 'vortex_shopping_cart') || has_shortcode(get_post()->post_content, 'vortex_checkout')) {
-            wp_enqueue_script(
-                $this->plugin_name . '-cart',
-                plugin_dir_url(__FILE__) . 'js/vortex-cart.js',
-                array('jquery', $this->plugin_name),
-                $this->version,
-                true
-            );
+        if (function_exists('is_cart') && function_exists('is_checkout')) {
+            if (is_cart() || is_checkout() || has_shortcode(get_post()->post_content, 'vortex_shopping_cart') || has_shortcode(get_post()->post_content, 'vortex_checkout')) {
+                wp_enqueue_script(
+                    $this->plugin_name . '-cart',
+                    plugin_dir_url(__FILE__) . 'js/vortex-cart.js',
+                    array('jquery', $this->plugin_name),
+                    $this->version,
+                    true
+                );
+            }
         }
 
         // Artwork details script
