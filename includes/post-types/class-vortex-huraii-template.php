@@ -27,7 +27,7 @@ class Vortex_Huraii_Template {
      * @access   private
      * @var      string    $post_type    The post type name.
      */
-    private $post_type = 'vortex_huraii_template';
+    private $post_type = 'vrtx_huraii_tmplt';
 
     /**
      * Register the custom post type.
