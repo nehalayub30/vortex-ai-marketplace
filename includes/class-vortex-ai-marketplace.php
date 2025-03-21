@@ -265,7 +265,7 @@ class Vortex_AI_Marketplace {
         $tola = new Vortex_TOLA( $this->plugin_name, $this->version, $this->blockchain, $this->wallet, true );
         
         // Register admin settings
-        $this->loader->add_action('admin_init', $tola, 'register_admin_settings');
+        $this->loader->add_action('admin_init', $tola, 'register_settings');
         
         // Add meta boxes for product pricing
         $this->loader->add_action('add_meta_boxes', $tola, 'add_product_meta_boxes');
