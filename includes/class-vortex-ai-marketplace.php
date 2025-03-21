@@ -274,7 +274,7 @@ class Vortex_AI_Marketplace {
         $this->loader->add_action('save_post_vortex_product', $tola, 'save_tola_pricing_meta_box');
         
         // Filter content to check access
-        $this->loader->add_filter('the_content', $tola, 'check_content_access', 20);
+        // $this->loader->add_filter('the_content', $tola, 'check_content_access', 20);
         
         // AJAX handlers are already defined in the TOLA class constructor
     }
