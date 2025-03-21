@@ -104,7 +104,7 @@ class Vortex_Admin {
         add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 10, 1 );
         
         // Admin customizations
-        add_action( 'current_screen', array( $this, 'customize_admin_screens' ) );
+        // add_action( 'current_screen', array( $this, 'customize_admin_screens' ) );
         
         // TinyMCE customizations
         add_filter( 'mce_buttons', array( $this, 'register_mce_buttons' ) );
