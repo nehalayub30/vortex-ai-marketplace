@@ -41,6 +41,24 @@ class Vortex_AI_Marketplace {
     protected $version;
 
     /**
+     * Blockchain instance.
+     *
+     * @since    1.0.0
+     * @access   private
+     * @var      Vortex_Blockchain    $blockchain    The Blockchain instance.
+     */
+    private $blockchain;
+
+    /**
+     * Wallet instance.
+     *
+     * @since    1.0.0
+     * @access   private
+     * @var      Vortex_Wallet    $wallet    The Wallet instance.
+     */
+    private $wallet;
+
+    /**
      * Define the core functionality of the plugin.
      *
      * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -233,8 +251,18 @@ class Vortex_AI_Marketplace {
      * @access   private
      */
     private function define_tola_hooks() {
+
+        // Load Blockchain Integration
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/blockchain/class-vortex-blockchain-integration.php';
+        
+        // Load Wallet 
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/blockchain/class-vortex-wallet-connect.php';
+
+        $this->blockchain = new Vortex_Blockchain_Integration();
+        $this->wallet = new Vortex_Wallet_Connect($this->blockchain);
+
         // Initialize TOLA token integration
-        $tola = new Vortex_TOLA();
+        $tola = new Vortex_TOLA( $this->plugin_name, $this->version, $this->blockchain, $this->wallet, true );
         
         // Register admin settings
         $this->loader->add_action('admin_init', $tola, 'register_admin_settings');
