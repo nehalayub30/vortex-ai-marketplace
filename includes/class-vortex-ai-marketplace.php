@@ -214,8 +214,8 @@ class Vortex_AI_Marketplace {
         $metrics = new Vortex_Metrics($this->get_plugin_name(), $this->get_version());
         $rankings = new Vortex_Rankings($this->get_plugin_name(), $this->get_version());
 
-        $this->loader->add_action('init', $metrics, 'initialize_metrics');
-        $this->loader->add_action('init', $rankings, 'initialize_rankings');
+        // $this->loader->add_action('init', $metrics, 'initialize_metrics');
+        // $this->loader->add_action('init', $rankings, 'initialize_rankings');
     }
 
     /**
@@ -229,7 +229,7 @@ class Vortex_AI_Marketplace {
         $image_processor = new Vortex_Image_Processor($this->get_plugin_name(), $this->get_version());
 
         // $this->loader->add_action('init', $huraii, 'initialize_huraii');
-        $this->loader->add_action('init', $image_processor, 'initialize_processor');
+        // $this->loader->add_action('init', $image_processor, 'initialize_processor');
     }
 
     /**
