@@ -231,14 +231,14 @@ class Vortex_Rankings {
      * @since    1.0.0
      */
     public function add_rankings_menu() {
-        add_submenu_page(
-            'vortex_marketplace',
-            __( 'Rankings Settings', 'vortex-ai-marketplace' ),
-            __( 'Rankings', 'vortex-ai-marketplace' ),
-            'manage_options',
-            'vortex_rankings_settings',
-            array( $this, 'render_settings_page' )
-        );
+        // add_submenu_page(
+        //     'vortex_marketplace',
+        //     __( 'Rankings Settings', 'vortex-ai-marketplace' ),
+        //     __( 'Rankings', 'vortex-ai-marketplace' ),
+        //     'manage_options',
+        //     'vortex_rankings_settings',
+        //     array( $this, 'render_settings_page' )
+        // );
     }
 
     /**

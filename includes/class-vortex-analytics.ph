@@ -207,14 +207,14 @@ class Vortex_Analytics {
             array( $this, 'render_analytics_page' )
         );
         
-        add_submenu_page(
-            'vortex_marketplace',
-            __( 'Analytics Settings', 'vortex-ai-marketplace' ),
-            __( 'Analytics Settings', 'vortex-ai-marketplace' ),
-            'manage_options',
-            'vortex_analytics_settings',
-            array( $this, 'render_settings_page' )
-        );
+        // add_submenu_page(
+        //     'vortex_marketplace',
+        //     __( 'Analytics Settings', 'vortex-ai-marketplace' ),
+        //     __( 'Analytics Settings', 'vortex-ai-marketplace' ),
+        //     'manage_options',
+        //     'vortex_analytics_settings',
+        //     array( $this, 'render_settings_page' )
+        // );
     }
 
     /**
