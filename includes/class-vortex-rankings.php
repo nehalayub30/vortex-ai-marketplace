@@ -170,6 +170,187 @@ class Vortex_Rankings {
         if ( class_exists( 'Vortex_Featured_Artwork_Widget' ) ) {
             add_filter( 'vortex_artwork_widget_query_args', array( $this, 'modify_artwork_widget_query' ), 10, 2 );
         }
+
+        // Scheduled rankings generation
+        add_action('vortex_daily_rankings_update', array($this, 'generate_all_rankings'));
+        
+        // AJAX handlers
+        add_action('wp_ajax_vortex_get_rankings', array($this, 'ajax_get_rankings'));
+        add_action('wp_ajax_nopriv_vortex_get_rankings', array($this, 'ajax_get_rankings'));
+        
+        // Rankings display shortcodes
+        add_shortcode('vortex_top_artworks', array($this, 'shortcode_top_artworks'));
+        add_shortcode('vortex_top_artists', array($this, 'shortcode_top_artists'));
+        add_shortcode('vortex_trending_artworks', array($this, 'shortcode_trending_artworks'));
+        add_shortcode('vortex_sales_leaderboard', array($this, 'shortcode_sales_leaderboard'));
+        
+        // Set up scheduled events if not already
+        if (!wp_next_scheduled('vortex_daily_rankings_update')) {
+            wp_schedule_event(time(), 'daily', 'vortex_daily_rankings_update');
+        }
+        
+        // Update rankings when certain events occur
+        add_action('vortex_artwork_sale', array($this, 'schedule_rankings_update'), 10, 4);
+        add_action('vortex_artwork_published', array($this, 'schedule_rankings_update'), 10, 1);
+        add_action('vortex_artist_profile_updated', array($this, 'schedule_rankings_update'), 10, 1);
+    }
+
+    /**
+     * Shortcode handler for top artworks
+     *
+     * @since 1.0.0
+     * @param array $atts Shortcode attributes
+     * @return string Shortcode output
+     */
+    public function shortcode_top_artworks($atts) {
+        $atts = shortcode_atts(array(
+            'count' => 6,
+            'category' => 0,
+            'period' => '30days',
+            'title' => __('Top Artworks', 'vortex-marketplace'),
+            'columns' => 3,
+            'show_rank' => true,
+            'show_artist' => true,
+            'show_price' => true
+        ), $atts, 'vortex_top_artworks');
+        
+        $count = intval($atts['count']);
+        $category = intval($atts['category']);
+        $period = sanitize_text_field($atts['period']);
+        $columns = intval($atts['columns']);
+        $show_rank = filter_var($atts['show_rank'], FILTER_VALIDATE_BOOLEAN);
+        $show_artist = filter_var($atts['show_artist'], FILTER_VALIDATE_BOOLEAN);
+        $show_price = filter_var($atts['show_price'], FILTER_VALIDATE_BOOLEAN);
+        
+        // Get rankings
+        $rankings = $this->get_top_artworks($count, $category, $period);
+        
+        // Start output buffer
+        ob_start();
+        
+        // Include template
+        include(VORTEX_PLUGIN_PATH . 'templates/rankings/top-artworks.php');
+        
+        // Return output
+        return ob_get_clean();
+    }
+    
+    /**
+     * Shortcode handler for top artists
+     *
+     * @since 1.0.0
+     * @param array $atts Shortcode attributes
+     * @return string Shortcode output
+     */
+    public function shortcode_top_artists($atts) {
+        $atts = shortcode_atts(array(
+            'count' => 6,
+            'category' => 0,
+            'period' => '30days',
+            'title' => __('Top Artists', 'vortex-marketplace'),
+            'columns' => 3,
+            'show_rank' => true,
+            'show_sales' => true
+        ), $atts, 'vortex_top_artists');
+        
+        $count = intval($atts['count']);
+        $category = intval($atts['category']);
+        $period = sanitize_text_field($atts['period']);
+        $columns = intval($atts['columns']);
+        $show_rank = filter_var($atts['show_rank'], FILTER_VALIDATE_BOOLEAN);
+        $show_sales = filter_var($atts['show_sales'], FILTER_VALIDATE_BOOLEAN);
+        
+        // Get rankings
+        $rankings = $this->get_top_artists($count, $category, $period);
+        
+        // Start output buffer
+        ob_start();
+        
+        // Include template
+        include(VORTEX_PLUGIN_PATH . 'templates/rankings/top-artists.php');
+        
+        // Return output
+        return ob_get_clean();
+    }
+    
+    /**
+     * Shortcode handler for trending artworks
+     *
+     * @since 1.0.0
+     * @param array $atts Shortcode attributes
+     * @return string Shortcode output
+     */
+    public function shortcode_trending_artworks($atts) {
+        $atts = shortcode_atts(array(
+            'count' => 6,
+            'category' => 0,
+            'title' => __('Trending Artworks', 'vortex-marketplace'),
+            'columns' => 3,
+            'show_rank' => true,
+            'show_artist' => true,
+            'show_trend_score' => true
+        ), $atts, 'vortex_trending_artworks');
+        
+        $count = intval($atts['count']);
+        $category = intval($atts['category']);
+        $columns = intval($atts['columns']);
+        $show_rank = filter_var($atts['show_rank'], FILTER_VALIDATE_BOOLEAN);
+        $show_artist = filter_var($atts['show_artist'], FILTER_VALIDATE_BOOLEAN);
+        $show_trend_score = filter_var($atts['show_trend_score'], FILTER_VALIDATE_BOOLEAN);
+        
+        // Get rankings
+        $rankings = $this->get_trending_artworks($count, $category);
+        
+        // Start output buffer
+        ob_start();
+        
+        // Include template
+        include(VORTEX_PLUGIN_PATH . 'templates/rankings/trending-artworks.php');
+        
+        // Return output
+        return ob_get_clean();
+    }
+    
+    /**
+     * Shortcode handler for sales leaderboard
+     *
+     * @since 1.0.0
+     * @param array $atts Shortcode attributes
+     * @return string Shortcode output
+     */
+    public function shortcode_sales_leaderboard($atts) {
+        $atts = shortcode_atts(array(
+            'count' => 6,
+            'category' => 0,
+            'period' => '30days',
+            'title' => __('Sales Leaderboard', 'vortex-marketplace'),
+            'columns' => 3,
+            'show_rank' => true,
+            'show_artist' => true,
+            'show_sales' => true,
+            'show_revenue' => true
+        ), $atts, 'vortex_sales_leaderboard');
+        
+        $count = intval($atts['count']);
+        $category = intval($atts['category']);
+        $period = sanitize_text_field($atts['period']);
+        $columns = intval($atts['columns']);
+        $show_rank = filter_var($atts['show_rank'], FILTER_VALIDATE_BOOLEAN);
+        $show_artist = filter_var($atts['show_artist'], FILTER_VALIDATE_BOOLEAN);
+        $show_sales = filter_var($atts['show_sales'], FILTER_VALIDATE_BOOLEAN);
+        $show_revenue = filter_var($atts['show_revenue'], FILTER_VALIDATE_BOOLEAN);
+        
+        // Get rankings
+        $rankings = $this->get_sales_leaderboard($count, $category, $period);
+        
+        // Start output buffer
+        ob_start();
+        
+        // Include template
+        include(VORTEX_PLUGIN_PATH . 'templates/rankings/sales-leaderboard.php');
+        
+        // Return output
+        return ob_get_clean();
     }
 
     /**

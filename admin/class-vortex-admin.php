@@ -258,6 +258,47 @@ class Vortex_Admin {
                 'all'
             );
         }
+
+        /**
+         * An instance of this class should be passed to the run() function
+         * defined in Vortex_Loader as all of the hooks are defined
+         * in that particular class.
+         *
+         * The Vortex_Loader will then create the relationship
+         * between the defined hooks and the functions defined in this
+         * class.
+         */
+
+        $screen = get_current_screen();
+        
+        // Main admin styles for all admin pages
+        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/vortex-admin.css', array(), $this->version, 'all');
+        
+        // Dashboard specific styles
+        if ($screen && $screen->id === 'toplevel_page_vortex-dashboard') {
+            wp_enqueue_style($this->plugin_name . '-dashboard', plugin_dir_url(__FILE__) . 'css/vortex-dashboard.css', array(), $this->version, 'all');
+        }
+        
+        // Artwork edit page styles
+        if ($screen && $screen->id === 'vortex_artwork') {
+            wp_enqueue_style($this->plugin_name . '-post-edit', plugin_dir_url(__FILE__) . 'css/vortex-post-edit.css', array(), $this->version, 'all');
+            wp_enqueue_style('wp-color-picker');
+        }
+        
+        // Settings page styles
+        if ($screen && strpos($screen->id, 'vortex-settings') !== false) {
+            wp_enqueue_style('wp-color-picker');
+        }
+        
+        // Metrics dashboard styles
+        if ($screen && strpos($screen->id, 'page_vortex-tools') !== false) {
+            wp_enqueue_style($this->plugin_name . '-metrics', plugin_dir_url(__FILE__) . 'css/vortex-metrics-dashboard.css', array(), $this->version, 'all');
+        }
+        
+        // Language admin styles
+        if ($screen && (strpos($screen->id, 'page_vortex-settings') !== false || strpos($screen->id, 'page_vortex-status') !== false)) {
+            wp_enqueue_style($this->plugin_name . '-language', plugin_dir_url(__FILE__) . 'css/vortex-language-admin.css', array(), $this->version, 'all');
+        }
     }
 
     /**
@@ -351,6 +392,57 @@ class Vortex_Admin {
                     ),
                 )
             );
+        }
+
+        /**
+         * An instance of this class should be passed to the run() function
+         * defined in Vortex_Loader as all of the hooks are defined
+         * in that particular class.
+         *
+         * The Vortex_Loader will then create the relationship
+         * between the defined hooks and the functions defined in this
+         * class.
+         */
+
+        $screen = get_current_screen();
+        
+        // Main admin scripts for all admin pages
+        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/vortex-admin.js', array('jquery', 'jquery-ui-sortable', 'jquery-ui-dialog'), $this->version, false);
+        
+        wp_localize_script($this->plugin_name, 'vortex_admin', array(
+            'ajaxurl' => admin_url('ajax.php'),
+            'nonce' => wp_create_nonce('vortex_admin_nonce'),
+            'confirm_delete' => __('Are you sure you want to delete this item? This action cannot be undone.', 'vortex-ai-marketplace'),
+            'confirm_reset' => __('Are you sure you want to reset settings to defaults? This action cannot be undone.', 'vortex-ai-marketplace'),
+            'saving' => __('Saving...', 'vortex-ai-marketplace'),
+            'save_success' => __('Settings saved successfully!', 'vortex-ai-marketplace'),
+            'save_error' => __('Error saving settings. Please try again.', 'vortex-ai-marketplace'),
+        ));
+        
+        // Dashboard specific scripts
+        if ($screen && $screen->id === 'toplevel_page_vortex-dashboard') {
+            wp_enqueue_script($this->plugin_name . '-dashboard', plugin_dir_url(__FILE__) . 'js/vortex-dashboard.js', array('jquery', $this->plugin_name), $this->version, false);
+        }
+        
+        // Artwork edit page scripts
+        if ($screen && $screen->id === 'vortex_artwork') {
+            wp_enqueue_script($this->plugin_name . '-post-edit', plugin_dir_url(__FILE__) . 'js/vortex-post-edit.js', array('jquery', 'wp-color-picker', $this->plugin_name), $this->version, false);
+        }
+        
+        // Settings page scripts
+        if ($screen && strpos($screen->id, 'vortex-settings') !== false) {
+            wp_enqueue_script('wp-color-picker');
+            wp_enqueue_media();
+        }
+        
+        // Metrics dashboard scripts
+        if ($screen && strpos($screen->id, 'page_vortex-tools') !== false) {
+            wp_enqueue_script($this->plugin_name . '-metrics', plugin_dir_url(__FILE__) . 'js/vortex-metrics-dashboard.js', array('jquery', $this->plugin_name), $this->version, false);
+        }
+        
+        // Language admin scripts
+        if ($screen && (strpos($screen->id, 'page_vortex-settings') !== false || strpos($screen->id, 'page_vortex-status') !== false)) {
+            wp_enqueue_script($this->plugin_name . '-language', plugin_dir_url(__FILE__) . 'js/vortex-language-admin.js', array('jquery', $this->plugin_name), $this->version, false);
         }
     }
 

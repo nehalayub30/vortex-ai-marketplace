@@ -84,6 +84,7 @@ class Vortex_AI_Marketplace {
         $this->define_huraii_hooks();
         $this->define_blockchain_hooks();
         $this->define_tola_hooks();
+        $this->initialize_database();
     }
 
     /**
@@ -128,7 +129,24 @@ class Vortex_AI_Marketplace {
 
         // Load HURAII AI integration
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-vortex-huraii.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-vortex-img2img.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-vortex-model-loader.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-vortex-image-processor.php';
+
+        /**
+         * Analytics and metrics.
+         */
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-vortex-metrics.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-vortex-analytics.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-vortex-rankings.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'api/class-vortex-metrics-api.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'api/class-vortex-rankings-api.php';
+
+        /**
+         * Translation and internationalization.
+         */
+        require_once plugin_dir_path(dirname(__FILE__)) . 'api/class-vortex-translation-api.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-vortex-language-db.php';
 
         // Load blockchain integration
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-vortex-blockchain.php';
@@ -137,6 +155,66 @@ class Vortex_AI_Marketplace {
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/blockchain/class-vortex-tola.php';
 
         $this->loader = new Vortex_Loader( $this->get_plugin_name(), $this->get_version() );
+    }
+
+    /**
+     * Initialize the database tables for the plugin.
+     *
+     * @since    1.0.0
+     * @access   private
+     */
+    private function initialize_database() {
+        // Check if tables need to be created/updated
+        $this->loader->add_action('plugins_loaded', $this, 'check_database_version');
+    }
+
+    /**
+     * Check the database version and update if necessary.
+     *
+     * @since    1.0.0
+     */
+    public function check_database_version() {
+        $current_db_version = get_option('vortex_database_version', '0');
+        
+        if (version_compare($current_db_version, $this->version, '<')) {
+            $this->create_database_tables();
+            update_option('vortex_database_version', $this->version);
+        }
+    }
+
+    /**
+     * Create the database tables for the plugin.
+     *
+     * @since    1.0.0
+     */
+    public function create_database_tables() {
+        global $wpdb;
+        
+        // Get collation
+        $charset_collate = $wpdb->get_charset_collate();
+        
+        // Include database schema files
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        require_once plugin_dir_path(dirname(__FILE__)) . 'database/schemas/core-schema.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'database/schemas/tola-schema.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'database/schemas/metrics-schema.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'database/schemas/rankings-schema.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'database/schemas/language-schema.php';
+        
+        // Execute core schema
+        vortex_create_core_schema($charset_collate);
+        
+        // Execute TOLA schema
+        vortex_create_tola_schema($charset_collate);
+        
+        // Execute metrics schema
+        vortex_create_metrics_schema($charset_collate);
+        
+        // Execute rankings schema
+        vortex_create_rankings_schema($charset_collate);
+        
+        // Execute language schema
+        vortex_create_language_schema($charset_collate);
     }
 
     /**
