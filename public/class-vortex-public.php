@@ -59,6 +59,15 @@ class Vortex_Public {
     private $theme_compatibility;
 
     /**
+     * Theme compatibility handler.
+     *
+     * @since    1.0.0
+     * @access   private
+     * @var      Vortex_Theme_Compatibility    $theme_compatibility    Theme compatibility handler.
+     */
+    private $metrics;
+
+    /**
      * Initialize the class and set its properties.
      *
      * @since    1.0.0
