@@ -137,7 +137,7 @@ class Vortex_AI_Marketplace {
          * Analytics and metrics.
          */
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-vortex-metrics.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-vortex-analytics.php';
+        // require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-vortex-analytics.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-vortex-rankings.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'api/class-vortex-metrics-api.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'api/class-vortex-rankings-api.php';
