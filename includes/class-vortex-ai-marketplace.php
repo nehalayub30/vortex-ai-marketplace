@@ -129,8 +129,8 @@ class Vortex_AI_Marketplace {
 
         // Load HURAII AI integration
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-vortex-huraii.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-vortex-img2img.php';
-        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-vortex-model-loader.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/ai-models/class-vortex-img2img.php';
+        require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/ai-models/class-vortex-model-loader.php';
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-vortex-image-processor.php';
 
         /**
