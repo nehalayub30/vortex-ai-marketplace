@@ -1008,6 +1008,7 @@ class Vortex_Translation_API {
             $data
         );
     }
+}
 
     /**
      * Translate text using Microsoft Translator API.
@@ -1015,3 +1016,4 @@ class Vortex_Translation_API {
      * @since    1.0.0
      * @param    string    $text           
 </rewritten_file> 
+*/
