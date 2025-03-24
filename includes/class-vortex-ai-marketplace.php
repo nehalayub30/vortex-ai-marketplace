@@ -146,7 +146,7 @@ class Vortex_AI_Marketplace {
          * Translation and internationalization.
          */
         require_once plugin_dir_path(dirname(__FILE__)) . 'api/class-vortex-translation-api.php';
-        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-vortex-language-db.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'database/class-vortex-language-db.php';
 
         // Load blockchain integration
         require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-vortex-blockchain.php';
