@@ -1007,9 +1007,9 @@ class Vortex_Public {
         }
         
         // Load language switcher script on all pages if multilingual is enabled
-        if ($this->is_multilingual_enabled()) {
-            wp_enqueue_script($this->plugin_name . '-language', plugin_dir_url(__FILE__) . 'js/vortex-language-switcher.js', array('jquery', $this->plugin_name), $this->version, true);
-        }
+        // if ($this->is_multilingual_enabled()) {
+        //     wp_enqueue_script($this->plugin_name . '-language', plugin_dir_url(__FILE__) . 'js/vortex-language-switcher.js', array('jquery', $this->plugin_name), $this->version, true);
+        // }
         
         // Blockchain integration scripts (load conditionally to save resources)
         if ($this->is_blockchain_page()) {
