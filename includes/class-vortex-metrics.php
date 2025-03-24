@@ -668,10 +668,10 @@ class Vortex_Metrics {
         }
         
         // Check if this is admin or excluded role
-        if ( $this->is_excluded_user() ) {
-            wp_send_json_success();
-            return;
-        }
+        // if ( $this->is_excluded_user() ) {
+        //     wp_send_json_success();
+        //     return;
+        // }
         
         // Get visitor IP if tracking is enabled
         $visitor_ip = '';
@@ -793,9 +793,9 @@ class Vortex_Metrics {
         }
         
         // Check if this is an excluded role
-        if ( $this->is_excluded_user( $user ) ) {
-            return;
-        }
+        // if ( $this->is_excluded_user( $user ) ) {
+        //     return;
+        // }
         
         $date = current_time( 'Y-m-d' );
         $date_key = str_replace( '-', '', $date );
