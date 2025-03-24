@@ -19,6 +19,7 @@ if (!defined('WPINC')) {
 
 // Define plugin constants
 define('VORTEX_AI_MARKETPLACE_VERSION', '1.0.0');
+define('VORTEX_PLUGIN_FILE', __FILE__);
 define('VORTEX_AI_MARKETPLACE_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('VORTEX_AI_MARKETPLACE_PLUGIN_URL', plugin_dir_url(__FILE__));
 
