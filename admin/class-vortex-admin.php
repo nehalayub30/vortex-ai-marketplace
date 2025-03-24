@@ -90,8 +90,8 @@ class Vortex_Admin {
         add_action( 'admin_notices', array( $this, 'display_admin_notices' ) );
         
         // Plugin actions and links
-        add_filter( 'plugin_action_links_' . $this->plugin_name . '/' . $this->plugin_name . '.php', 
-                    array( $this, 'add_plugin_action_links' ) );
+        // add_filter( 'plugin_action_links_' . $this->plugin_name . '/' . $this->plugin_name . '.php', 
+        //             array( $this, 'add_plugin_action_links' ) );
         
         // Admin AJAX handlers
         add_action( 'wp_ajax_vortex_dismiss_notice', array( $this, 'ajax_dismiss_notice' ) );
