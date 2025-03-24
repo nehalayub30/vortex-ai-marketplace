@@ -112,6 +112,64 @@ class Vortex_Admin {
     }
 
     /**
+     * Add analytics dashboard widgets.
+     *
+     * @since    1.0.0
+     */
+    public function add_dashboard_widgets() {
+        // Check if analytics is enabled
+        if ( ! get_option( 'vortex_analytics_enabled', true ) ) {
+            return;
+        }
+        
+        // Check user permissions
+        if ( ! current_user_can( 'manage_options' ) ) {
+            return;
+        }
+        
+        // Get enabled widgets from settings
+        $widgets = get_option( 'vortex_analytics_dashboard_widgets', array(
+            'sales_summary' => true,
+            'artist_growth' => true,
+            'artwork_statistics' => true,
+            'marketplace_health' => true,
+        ));
+        
+        // Add enabled widgets
+        if ( ! empty( $widgets['sales_summary'] ) ) {
+            wp_add_dashboard_widget(
+                'vortex_analytics_sales_summary',
+                __( 'VORTEX Marketplace: Sales Summary', 'vortex-ai-marketplace' ),
+                array( $this, 'render_sales_summary_widget' )
+            );
+        }
+        
+        if ( ! empty( $widgets['artist_growth'] ) ) {
+            wp_add_dashboard_widget(
+                'vortex_analytics_artist_growth',
+                __( 'VORTEX Marketplace: Artist Growth', 'vortex-ai-marketplace' ),
+                array( $this, 'render_artist_growth_widget' )
+            );
+        }
+        
+        if ( ! empty( $widgets['artwork_statistics'] ) ) {
+            wp_add_dashboard_widget(
+                'vortex_analytics_artwork_statistics',
+                __( 'VORTEX Marketplace: Artwork Statistics', 'vortex-ai-marketplace' ),
+                array( $this, 'render_artwork_statistics_widget' )
+            );
+        }
+        
+        if ( ! empty( $widgets['marketplace_health'] ) ) {
+            wp_add_dashboard_widget(
+                'vortex_analytics_marketplace_health',
+                __( 'VORTEX Marketplace: Health Metrics', 'vortex-ai-marketplace' ),
+                array( $this, 'render_marketplace_health_widget' )
+            );
+        }
+    }
+
+    /**
      * Set up admin pages configuration.
      *
      * @since    1.0.0
