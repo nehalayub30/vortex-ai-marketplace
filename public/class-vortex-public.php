@@ -1,4 +1,4 @@
-<?php
+    <?php
 /**
  * The public-facing functionality of the plugin.
  *
@@ -774,6 +774,11 @@ class Vortex_Public {
         $custom_css = get_option('vortex_advanced_custom_css', '');
         if (!empty($custom_css)) {
             wp_add_inline_style($this->plugin_name, $custom_css);
+        }
+
+        // RTL support
+        if (is_rtl()) {
+            wp_enqueue_style($this->plugin_name . '-rtl', plugin_dir_url(__FILE__) . 'css/vortex-rtl.css', array(), $this->version, 'all');
         }
     }
 
