@@ -464,19 +464,6 @@ class Vortex_Admin {
 
         $screen = get_current_screen();
         
-        // Main admin scripts for all admin pages
-        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/vortex-admin.js', array('jquery', 'jquery-ui-sortable', 'jquery-ui-dialog'), $this->version, false);
-        
-        wp_localize_script($this->plugin_name, 'vortex_admin', array(
-            'ajaxurl' => admin_url('ajax.php'),
-            'nonce' => wp_create_nonce('vortex_admin_nonce'),
-            'confirm_delete' => __('Are you sure you want to delete this item? This action cannot be undone.', 'vortex-ai-marketplace'),
-            'confirm_reset' => __('Are you sure you want to reset settings to defaults? This action cannot be undone.', 'vortex-ai-marketplace'),
-            'saving' => __('Saving...', 'vortex-ai-marketplace'),
-            'save_success' => __('Settings saved successfully!', 'vortex-ai-marketplace'),
-            'save_error' => __('Error saving settings. Please try again.', 'vortex-ai-marketplace'),
-        ));
-        
         // Dashboard specific scripts
         if ($screen && $screen->id === 'toplevel_page_vortex-dashboard') {
             wp_enqueue_script($this->plugin_name . '-dashboard', plugin_dir_url(__FILE__) . 'js/vortex-dashboard.js', array('jquery', $this->plugin_name), $this->version, false);
