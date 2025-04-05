@@ -56,6 +56,7 @@ require_once plugin_dir_path(__FILE__) . 'includes/class-vortex-shortcodes.php';
 require_once plugin_dir_path(__FILE__) . 'class-vortex-ai-coordinator.php';
 require_once plugin_dir_path(__FILE__) . 'includes/ai-models/class-vortex-model-loader.php';
 require_once plugin_dir_path(__FILE__) . 'includes/ai-models/class-vortex-img2img.php';
+require_once plugin_dir_path(__FILE__) . 'class-vortex-cloe.php';
 require_once plugin_dir_path(__FILE__) . 'class-vortex-huraii.php';
 require_once plugin_dir_path(__FILE__) . 'class-vortex-support-chat.php';
 require_once VORTEX_PLUGIN_DIR . 'includes/class-vortex-subscriptions.php';
