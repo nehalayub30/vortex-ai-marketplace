@@ -92,6 +92,19 @@ class Vortex_Rankings {
     }
 
     /**
+     * Log debugging info to the error log.
+     *
+     * Enabled when WP_DEBUG_LOG is enabled (and WP_DEBUG, since according to
+     * core, "WP_DEBUG_DISPLAY and WP_DEBUG_LOG perform no function unless
+     * WP_DEBUG is true), but can be disabled via the akismet_debug_log filter.
+     *
+     * @param mixed $akismet_debug The data to log.
+     */
+    public static function log( $message, $status = 'info' ) {
+        error_log( print_r( compact( 'message' ), true ) );
+    }
+
+    /**
      * Initialize ranking algorithm weights from settings.
      *
      * @since    1.0.0
