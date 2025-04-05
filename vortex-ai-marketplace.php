@@ -58,6 +58,8 @@ require_once plugin_dir_path(__FILE__) . 'includes/class-vortex-shortcodes.php';
 require_once plugin_dir_path(__FILE__) . 'class-vortex-ai-coordinator.php';
 require_once plugin_dir_path(__FILE__) . 'includes/ai-models/class-vortex-model-loader.php';
 require_once plugin_dir_path(__FILE__) . 'includes/ai-models/class-vortex-img2img.php';
+require_once plugin_dir_path(__FILE__) . 'includes/class-vortex-thorius.php';
+
 require_once plugin_dir_path(__FILE__) . 'class-vortex-cloe.php';
 require_once plugin_dir_path(__FILE__) . 'class-vortex-huraii.php';
 require_once plugin_dir_path(__FILE__) . 'class-vortex-support-chat.php';
@@ -101,7 +103,9 @@ function run_vortex_ai_marketplace() {
 }
 
 // Initialize the scheduler
-$scheduler = new Vortex_Scheduler($plugin_name, $version, $this);
+$plugin_name = 'vortex-ai-marketplace';
+$version = VORTEX_VERSION;
+$scheduler = new Vortex_Scheduler($plugin_name, $version, Vortex_AI_Marketplace::instance());
 
 run_vortex_ai_marketplace();
 
