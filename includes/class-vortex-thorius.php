@@ -844,7 +844,7 @@ class Vortex_Thorius {
     /**
      * Process user query with context
      */
-    public function process_query($query, $context = '', $user_id = 0) {
+    public function process_query_($query, $context = '', $user_id = 0) {
         // Get user context if logged in
         if ($user_id) {
             $user_context = $this->context_manager->get_context($user_id);
