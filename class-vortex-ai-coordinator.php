@@ -77,7 +77,7 @@ class VORTEX_AI_Coordinator {
     /**
      * Initialize agent
      */
-    public function initialize_agent($agent_name, $agent_type, $status, $data) {
+    public function initialize_agent($agent_name, $agent_type, $status, $data = []) {
         // Implementation of initialize_agent method
     }
     

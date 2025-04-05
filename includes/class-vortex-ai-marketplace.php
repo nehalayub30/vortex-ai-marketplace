@@ -13,6 +13,13 @@
 class Vortex_AI_Marketplace {
 
     /**
+     * The single instance of the class.
+     *
+     * @var Vortex_Scheduler_Shortcodes
+     */
+    protected static $instance = null;
+
+    /**
      * The loader that's responsible for maintaining and registering all hooks that power
      * the plugin.
      *
@@ -85,6 +92,13 @@ class Vortex_AI_Marketplace {
         $this->define_blockchain_hooks();
         $this->define_tola_hooks();
         $this->initialize_database();
+    }
+
+    public static function instance() {
+        if (is_null(self::$instance)) {
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
 
     /**
