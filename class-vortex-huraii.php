@@ -93,6 +93,8 @@ class VORTEX_HURAII {
      * @var VORTEX_Img2Img
      */
     private $img_processor;
+
+    private $cross_learning;
     
     /**
      * Default generation parameters
