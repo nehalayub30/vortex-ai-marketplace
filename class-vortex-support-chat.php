@@ -95,11 +95,11 @@ class VORTEX_Support_Chat {
         $this->ai_agents['cloe']->set_context_window(1000);
         
         // Initialize Business Strategist for business logic with deep learning
-        $this->ai_agents['business_strategist'] = new VORTEX_Business_Strategist();
-        $this->ai_agents['business_strategist']->enable_deep_learning();
-        $this->ai_agents['business_strategist']->set_learning_rate(0.001);
-        $this->ai_agents['business_strategist']->enable_continuous_learning();
-        $this->ai_agents['business_strategist']->set_context_window(1000);
+        // $this->ai_agents['business_strategist'] = new VORTEX_Business_Strategist();
+        // $this->ai_agents['business_strategist']->enable_deep_learning();
+        // $this->ai_agents['business_strategist']->set_learning_rate(0.001);
+        // $this->ai_agents['business_strategist']->enable_continuous_learning();
+        // $this->ai_agents['business_strategist']->set_context_window(1000);
         
         // Set up cross-agent learning
         $this->setup_cross_agent_learning();
