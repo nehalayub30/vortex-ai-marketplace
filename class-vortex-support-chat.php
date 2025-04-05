@@ -142,10 +142,10 @@ class VORTEX_Support_Chat {
         $this->ai_agents['huraii']->enable_cross_learning($this->ai_agents['cloe']);
         
         // Enable cross-agent learning between CLoe and Business Strategist
-        $this->ai_agents['cloe']->enable_cross_learning($this->ai_agents['business_strategist']);
+        // $this->ai_agents['cloe']->enable_cross_learning($this->ai_agents['business_strategist']);
         
         // Enable cross-agent learning between HURAII and Business Strategist
-        $this->ai_agents['huraii']->enable_cross_learning($this->ai_agents['business_strategist']);
+        // $this->ai_agents['huraii']->enable_cross_learning($this->ai_agents['business_strategist']);
     }
     
     /**
