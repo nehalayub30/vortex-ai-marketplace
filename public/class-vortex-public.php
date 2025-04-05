@@ -738,7 +738,7 @@ class Vortex_Public {
         }
 
         // AI Generator stylesheet
-        if (has_shortcode(get_post()->post_content, 'vortex_artwork_generator')) {
+        if (!empty(get_post()->post_content) && has_shortcode(get_post()->post_content, 'vortex_artwork_generator')) {
             wp_enqueue_style(
                 $this->plugin_name . '-generator',
                 plugin_dir_url(__FILE__) . 'css/vortex-generator.css',
@@ -749,7 +749,7 @@ class Vortex_Public {
         }
 
         // User dashboard stylesheet
-        if (has_shortcode(get_post()->post_content, 'vortex_user_dashboard')) {
+        if (!empty(get_post()->post_content) && has_shortcode(get_post()->post_content, 'vortex_user_dashboard')) {
             wp_enqueue_style(
                 $this->plugin_name . '-dashboard',
                 plugin_dir_url(__FILE__) . 'css/vortex-user-dashboard.css',
@@ -879,7 +879,7 @@ class Vortex_Public {
         }
 
         // AI Generator script
-        if (has_shortcode(get_post()->post_content, 'vortex_artwork_generator')) {
+        if (!empty(get_post()->post_content) && has_shortcode(get_post()->post_content, 'vortex_artwork_generator')) {
             wp_enqueue_script(
                 $this->plugin_name . '-generator',
                 plugin_dir_url(__FILE__) . 'js/vortex-generator.js',
@@ -911,7 +911,7 @@ class Vortex_Public {
         }
 
         // User dashboard script
-        if (has_shortcode(get_post()->post_content, 'vortex_user_dashboard')) {
+        if (!empty(get_post()->post_content) && has_shortcode(get_post()->post_content, 'vortex_user_dashboard')) {
             wp_enqueue_script(
                 $this->plugin_name . '-dashboard',
                 plugin_dir_url(__FILE__) . 'js/vortex-user-dashboard.js',
