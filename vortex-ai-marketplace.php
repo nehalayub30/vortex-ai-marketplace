@@ -21,6 +21,8 @@ define( 'VORTEX_VERSION', '1.0.0' );
 /**
  * Define plugin directories and URLs.
  */
+define( 'VORTEX_PLUGIN_FILE', plugin_dir_path( __FILE__ ) );
+define('VORTEX_AI_MARKETPLACE_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define( 'VORTEX_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'VORTEX_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'VORTEX_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
