@@ -52,6 +52,33 @@ class VORTEX_CLOE {
      * Marketing intelligence data
      */
     private $marketing_data = array();
+
+    /**
+     * Marketing intelligence data
+     */
+    private $deep_learning_enabled;
+
+    /**
+     * Marketing intelligence data
+     */
+    private $learning_rate;
+
+    /**
+     * Marketing intelligence data
+     */
+    private $context_window;
+
+   /**
+     * Marketing intelligence data
+     */
+    private $model_config;
+
+
+    /**
+     * Marketing intelligence data
+     */
+    private $continuous_learning;
+    
     
     /**
      * Constructor
@@ -938,7 +965,7 @@ class VORTEX_CLOE {
             // Build correlation data
             $correlations = array();
             
-            if ($internal_styles['status'] === 'success' && $external_trends['status'] === 'success') {
+            if ((isset($internal_styles['status']) && isset($internal_styles['data'])) && $internal_styles['status'] === 'success' && $external_trends['status'] === 'success') {
                 $internal_style_names = array_column($internal_styles['data'], 'style_name');
                 
                 // Extract external style names from various sources
