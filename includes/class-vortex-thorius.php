@@ -306,8 +306,8 @@ class Vortex_Thorius {
      * Initialize admin components
      */
     private function init_admin() {
-        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/admin/class-vortex-thorius-admin.php';
-        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/admin/class-vortex-thorius-admin-tabs.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-vortex-thorius-admin.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-vortex-thorius-admin-tabs.php';
         
         $this->admin = new Vortex_Thorius_Admin();
         $this->admin_tabs = new Vortex_Thorius_Admin_Tabs();
