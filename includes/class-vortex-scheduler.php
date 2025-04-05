@@ -22,7 +22,7 @@
 class Vortex_Scheduler {
 
     protected static $instance = null;
-    
+
     /**
      * The ID of this plugin.
      *
@@ -84,7 +84,7 @@ class Vortex_Scheduler {
 
     public static function instance() {
         if (is_null(self::$instance)) {
-            self::$instance = new self();
+            self::$instance = new self('Vortex AI Marketplace', 'VORTEX_VERSION', Vortex_AI_Marketplace::instance());
         }
         return self::$instance;
     }
