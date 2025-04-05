@@ -21,6 +21,8 @@
  */
 class Vortex_Scheduler {
 
+    protected static $instance = null;
+    
     /**
      * The ID of this plugin.
      *
@@ -78,6 +80,13 @@ class Vortex_Scheduler {
         
         // Register shortcodes
         $this->register_shortcodes();
+    }
+
+    public static function instance() {
+        if (is_null(self::$instance)) {
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
 
     /**
