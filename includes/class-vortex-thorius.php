@@ -844,33 +844,33 @@ class Vortex_Thorius {
     /**
      * Process user query with context
      */
-    public function process_query_($query, $context = '', $user_id = 0) {
-        // Get user context if logged in
-        if ($user_id) {
-            $user_context = $this->context_manager->get_context($user_id);
-            $user_preferences = $this->user_manager->get_preferences($user_id);
+    // public function process_query_($query, $context = '', $user_id = 0) {
+    //     // Get user context if logged in
+    //     if ($user_id) {
+    //         $user_context = $this->context_manager->get_context($user_id);
+    //         $user_preferences = $this->user_manager->get_preferences($user_id);
             
-            // Merge with provided context
-            $context = array_merge(
-                $user_context,
-                array('preferences' => $user_preferences),
-                $context ? array('provided' => $context) : array()
-            );
-        }
+    //         // Merge with provided context
+    //         $context = array_merge(
+    //             $user_context,
+    //             array('preferences' => $user_preferences),
+    //             $context ? array('provided' => $context) : array()
+    //         );
+    //     }
         
-        // Process query with enhanced context
-        $response = parent::process_query($query, $context, $user_id);
+    //     // Process query with enhanced context
+    //     $response = parent::process_query($query, $context, $user_id);
         
-        // Track interaction
-        if ($user_id) {
-            $this->history_manager->track_interaction($user_id, 'query', array(
-                'query' => $query,
-                'response' => $response
-            ));
-        }
+    //     // Track interaction
+    //     if ($user_id) {
+    //         $this->history_manager->track_interaction($user_id, 'query', array(
+    //             'query' => $query,
+    //             'response' => $response
+    //         ));
+    //     }
         
-        return $response;
-    }
+    //     return $response;
+    // }
 
     /**
      * Process query with emotion awareness
