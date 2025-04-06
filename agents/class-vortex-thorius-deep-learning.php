@@ -64,8 +64,8 @@ class Vortex_Thorius_Deep_Learning {
         $this->agents['cloe'] = new Vortex_Thorius_CLOE($this->api_manager);
         
         // Register HURAII connection
-        require_once plugin_dir_path(__FILE__) . 'class-vortex-thorius-huraii.php';
-        $this->agents['huraii'] = new Vortex_Thorius_HURAII($this->api_manager);
+        // require_once plugin_dir_path(__FILE__) . 'class-vortex-thorius-huraii.php';
+        // $this->agents['huraii'] = new Vortex_Thorius_HURAII($this->api_manager);
         
         // Register Strategist connection
         require_once plugin_dir_path(__FILE__) . 'class-vortex-thorius-strategist.php';
