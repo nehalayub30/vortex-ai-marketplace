@@ -17,6 +17,8 @@
  * Start at version 1.0.0 and use SemVer - https://semver.org
  */
 define( 'VORTEX_VERSION', '1.0.0' );
+define( 'VORTEX_THORIUS_VERSION', '1.0.0' );
+
 
 /**
  * Define plugin directories and URLs.
