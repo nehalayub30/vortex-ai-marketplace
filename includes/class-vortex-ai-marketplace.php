@@ -360,7 +360,7 @@ class Vortex_AI_Marketplace {
         $this->loader->add_action('admin_init', $tola, 'register_settings');
         
         // Add meta boxes for product pricing
-        $this->loader->add_action('add_meta_boxes', $tola, 'add_product_meta_boxes');
+        // $this->loader->add_action('add_meta_boxes', $tola, 'add_product_meta_boxes');
         
         // Save meta box data
         $this->loader->add_action('save_post_vortex_product', $tola, 'save_tola_pricing_meta_box');
