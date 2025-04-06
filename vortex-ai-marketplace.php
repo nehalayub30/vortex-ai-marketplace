@@ -84,6 +84,10 @@ require_once plugin_dir_path(__FILE__) . 'includes/class-vortex-post-types.php';
 // Include AJAX handlers
 require_once plugin_dir_path(__FILE__) . 'includes/class-vortex-ajax-handlers.php';
 
+
+require_once plugin_dir_path(__FILE__) . 'class-vortex-security.php';
+
+
 /**
  * Initialize the plugin.
  */
