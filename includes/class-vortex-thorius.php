@@ -42,6 +42,7 @@ class Vortex_Thorius {
     private $recovery;
     private $user_manager;
     private $session_manager;
+    private $history_manager;
 
     
     /**
