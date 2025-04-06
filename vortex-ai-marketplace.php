@@ -68,7 +68,7 @@ require_once VORTEX_PLUGIN_DIR . 'includes/class-vortex-subscriptions.php';
 
 // Register HURAII Widgets
 require_once plugin_dir_path(__FILE__) . 'includes/class-vortex-huraii-widgets.php';
-add_action('init', array('Vortex_HURAII_Widgets', 'init'));
+// add_action('init', array('Vortex_HURAII_Widgets', 'init'));
 
 // Include the scheduler files
 require_once plugin_dir_path(__FILE__) . 'includes/class-vortex-scheduler-db.php';
