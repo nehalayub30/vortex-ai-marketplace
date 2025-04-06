@@ -32,6 +32,8 @@ class Vortex_Thorius {
 
     private $synthesis_reports;
     private $admin_intelligence;
+    private $security;
+    private $consent;
 
     
     /**
