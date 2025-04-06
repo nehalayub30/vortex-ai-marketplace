@@ -44,7 +44,7 @@ class VORTEX_Shortcodes {
         add_shortcode('vortex_thorius_blockchain', array(__CLASS__, 'thorius_blockchain_shortcode'));
         
         // Image generator shortcode
-        add_shortcode('vortex_image_generator', array(VORTEX_HURAII_Image_Generator::get_instance(), 'image_generator_shortcode'));
+        // add_shortcode('vortex_image_generator', array(VORTEX_HURAII_Image_Generator::get_instance(), 'image_generator_shortcode'));
 
         // Market Trends Analysis shortcode
         add_shortcode('vortex_market_trends', array(__CLASS__, 'market_trends_shortcode'));
