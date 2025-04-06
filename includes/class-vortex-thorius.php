@@ -34,6 +34,14 @@ class Vortex_Thorius {
     private $admin_intelligence;
     private $security;
     private $consent;
+    private $data_cleanup;
+    private $orchestrator;
+    private $learning_system;
+    private $multimodal;
+    private $cache;
+    private $recovery;
+    private $user_manager;
+    private $session_manager;
 
     
     /**
@@ -390,7 +398,7 @@ class Vortex_Thorius {
      * Initialize agent orchestrator
      */
     private function init_agent_orchestrator() {
-        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/agents/class-vortex-thorius-orchestrator.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-vortex-thorius-orchestrator.php';
         $this->orchestrator = new Vortex_Thorius_Orchestrator();
     }
 
@@ -426,7 +434,7 @@ class Vortex_Thorius {
      * Initialize cache system
      */
     private function init_cache_system() {
-        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-vortex-thorius-cache.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'class-vortex-thorius-cache.php';
         $this->cache = new Vortex_Thorius_Cache();
     }
 
