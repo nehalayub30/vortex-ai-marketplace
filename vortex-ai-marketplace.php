@@ -401,11 +401,12 @@ add_action('init', 'vortex_setup_security_hooks');
 function vortex_load_ai_agents() {
     // Only load AI agents when needed
     if (
-        is_admin() || 
-        (defined('DOING_AJAX') && DOING_AJAX) || 
-        has_shortcode(get_post()->post_content, 'vortex_huraii_generator') ||
-        has_shortcode(get_post()->post_content, 'vortex_cloe_insights') ||
-        has_shortcode(get_post()->post_content, 'vortex_business_plan')
+        isset(get_post()->post_content) &&
+        (is_admin() || 
+                (defined('DOING_AJAX') && DOING_AJAX) || 
+                has_shortcode(get_post()->post_content, 'vortex_huraii_generator') ||
+                has_shortcode(get_post()->post_content, 'vortex_cloe_insights') ||
+                has_shortcode(get_post()->post_content, 'vortex_business_plan'))
     ) {
         // Load HURAII only when needed
         if (
