@@ -242,7 +242,7 @@ class VORTEX_Model_Loader {
      */
     private function setup_hooks() {
         // Admin interfaces
-        add_action('admin_init', array($this, 'register_settings'));
+        // add_action('admin_init', array($this, 'register_settings'));
         
         // AJAX handlers
         add_action('wp_ajax_vortex_model_status', array($this, 'ajax_model_status'));
