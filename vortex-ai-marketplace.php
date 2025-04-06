@@ -618,7 +618,7 @@ set_error_handler('vortex_error_handler', E_ERROR | E_PARSE | E_CORE_ERROR | E_C
 // require plugin_dir_path(__FILE__) . 'includes/class-vortex-artist-verification.php';
 // require plugin_dir_path(__FILE__) . 'includes/class-vortex-artwork-verification.php';
 require plugin_dir_path(__FILE__) . 'includes/class-vortex-blockchain-connection.php';
-require plugin_dir_path(__FILE__) . 'includes/class-vortex-artwork-swap.php';
+// require plugin_dir_path(__FILE__) . 'includes/class-vortex-artwork-swap.php';
 require plugin_dir_path(__FILE__) . 'includes/class-vortex-artwork-swap-shortcodes.php';
 
 // Blockchain and TOLA Integration
