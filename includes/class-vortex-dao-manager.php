@@ -14,6 +14,9 @@ class VORTEX_DAO_Manager {
     public function __construct() {
         global $wpdb;
         $this->db = $wpdb;
+        
+        require_once VORTEX_PLUGIN_DIR . 'blockchain/class-vortex-blockchain-manager.php';
+
         $this->blockchain_manager = new VORTEX_Blockchain_Manager();
         $this->dao_address = get_option('vortex_dao_address', '');
         $this->voting_period = get_option('vortex_dao_voting_period', 7);
