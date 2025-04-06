@@ -13,7 +13,7 @@ class Vortex_Thorius_Admin {
 	    add_action('admin_init', array($this, 'register_settings'));
 	    
 	    // Add meta boxes
-	    add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
+	    // add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
 	    
 	    // Register AJAX handlers
 	    add_action('wp_ajax_vortex_thorius_generate_report', array($this, 'ajax_generate_report'));
