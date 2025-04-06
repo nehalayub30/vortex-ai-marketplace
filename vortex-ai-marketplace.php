@@ -615,8 +615,8 @@ function vortex_error_handler($errno, $errstr, $errfile, $errline) {
 set_error_handler('vortex_error_handler', E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR);
 
 // Load dependent classes
-require plugin_dir_path(__FILE__) . 'includes/class-vortex-artist-verification.php';
-require plugin_dir_path(__FILE__) . 'includes/class-vortex-artwork-verification.php';
+// require plugin_dir_path(__FILE__) . 'includes/class-vortex-artist-verification.php';
+// require plugin_dir_path(__FILE__) . 'includes/class-vortex-artwork-verification.php';
 require plugin_dir_path(__FILE__) . 'includes/class-vortex-blockchain-connection.php';
 require plugin_dir_path(__FILE__) . 'includes/class-vortex-artwork-swap.php';
 require plugin_dir_path(__FILE__) . 'includes/class-vortex-artwork-swap-shortcodes.php';
