@@ -107,8 +107,8 @@ class Vortex_Admin {
         // add_action( 'current_screen', array( $this, 'customize_admin_screens' ) );
         
         // TinyMCE customizations
-        add_filter( 'mce_buttons', array( $this, 'register_mce_buttons' ) );
-        add_filter( 'mce_external_plugins', array( $this, 'register_mce_javascript' ) );
+        // add_filter( 'mce_buttons', array( $this, 'register_mce_buttons' ) );
+        // add_filter( 'mce_external_plugins', array( $this, 'register_mce_javascript' ) );
     }
 
     /**
