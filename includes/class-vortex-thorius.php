@@ -43,6 +43,9 @@ class Vortex_Thorius {
     private $user_manager;
     private $session_manager;
     private $history_manager;
+    private $context_manager;
+    private $tola_incentives;
+    private $artwork_swap;
 
     
     /**
@@ -336,7 +339,7 @@ class Vortex_Thorius {
     /**
      * Initialize widget
      */
-    private function init_widget() {
+    public function init_widget() {
         require_once plugin_dir_path(dirname(__FILE__)) . 'includes/widgets/class-vortex-thorius-widget.php';
         
         // Register widget
