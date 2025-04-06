@@ -21,7 +21,7 @@ class Vortex_Thorius_Admin {
 	    add_action('wp_ajax_vortex_thorius_run_integration_test', array($this, 'ajax_run_integration_test'));
 	    
 	    // Add admin notices
-	    add_action('admin_notices', array($this, 'display_admin_notices'));
+	    // add_action('admin_notices', array($this, 'display_admin_notices'));
 	    
 	    // Add dashboard widgets
 	    add_action('wp_dashboard_setup', array($this, 'register_dashboard_widgets'));
