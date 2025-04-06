@@ -630,8 +630,8 @@ require_once VORTEX_PLUGIN_DIR . 'includes/class-vortex-dao-manager.php';
 require_once VORTEX_PLUGIN_DIR . 'includes/class-vortex-gamification.php';
 
 // Register marketplace shortcodes
-require_once VORTEX_PLUGIN_DIR . 'includes/shortcodes/class-vortex-marketplace-shortcodes.php';
-new VORTEX_Marketplace_Shortcodes();
+// require_once VORTEX_PLUGIN_DIR . 'includes/shortcodes/class-vortex-marketplace-shortcodes.php';
+// new VORTEX_Marketplace_Shortcodes();
 
 // Initialize DAO and Gamification
 add_action('plugins_loaded', 'vortex_init_dao_and_gamification');
