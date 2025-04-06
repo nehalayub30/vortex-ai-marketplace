@@ -255,7 +255,7 @@ class VORTEX_Model_Loader {
         add_action('vortex_model_execution_complete', array($this, 'track_model_execution'), 10, 3);
         
         // Save states on shutdown
-        add_action('shutdown', array($this, 'save_states'));
+        // add_action('shutdown', array($this, 'save_states'));
         
         // Schedule maintenance if not already scheduled
         if (!wp_next_scheduled('vortex_daily_model_maintenance')) {

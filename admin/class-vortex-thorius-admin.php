@@ -35,25 +35,25 @@ class Vortex_Thorius_Admin {
 	 */
 	public function register_admin_pages() {
 	    // Main menu
-	    add_menu_page(
-	        __('Thorius AI', 'vortex-ai-marketplace'),
-	        __('Thorius AI', 'vortex-ai-marketplace'),
-	        'manage_options',
-	        'vortex-thorius',
-	        array($this, 'render_dashboard_page'),
-	        'dashicons-superhero',
-	        30
-	    );
+	    // add_menu_page(
+	    //     __('Thorius AI', 'vortex-ai-marketplace'),
+	    //     __('Thorius AI', 'vortex-ai-marketplace'),
+	    //     'manage_options',
+	    //     'vortex-thorius',
+	    //     array($this, 'render_dashboard_page'),
+	    //     'dashicons-superhero',
+	    //     30
+	    // );
 	    
-	    // Submenu pages
-	    add_submenu_page(
-	        'vortex-thorius',
-	        __('Dashboard', 'vortex-ai-marketplace'),
-	        __('Dashboard', 'vortex-ai-marketplace'),
-	        'manage_options',
-	        'vortex-thorius',
-	        array($this, 'render_dashboard_page')
-	    );
+	    // // Submenu pages
+	    // add_submenu_page(
+	    //     'vortex-thorius',
+	    //     __('Dashboard', 'vortex-ai-marketplace'),
+	    //     __('Dashboard', 'vortex-ai-marketplace'),
+	    //     'manage_options',
+	    //     'vortex-thorius',
+	    //     array($this, 'render_dashboard_page')
+	    // );
 	    
 	    // Agents Settings submenu
 	    add_submenu_page(
