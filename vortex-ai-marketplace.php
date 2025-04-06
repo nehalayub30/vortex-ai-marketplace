@@ -409,6 +409,7 @@ function vortex_load_ai_agents() {
     ) {
         // Load HURAII only when needed
         if (
+            isset(get_post()->post_content) &&
             isset($_REQUEST['action']) && 
             (strpos($_REQUEST['action'], 'vortex_huraii') !== false || has_shortcode(get_post()->post_content, 'vortex_huraii_generator'))
         ) {
@@ -417,6 +418,7 @@ function vortex_load_ai_agents() {
         
         // Load CLOE only when needed
         if (
+            isset(get_post()->post_content) &&
             isset($_REQUEST['action']) && 
             (strpos($_REQUEST['action'], 'vortex_cloe') !== false || has_shortcode(get_post()->post_content, 'vortex_cloe_insights'))
         ) {
@@ -425,6 +427,7 @@ function vortex_load_ai_agents() {
         
         // Load Business Strategist only when needed
         if (
+            isset(get_post()->post_content) &&
             isset($_REQUEST['action']) && 
             (strpos($_REQUEST['action'], 'vortex_business') !== false || has_shortcode(get_post()->post_content, 'vortex_business_plan'))
         ) {
