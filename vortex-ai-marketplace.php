@@ -622,7 +622,7 @@ require plugin_dir_path(__FILE__) . 'includes/class-vortex-blockchain-connection
 require plugin_dir_path(__FILE__) . 'includes/class-vortex-artwork-swap-shortcodes.php';
 
 // Blockchain and TOLA Integration
-require plugin_dir_path(__FILE__) . 'includes/class-vortex-tola.php';
+// require plugin_dir_path(__FILE__) . 'includes/blockchain/class-vortex-tola.php';
 require plugin_dir_path(__FILE__) . 'includes/class-vortex-blockchain-metrics.php'; // New metrics class
 
 // Register DAO and Gamification systems
