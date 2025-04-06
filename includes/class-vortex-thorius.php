@@ -25,6 +25,14 @@ class Vortex_Thorius {
      */
     private $conversation_context = array();
     
+    private $admin;
+    private $admin_tabs;
+
+    private $analytics;
+
+    private $synthesis_reports;
+
+    
     /**
      * Action handlers registry
      */
@@ -337,7 +345,7 @@ class Vortex_Thorius {
      * Initialize synthesis reports
      */
     private function init_synthesis_reports() {
-        require_once plugin_dir_path(dirname(__FILE__)) . 'includes/admin/class-vortex-thorius-synthesis-reports.php';
+        require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-vortex-thorius-synthesis-reports.php';
         $this->synthesis_reports = new Vortex_Thorius_Synthesis_Reports();
     }
 
@@ -346,7 +354,7 @@ class Vortex_Thorius {
      */
     private function init_admin_intelligence() {
         if (is_admin()) {
-            require_once plugin_dir_path(dirname(__FILE__)) . 'includes/admin/class-vortex-thorius-admin-intelligence.php';
+            require_once plugin_dir_path(dirname(__FILE__)) . 'admin/class-vortex-thorius-admin-intelligence.php';
             $this->admin_intelligence = new Vortex_Thorius_Admin_Intelligence();
         }
     }
