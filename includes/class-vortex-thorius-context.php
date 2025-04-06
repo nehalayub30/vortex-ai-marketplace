@@ -9,7 +9,7 @@ class Vortex_Thorius_Context {
     public function __construct() {
         global $wpdb;
         $this->context_table = $wpdb->prefix . 'vortex_thorius_user_context';
-        $this->init_context_table();
+        // $this->init_context_table();
     }
     
     /**
