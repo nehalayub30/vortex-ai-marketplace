@@ -66,7 +66,7 @@ class Vortex_Artwork {
         add_action( 'manage_' . $this->post_type . '_posts_columns', array( $this, 'set_custom_columns' ) );
         add_action( 'manage_' . $this->post_type . '_posts_custom_column', array( $this, 'custom_column_content' ), 10, 2 );
         add_filter( 'manage_edit-' . $this->post_type . '_sortable_columns', array( $this, 'set_sortable_columns' ) );
-        add_filter( 'enter_title_here', array( $this, 'change_title_placeholder' ) );
+        // add_filter( 'enter_title_here', array( $this, 'change_title_placeholder' ) );
         add_filter( 'post_updated_messages', array( $this, 'custom_updated_messages' ) );
         // add_filter( 'bulk_post_updated_messages', array( $this, 'custom_bulk_updated_messages' ), 10, 2 );
         // add_action( 'admin_head', array( $this, 'add_admin_styles' ) );
