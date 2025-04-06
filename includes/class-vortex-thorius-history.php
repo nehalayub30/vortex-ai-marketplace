@@ -8,7 +8,7 @@ class Vortex_Thorius_History {
     public function __construct() {
         global $wpdb;
         $this->history_table = $wpdb->prefix . 'vortex_thorius_interaction_history';
-        $this->init_history_table();
+        // $this->init_history_table();
     }
     
     /**
