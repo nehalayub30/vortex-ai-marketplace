@@ -26,6 +26,7 @@ class Vortex_Thorius_Multimodal {
      * Constructor
      */
     public function __construct() {
+        require_once plugin_dir_path(dirname(__FILE__)) . 'api/class-vortex-thorius-api-manager.php';
         $this->api_manager = new Vortex_Thorius_API_Manager();
         
         // Register multimodal shortcode
