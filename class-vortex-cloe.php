@@ -512,7 +512,7 @@ class VORTEX_CLOE {
      * @param string $period Time period for analysis
      * @return array Region distribution data
      */
-    // private function get_region_distribution($period = 'month') {
+    private function get_region_distribution($period = 'month') {
         try {
             global $wpdb;
             
@@ -969,6 +969,26 @@ class VORTEX_CLOE {
                 'category_durations' => array(),
                 'duration_distribution' => array()
             );
+        }
+    }
+
+    /**
+     * Helper function to format duration in seconds to a readable format
+     * 
+     * @param int $seconds Duration in seconds
+     * @return string Formatted duration
+     */
+    private function format_duration($seconds) {
+        if ($seconds < 60) {
+            return round($seconds) . 's';
+        } elseif ($seconds < 3600) {
+            $minutes = floor($seconds / 60);
+            $remaining_seconds = $seconds % 60;
+            return $minutes . 'm ' . $remaining_seconds . 's';
+        } else {
+            $hours = floor($seconds / 3600);
+            $minutes = floor(($seconds % 3600) / 60);
+            return $hours . 'h ' . $minutes . 'm';
         }
     }
 
