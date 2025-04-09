@@ -417,7 +417,7 @@ class VORTEX_CLOE {
         add_action('vortex_swipe_action', array($this, 'track_swipe_action'), 10, 3);
         
         // Session tracking
-        add_action('wp_login', array($this, 'start_session_tracking'), 10, 2);
+        // add_action('wp_login', array($this, 'start_session_tracking'), 10, 2);
         add_action('wp_logout', array($this, 'end_session_tracking'));
         // add_action('init', array($this, 'continue_session_tracking'));
         
