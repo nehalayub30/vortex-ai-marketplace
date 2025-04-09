@@ -692,10 +692,10 @@ class VORTEX_CLOE {
         update_user_meta($user_id, 'vortex_last_login', time());
         
         // Record login for trend analysis
-        $this->record_user_event($user_id, 'login', array(
-            'timestamp' => time(),
-            'previous_login' => $last_login
-        ));
+        // $this->record_user_event($user_id, 'login', array(
+        //     'timestamp' => time(),
+        //     'previous_login' => $last_login
+        // ));
         
         // Prepare for AI learning
         do_action('vortex_ai_agent_learn', 'CLOE', 'user_login', array(
