@@ -423,7 +423,7 @@ class VORTEX_CLOE {
         
         // Admin reporting
         add_action('admin_menu', array($this, 'add_admin_menu'));
-        add_action('wp_dashboard_setup', array($this, 'add_dashboard_widgets'));
+        // add_action('wp_dashboard_setup', array($this, 'add_dashboard_widgets'));
         
         // AJAX handlers
         add_action('wp_ajax_vortex_cloe_get_greeting', array($this, 'ajax_get_greeting'));
