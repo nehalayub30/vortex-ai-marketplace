@@ -300,8 +300,8 @@ class Vortex_Metrics {
         $sales_data = $wpdb->get_row( $sales_query );
         
         // Store sales metrics
-        // $this->store_metric( 'daily_sales_count', $sales_data->total_sales, $date );
-        // $this->store_metric( 'daily_sales_revenue', $sales_data->total_revenue, $date );
+        $this->store_metric( 'daily_sales_count', $sales_data->total_sales, $date );
+        $this->store_metric( 'daily_sales_revenue', $sales_data->total_revenue, $date );
         
         // Get artist earnings
         $artist_earnings_query = $wpdb->prepare("
@@ -315,7 +315,7 @@ class Vortex_Metrics {
         ", $date . '%' );
         
         $artist_earnings = $wpdb->get_var( $artist_earnings_query );
-        // $this->store_metric( 'daily_artist_earnings', $artist_earnings ? $artist_earnings : 0, $date );
+        $this->store_metric( 'daily_artist_earnings', $artist_earnings ? $artist_earnings : 0, $date );
         
         // Get marketplace fee revenue
         $fee_query = $wpdb->prepare("
@@ -328,7 +328,7 @@ class Vortex_Metrics {
         ", $date . '%' );
         
         $fee_revenue = $wpdb->get_var( $fee_query );
-        // $this->store_metric( 'daily_marketplace_fees', $fee_revenue ? $fee_revenue : 0, $date );
+        $this->store_metric( 'daily_marketplace_fees', $fee_revenue ? $fee_revenue : 0, $date );
         
         // Get top selling artworks
         $top_artworks_query = $wpdb->prepare("
@@ -345,7 +345,7 @@ class Vortex_Metrics {
         ", $date . '%' );
         
         $top_artworks = $wpdb->get_results( $top_artworks_query );
-        // $this->store_metric( 'top_selling_artworks', wp_json_encode( $top_artworks ), $date );
+        $this->store_metric( 'top_selling_artworks', wp_json_encode( $top_artworks ), $date );
         
         // Get top selling artists
         $top_artists_query = $wpdb->prepare("
@@ -362,7 +362,7 @@ class Vortex_Metrics {
         ", $date . '%' );
         
         $top_artists = $wpdb->get_results( $top_artists_query );
-        // $this->store_metric( 'top_selling_artists', wp_json_encode( $top_artists ), $date );
+        $this->store_metric( 'top_selling_artists', wp_json_encode( $top_artists ), $date );
     }
 
     /**
@@ -382,16 +382,16 @@ class Vortex_Metrics {
         ", $date . '%' );
         
         $new_users = $wpdb->get_var( $registrations_query );
-        // $this->store_metric( 'daily_new_users', $new_users, $date );
+        $this->store_metric( 'daily_new_users', $new_users, $date );
         
         // Get active users (users who logged in)
         $active_users = get_option( 'vortex_daily_active_users_' . str_replace( '-', '', $date ), 0 );
-        // $this->store_metric( 'daily_active_users', $active_users, $date );
+        $this->store_metric( 'daily_active_users', $active_users, $date );
         
         // Get total registered users
         $total_users_query = "SELECT COUNT(*) FROM {$wpdb->users}";
         $total_users = $wpdb->get_var( $total_users_query );
-        // $this->store_metric( 'total_users', $total_users, $date );
+        $this->store_metric( 'total_users', $total_users, $date );
         
         // Get new artist registrations
         $new_artists_query = $wpdb->prepare("
@@ -403,7 +403,7 @@ class Vortex_Metrics {
         ", $date . '%' );
         
         $new_artists = $wpdb->get_var( $new_artists_query );
-        // $this->store_metric( 'daily_new_artists', $new_artists, $date );
+        $this->store_metric( 'daily_new_artists', $new_artists, $date );
         
         // Get total artists
         $total_artists_query = "
@@ -414,7 +414,7 @@ class Vortex_Metrics {
         ";
         
         $total_artists = $wpdb->get_var( $total_artists_query );
-        // $this->store_metric( 'total_artists', $total_artists, $date );
+        $this->store_metric( 'total_artists', $total_artists, $date );
         
         // Get verified artists
         $verified_artists_query = "
@@ -428,14 +428,14 @@ class Vortex_Metrics {
         ";
         
         $verified_artists = $wpdb->get_var( $verified_artists_query );
-        // $this->store_metric( 'verified_artists', $verified_artists, $date );
+        $this->store_metric( 'verified_artists', $verified_artists, $date );
         
         // Calculate user retention (users who were active 7 days ago and are active today)
         $previous_week = date( 'Y-m-d', strtotime( $date . ' -7 days' ) );
         $previous_active_users = get_option( 'vortex_daily_active_users_' . str_replace( '-', '', $previous_week ), 0 );
         
         $retention_rate = $previous_active_users > 0 ? ( $active_users / $previous_active_users ) * 100 : 0;
-        // $this->store_metric( 'weekly_retention_rate', $retention_rate, $date );
+        $this->store_metric( 'weekly_retention_rate', $retention_rate, $date );
     }
 
     /**
@@ -457,7 +457,7 @@ class Vortex_Metrics {
         ", $date . '%' );
         
         $new_artworks = $wpdb->get_var( $new_artworks_query );
-        // $this->store_metric( 'daily_new_artworks', $new_artworks, $date );
+        $this->store_metric( 'daily_new_artworks', $new_artworks, $date );
         
         // Get total artworks
         $total_artworks_query = "
@@ -468,11 +468,11 @@ class Vortex_Metrics {
         ";
         
         $total_artworks = $wpdb->get_var( $total_artworks_query );
-        // $this->store_metric( 'total_artworks', $total_artworks, $date );
+        $this->store_metric( 'total_artworks', $total_artworks, $date );
         
         // Get total artwork views
         $artwork_views = get_option( 'vortex_daily_artwork_views_' . str_replace( '-', '', $date ), 0 );
-        // $this->store_metric( 'daily_artwork_views', $artwork_views, $date );
+        $this->store_metric( 'daily_artwork_views', $artwork_views, $date );
         
         // Get AI-generated artworks
         $ai_artworks_query = "
@@ -486,11 +486,11 @@ class Vortex_Metrics {
         ";
         
         $ai_artworks = $wpdb->get_var( $ai_artworks_query );
-        // $this->store_metric( 'ai_generated_artworks', $ai_artworks, $date );
+        $this->store_metric( 'ai_generated_artworks', $ai_artworks, $date );
         
         // Calculate AI artwork percentage
         $ai_percentage = $total_artworks > 0 ? ( $ai_artworks / $total_artworks ) * 100 : 0;
-        // $this->store_metric( 'ai_artwork_percentage', $ai_percentage, $date );
+        $this->store_metric( 'ai_artwork_percentage', $ai_percentage, $date );
         
         // Get most popular categories
         $categories_query = "
@@ -508,7 +508,7 @@ class Vortex_Metrics {
         ";
         
         $popular_categories = $wpdb->get_results( $categories_query );
-        // $this->store_metric( 'popular_categories', wp_json_encode( $popular_categories ), $date );
+        $this->store_metric( 'popular_categories', wp_json_encode( $popular_categories ), $date );
         
         // Get most used AI models
         $ai_models_query = "
@@ -524,7 +524,7 @@ class Vortex_Metrics {
         ";
         
         $popular_ai_models = $wpdb->get_results( $ai_models_query );
-        // $this->store_metric( 'popular_ai_models', wp_json_encode( $popular_ai_models ), $date );
+        $this->store_metric( 'popular_ai_models', wp_json_encode( $popular_ai_models ), $date );
     }
 
     /**
@@ -550,7 +550,7 @@ class Vortex_Metrics {
         $sales = $wpdb->get_var( $sales_query );
         
         $conversion_rate = $views > 0 ? ( $sales / $views ) * 100 : 0;
-        // $this->store_metric( 'daily_conversion_rate', $conversion_rate, $date );
+        $this->store_metric( 'daily_conversion_rate', $conversion_rate, $date );
         
         // Get average transaction value
         $avg_value_query = $wpdb->prepare("
@@ -569,7 +569,7 @@ class Vortex_Metrics {
         ", $date . '%' );
         
         $avg_value = $wpdb->get_var( $avg_value_query );
-        // $this->store_metric( 'average_transaction_value', $avg_value ? $avg_value : 0, $date );
+        $this->store_metric( 'average_transaction_value', $avg_value ? $avg_value : 0, $date );
         
         // Get active TOLA wallets
         $wallets_query = "
@@ -580,14 +580,72 @@ class Vortex_Metrics {
         ";
         
         $active_wallets = $wpdb->get_var( $wallets_query );
-        // $this->store_metric( 'active_wallets', $active_wallets, $date );
+        $this->store_metric( 'active_wallets', $active_wallets, $date );
         
         // Get TOLA token metrics
         $total_staked = get_option( 'vortex_tola_total_staked', 0 );
-        // $this->store_metric( 'total_staked_tola', $total_staked, $date );
+        $this->store_metric( 'total_staked_tola', $total_staked, $date );
         
         $distributed_rewards = get_option( 'vortex_tola_rewards_distributed_' . str_replace( '-', '', $date ), 0 );
-        // $this->store_metric( 'daily_tola_rewards', $distributed_rewards, $date );
+        $this->store_metric( 'daily_tola_rewards', $distributed_rewards, $date );
+    }
+
+    /**
+     * Store a metric in the database
+     *
+     * @param string $metric_name The name of the metric
+     * @param mixed $metric_value The value of the metric
+     * @param array $context Additional contextual data
+     * @return int|bool ID of the stored metric or false on failure
+     */
+    public function store_metric($metric_name, $metric_value, $context = array()) {
+        global $wpdb;
+        
+        if (empty($metric_name)) {
+            return false;
+        }
+        
+        try {
+            // Prepare data for insertion
+            $metric_data = array(
+                'metric_name' => sanitize_text_field($metric_name),
+                'metric_value' => is_numeric($metric_value) ? $metric_value : json_encode($metric_value),
+                'metric_date' => current_time('mysql'),
+                'user_id' => get_current_user_id(),
+                'context' => !empty($context) ? json_encode($context) : ''
+            );
+            
+            // Insert into database
+            $result = $wpdb->insert(
+                $wpdb->prefix . 'vortex_metrics',
+                $metric_data,
+                array(
+                    '%s', // metric_name
+                    '%s', // metric_value
+                    '%s', // metric_date
+                    '%d', // user_id
+                    '%s'  // context
+                )
+            );
+            
+            if ($result) {
+                // Log for AI analysis if relevant
+                if (!empty($context['track_for_ai'])) {
+                    $this->track_metric_event('new_metric', array(
+                        'metric_name' => $metric_name,
+                        'metric_value' => $metric_value,
+                        'context' => $context
+                    ));
+                }
+                
+                return $wpdb->insert_id;
+            }
+            
+            return false;
+        } catch (Exception $e) {
+            $this->log_error('Failed to store metric', $e);
+            return false;
+        }
     }
 
     /**
