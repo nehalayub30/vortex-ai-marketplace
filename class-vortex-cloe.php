@@ -418,7 +418,7 @@ class VORTEX_CLOE {
         
         // Session tracking
         // add_action('wp_login', array($this, 'start_session_tracking'), 10, 2);
-        add_action('wp_logout', array($this, 'end_session_tracking'));
+        // add_action('wp_logout', array($this, 'end_session_tracking'));
         // add_action('init', array($this, 'continue_session_tracking'));
         
         // Admin reporting
