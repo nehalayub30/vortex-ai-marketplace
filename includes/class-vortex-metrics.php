@@ -266,9 +266,61 @@ class Vortex_Metrics {
         $this->collect_performance_metrics( $date );
         
         // Clean up old metrics data based on retention settings
-        // $this->cleanup_old_metrics();
+        $this->cleanup_old_metrics();
         
         $this->log( 'Daily metrics collection completed', 'info' );
+    }
+
+    /**
+     * Cleanup old metrics data
+     * 
+     * @param int $days Number of days to keep metrics (default: 90)
+     * @return bool True on success, false on failure
+     */
+    public function cleanup_old_metrics($days = 90) {
+        global $wpdb;
+        
+        try {
+            // Calculate the cutoff date
+            $cutoff_date = date('Y-m-d H:i:s', strtotime("-{$days} days"));
+            
+            // Delete old metrics from main metrics table
+            $metrics_deleted = $wpdb->query($wpdb->prepare(
+                "DELETE FROM {$wpdb->prefix}vortex_metrics WHERE metric_date < %s",
+                $cutoff_date
+            ));
+            
+            // Delete old aggregated metrics that are no longer relevant
+            $agg_deleted = $wpdb->query($wpdb->prepare(
+                "DELETE FROM {$wpdb->prefix}vortex_metrics_aggregated WHERE period_end < %s",
+                $cutoff_date
+            ));
+            
+            // Log results
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log(sprintf(
+                    '[VORTEX Metrics] Cleaned up old metrics: %d metrics and %d aggregated metrics deleted',
+                    $metrics_deleted !== false ? $metrics_deleted : 0,
+                    $agg_deleted !== false ? $agg_deleted : 0
+                ));
+            }
+            
+            // Track the cleanup event
+            $this->store_metric('metrics_cleanup', array(
+                'metrics_deleted' => $metrics_deleted !== false ? $metrics_deleted : 0,
+                'aggregated_deleted' => $agg_deleted !== false ? $agg_deleted : 0,
+                'cutoff_date' => $cutoff_date,
+                'days_kept' => $days
+            ));
+            
+            // Run cleanup on related data if needed
+            $this->cleanup_related_data($cutoff_date);
+            
+            return true;
+        } catch (Exception $e) {
+            $this->log_error('Metrics cleanup failed', $e);
+            return false;
+        }
     }
 
     /**
