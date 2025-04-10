@@ -68,8 +68,8 @@ class Vortex_Thorius_Deep_Learning {
         $this->agents['huraii'] = new Vortex_Thorius_HURAII($this->api_manager);
         
         // Register Strategist connection
-        // require_once plugin_dir_path(__FILE__) . 'class-vortex-thorius-strategist.php';
-        // $this->agents['strategist'] = new Vortex_Thorius_Strategist($this->api_manager);
+        require_once plugin_dir_path(__FILE__) . 'class-vortex-thorius-strategist.php';
+        $this->agents['strategist'] = new Vortex_Thorius_Strategist($this->api_manager);
         
         // Allow plugins to register custom agent connections
         $this->agents = apply_filters('vortex_thorius_agent_connections', $this->agents);

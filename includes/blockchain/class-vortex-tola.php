@@ -129,6 +129,40 @@ class Vortex_TOLA {
     }
 
     /**
+     * Add meta boxes for TOLA pricing options to product pages.
+     *
+     * @since    1.0.0
+     */
+    public function add_product_meta_boxes() {
+        // Check if WooCommerce is active
+        if (!class_exists('WooCommerce')) {
+            return;
+        }
+        
+        // Add the meta box to products
+        add_meta_box(
+            'vortex_tola_pricing',
+            __('TOLA Token Pricing', 'vortex-ai-marketplace'),
+            array($this, 'render_tola_pricing_meta_box'),
+            'product',
+            'normal',
+            'high'
+        );
+        
+        // Add meta box to artwork post type if available
+        if (post_type_exists('vortex_artwork')) {
+            add_meta_box(
+                'vortex_tola_pricing',
+                __('TOLA Token Pricing', 'vortex-ai-marketplace'),
+                array($this, 'render_tola_pricing_meta_box'),
+                'vortex_artwork',
+                'side',
+                'high'
+            );
+        }
+    }
+
+    /**
      * Initialize TOLA contract settings.
      *
      * @since    1.0.0

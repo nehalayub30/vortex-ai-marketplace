@@ -49,6 +49,41 @@ class Vortex_Thorius_Orchestrator {
             'callback' => null,
         ));
     }
+
+    /**
+     * Get agent tabs configuration
+     */
+    public function get_agent_tabs() {
+        return array(
+            'cloe' => array(
+                'title' => __('CLOE', 'vortex-ai-marketplace'),
+                'description' => __('Conversational Learning and Orchestration Engine', 'vortex-ai-marketplace'),
+                'settings' => array(
+                    'model' => 'cloe-advanced',
+                    'temperature' => 0.7,
+                    'max_tokens' => 1500
+                )
+            ),
+            'huraii' => array(
+                'title' => __('HURAII', 'vortex-ai-marketplace'),
+                'description' => __('Human Understanding and Responsive AI Interface', 'vortex-ai-marketplace'),
+                'settings' => array(
+                    'model' => 'huraii-creative',
+                    'temperature' => 0.9,
+                    'max_tokens' => 2000
+                )
+            ),
+            'strategist' => array(
+                'title' => __('Business Strategist', 'vortex-ai-marketplace'),
+                'description' => __('AI-Powered Business Intelligence and Strategy', 'vortex-ai-marketplace'),
+                'settings' => array(
+                    'model' => 'strategist-pro',
+                    'temperature' => 0.5,
+                    'max_tokens' => 1800
+                )
+            )
+        );
+    }
     
     /**
      * Register default agents

@@ -107,8 +107,97 @@ class Vortex_Admin {
         // add_action( 'current_screen', array( $this, 'customize_admin_screens' ) );
         
         // TinyMCE customizations
-        // add_filter( 'mce_buttons', array( $this, 'register_mce_buttons' ) );
-        // add_filter( 'mce_external_plugins', array( $this, 'register_mce_javascript' ) );
+        add_filter( 'mce_buttons', array( $this, 'register_mce_buttons' ) );
+        add_filter( 'mce_external_plugins', array( $this, 'register_mce_javascript' ) );
+    }
+
+    /**
+     * Register JavaScript for TinyMCE editor.
+     *
+     * Conditionally loads JavaScript files needed for TinyMCE editor extensions.
+     *
+     * @since    1.0.0
+     */
+    public function register_mce_javascript() {
+        // Only enqueue on post/page edit screens
+        $screen = get_current_screen();
+        if (!$screen || !in_array($screen->base, array('post', 'page'))) {
+            return;
+        }
+        
+        // Register TinyMCE helper script for enhanced functionality
+        wp_enqueue_script(
+            $this->plugin_name . '-tinymce-helpers',
+            plugin_dir_url(__FILE__) . 'js/vortex-tinymce-helpers.js',
+            array('jquery'),
+            $this->version,
+            true
+        );
+        
+        // Localize script with artwork and artist data for the shortcode dialog
+        global $wpdb;
+        
+        // Get artworks
+        $artworks = $wpdb->get_results(
+            "SELECT ID, post_title 
+            FROM {$wpdb->posts} 
+            WHERE post_type = 'vortex_artwork' 
+            AND post_status = 'publish' 
+            ORDER BY post_title ASC 
+            LIMIT 100"
+        );
+        
+        // Get artists (WordPress users with artwork)
+        $artists = $wpdb->get_results(
+            "SELECT DISTINCT u.ID, u.display_name 
+            FROM {$wpdb->users} u
+            JOIN {$wpdb->posts} p ON p.post_author = u.ID
+            WHERE p.post_type = 'vortex_artwork'
+            ORDER BY u.display_name ASC
+            LIMIT 100"
+        );
+        
+        // Prepare data for localization
+        $artwork_options = array();
+        if ($artworks) {
+            foreach ($artworks as $artwork) {
+                $artwork_options[] = array(
+                    'text' => $artwork->post_title . ' (ID: ' . $artwork->ID . ')',
+                    'value' => $artwork->ID
+                );
+            }
+        }
+        
+        $artist_options = array();
+        if ($artists) {
+            foreach ($artists as $artist) {
+                $artist_options[] = array(
+                    'text' => $artist->display_name . ' (ID: ' . $artist->ID . ')',
+                    'value' => $artist->ID
+                );
+            }
+        }
+        
+        wp_localize_script($this->plugin_name . '-tinymce-helpers', 'vortex_tinymce_data', array(
+            'artwork_options' => $artwork_options,
+            'artist_options' => $artist_options,
+            'plugin_url' => plugin_dir_url(__FILE__),
+            'ajax_url' => admin_url('ajax.php'),
+            'nonce' => wp_create_nonce('vortex_tinymce_nonce')
+        ));
+    }
+
+    /**
+     * Register custom TinyMCE buttons.
+     *
+     * @since    1.0.0
+     * @param    array    $buttons    Array of existing buttons.
+     * @return   array                Modified array of buttons.
+     */
+    public function register_mce_buttons($buttons) {
+        // Add custom buttons
+        array_push($buttons, 'separator', 'vortex_artwork_shortcode', 'vortex_artist_shortcode');
+        return $buttons;
     }
 
     /**
@@ -764,7 +853,78 @@ class Vortex_Admin {
         register_setting( 'vortex_advanced_settings', 'vortex_advanced_custom_js', array(
             'sanitize_callback' => 'wp_strip_all_tags',
         ) );
+
+        // Add a Database Tools section in the admin settings
+        $this->add_database_tools_section();
     }
+
+    /**
+     * Add a Database Tools section in the admin settings
+     */
+    public function add_database_tools_section() {
+        add_settings_section(
+            'vortex_database_tools_section',
+            __('Database Tools', 'vortex-ai-marketplace'),
+            array($this, 'render_database_tools_section'),
+            'vortex_advanced_settings'
+        );
+        
+        add_settings_field(
+            'vortex_update_database',
+            __('Update Database', 'vortex-ai-marketplace'),
+            array($this, 'render_update_database_field'),
+            'vortex_advanced_settings',
+            'vortex_database_tools_section'
+        );
+    }
+
+    /**
+     * Render the database tools section
+     */
+    public function render_database_tools_section() {
+        echo '<p>' . __('Database maintenance tools for the VORTEX AI Marketplace.', 'vortex-ai-marketplace') . '</p>';
+    }
+
+    /**
+     * Render the update database field
+     */
+    public function render_update_database_field() {
+        echo '<button type="button" class="button button-secondary" id="vortex-update-database">' . __('Run Database Update', 'vortex-ai-marketplace') . '</button>';
+        echo '<p class="description">' . __('This will create or update any missing database tables required by the plugin.', 'vortex-ai-marketplace') . '</p>';
+        echo '<div id="vortex-database-update-result" style="margin-top: 10px;"></div>';
+        
+        // Add inline script for AJAX call
+        wp_add_inline_script('vortex-admin-js', '
+            jQuery(document).ready(function($) {
+                $("#vortex-update-database").on("click", function() {
+                    $(this).prop("disabled", true);
+                    $("#vortex-database-update-result").html("<p><em>' . __('Updating database...', 'vortex-ai-marketplace') . '</em></p>");
+                    
+                    $.ajax({
+                        url: ajaxurl,
+                        type: "POST",
+                        data: {
+                            action: "vortex_update_database",
+                            nonce: "' . wp_create_nonce('vortex_update_database_nonce') . '"
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                $("#vortex-database-update-result").html("<p class=\"notice notice-success\">" + response.data.message + "</p>");
+                            } else {
+                                $("#vortex-database-update-result").html("<p class=\"notice notice-error\">" + response.data.message + "</p>");
+                            }
+                            $("#vortex-update-database").prop("disabled", false);
+                        },
+                        error: function() {
+                            $("#vortex-database-update-result").html("<p class=\"notice notice-error\">' . __('An error occurred while updating the database.', 'vortex-ai-marketplace') . '</p>");
+                            $("#vortex-update-database").prop("disabled", false);
+                        }
+                    });
+                });
+            });
+        ');
+    }
+
 
     /**
      * Display the main dashboard page.

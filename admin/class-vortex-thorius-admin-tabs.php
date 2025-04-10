@@ -119,7 +119,7 @@ class Vortex_Thorius_Admin_Tabs {
      */
     public function render_admin_page() {
         $agent_tabs = [];
-        // $agent_tabs = $this->orchestrator->get_agent_tabs();
+        $agent_tabs = $this->orchestrator->get_agent_tabs();
         $current_tab = $this->get_current_agent_tab();
         
         echo '<div class="wrap thorius-admin">';
@@ -221,7 +221,7 @@ class Vortex_Thorius_Admin_Tabs {
         
         // Default to first tab
         $agent_tabs = [];
-        // $agent_tabs = $this->orchestrator->get_agent_tabs();
+        $agent_tabs = $this->orchestrator->get_agent_tabs();
         return key($agent_tabs);
     }
     
@@ -243,7 +243,7 @@ class Vortex_Thorius_Admin_Tabs {
         
         $agent_id = sanitize_key($_POST['agent_id']);
         $agent_tabs = [];
-        // $agent_tabs = $this->orchestrator->get_agent_tabs();
+        $agent_tabs = $this->orchestrator->get_agent_tabs();
         
         if (!isset($agent_tabs[$agent_id])) {
             wp_send_json_error(array('message' => __('Agent not found.', 'vortex-ai-marketplace')));

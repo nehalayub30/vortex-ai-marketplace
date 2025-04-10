@@ -42,6 +42,26 @@ class Vortex_Activator {
         // Set activation flag
         update_option( 'vortex_activated', 'yes' );
         update_option( 'vortex_activation_time', time() );
+
+        // Trigger vortex_ai_activate action to run database migrations
+        do_action('vortex_ai_activate');
+        
+        // Set admin notice for database update
+        $notices = get_transient('vortex_admin_notices');
+        if (!$notices) {
+            $notices = array();
+        }
+        
+        $notices['db_update_required'] = array(
+            'class' => 'notice-warning',
+            'message' => sprintf(
+                __('VORTEX AI Marketplace: Please run a database update to ensure all tables are created correctly. <a href="%s">Go to Settings</a>', 'vortex-ai-marketplace'),
+                admin_url('admin.php?page=vortex-settings&tab=advanced')
+            ),
+            'dismissible' => true
+        );
+        
+        set_transient('vortex_admin_notices', $notices, 60 * 60 * 24 * 7); // 1 week expiration
     }
 
     /**
@@ -152,6 +172,119 @@ class Vortex_Activator {
             KEY is_current (is_current)
         ) $charset_collate;";
         dbDelta($sql_ownership);
+
+        $table_artworks = $wpdb->prefix . 'vortex_artworks';
+        $sql_artworks = "CREATE TABLE IF NOT EXISTS $table_artworks (
+            artwork_id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+            post_id bigint(20) UNSIGNED,
+            artist_id bigint(20) UNSIGNED NOT NULL,
+            title varchar(255) NOT NULL,
+            description text,
+            short_description text,
+            thumbnail varchar(255),
+            full_image varchar(255),
+            price decimal(18,8) DEFAULT 0,
+            currency varchar(10) DEFAULT 'TOLA',
+            is_for_sale tinyint(1) DEFAULT 0,
+            is_minted tinyint(1) DEFAULT 0,
+            status varchar(50) DEFAULT 'draft',
+            artist_name varchar(100),
+            ai_generated tinyint(1) DEFAULT 0,
+            ai_model varchar(100),
+            ai_prompt text,
+            date_created datetime DEFAULT CURRENT_TIMESTAMP,
+            date_modified datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY  (artwork_id),
+            KEY post_id (post_id),
+            KEY artist_id (artist_id),
+            KEY status (status),
+            KEY is_for_sale (is_for_sale),
+            KEY is_minted (is_minted),
+            KEY date_created (date_created)
+        ) $charset_collate;";
+        dbDelta($sql_artworks);
+
+        $table_categories = $wpdb->prefix . 'vortex_categories';        
+        $sql_categories = "CREATE TABLE IF NOT EXISTS $table_categories (
+            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            category_name varchar(191) NOT NULL,
+            category_slug varchar(191) NOT NULL,
+            category_description text,
+            parent_id bigint(20) unsigned DEFAULT NULL,
+            popularity_score decimal(10,2) DEFAULT '0.00',
+            category_icon varchar(100) DEFAULT NULL,
+            category_color varchar(20) DEFAULT NULL,
+            creation_date datetime DEFAULT CURRENT_TIMESTAMP,
+            last_updated datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            display_order int(11) DEFAULT '0',
+            is_featured tinyint(1) DEFAULT '0',
+            is_active tinyint(1) DEFAULT '1',
+            item_count int(11) DEFAULT '0',
+            PRIMARY KEY  (id),
+            UNIQUE KEY category_slug (category_slug),
+            KEY parent_id (parent_id),
+            KEY popularity_score (popularity_score),
+            KEY is_featured (is_featured),
+            KEY is_active (is_active),
+            KEY display_order (display_order)
+        ) $charset_collate;";
+        dbDelta($sql_categories);
+
+        $table_art_style = $wpdb->prefix . 'vortex_art_styles';        
+        $sql_art_style = "CREATE TABLE IF NOT EXISTS $table_art_style (
+            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            style_name varchar(191) NOT NULL,
+            style_slug varchar(191) NOT NULL,
+            style_description text,
+            parent_style_id bigint(20) unsigned DEFAULT NULL,
+            visual_characteristics text,
+            historical_period varchar(100) DEFAULT NULL,
+            origin_region varchar(100) DEFAULT NULL,
+            creation_date datetime DEFAULT CURRENT_TIMESTAMP,
+            last_updated datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            popularity_score decimal(10,2) DEFAULT '0.00',
+            trend_score decimal(10,2) DEFAULT '0.00',
+            artwork_count int(11) DEFAULT '0',
+            is_featured tinyint(1) DEFAULT '0',
+            is_ai_generated tinyint(1) DEFAULT '0',
+            PRIMARY KEY  (id),
+            UNIQUE KEY style_slug (style_slug),
+            KEY parent_style_id (parent_style_id),
+            KEY popularity_score (popularity_score),
+            KEY trend_score (trend_score),
+            KEY is_featured (is_featured),
+            KEY is_ai_generated (is_ai_generated)
+        ) $charset_collate;";
+        dbDelta($sql_art_style);
+
+        $table_views = $wpdb->prefix . 'vortex_artwork_views';
+        $sql_views = "CREATE TABLE IF NOT EXISTS $table_views (
+            view_id bigint(20) NOT NULL AUTO_INCREMENT,
+            artwork_id bigint(20) NOT NULL,
+            user_id bigint(20) DEFAULT NULL,
+            view_duration int(11) DEFAULT 0,
+            view_time datetime NOT NULL,
+            source_search_id bigint(20) DEFAULT NULL,
+            PRIMARY KEY (view_id),
+            KEY artwork_id (artwork_id),
+            KEY user_id (user_id)
+        ) $charset_collate;";
+        dbDelta($sql_views);
+
+        // Artwork likes table
+        $table_likes = $wpdb->prefix . 'vortex_artwork_likes';
+        $sql_likes = "CREATE TABLE IF NOT EXISTS $table_likes (
+            id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,            
+            artwork_id bigint(20) NOT NULL,
+            user_id bigint(20) NOT NULL,
+            like_time datetime NOT NULL,
+            date_created datetime DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            UNIQUE KEY artwork_user (artwork_id, user_id),
+            KEY artwork_id (artwork_id),
+            KEY user_id (user_id)
+        ) $charset_collate;";
+        dbDelta($sql_likes);
     }
 
     /**

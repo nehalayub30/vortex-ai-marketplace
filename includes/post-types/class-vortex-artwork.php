@@ -66,11 +66,11 @@ class Vortex_Artwork {
         add_action( 'manage_' . $this->post_type . '_posts_columns', array( $this, 'set_custom_columns' ) );
         add_action( 'manage_' . $this->post_type . '_posts_custom_column', array( $this, 'custom_column_content' ), 10, 2 );
         add_filter( 'manage_edit-' . $this->post_type . '_sortable_columns', array( $this, 'set_sortable_columns' ) );
-        // add_filter( 'enter_title_here', array( $this, 'change_title_placeholder' ) );
+        add_filter( 'enter_title_here', array( $this, 'change_title_placeholder' ) );
         add_filter( 'post_updated_messages', array( $this, 'custom_updated_messages' ) );
         // add_filter( 'bulk_post_updated_messages', array( $this, 'custom_bulk_updated_messages' ), 10, 2 );
         // add_action( 'admin_head', array( $this, 'add_admin_styles' ) );
-        // add_action( 'rest_api_init', array( $this, 'register_rest_fields' ) );
+        add_action( 'rest_api_init', array( $this, 'register_rest_fields' ) );
         // add_filter( 'pre_get_posts', array( $this, 'modify_admin_query' ) );
         
         // AJAX handlers
@@ -79,6 +79,70 @@ class Vortex_Artwork {
         add_action( 'wp_ajax_vortex_get_artwork_data', array( $this, 'ajax_get_artwork_data' ) );
         add_action( 'wp_ajax_vortex_update_artwork_views', array( $this, 'ajax_update_artwork_views' ) );
         add_action( 'wp_ajax_nopriv_vortex_update_artwork_views', array( $this, 'ajax_update_artwork_views' ) );
+    }
+
+    /**
+     * Change the title placeholder for the artwork post type.
+     *
+     * @since    1.0.0
+     * @param    string    $title    The default title placeholder.
+     * @return   string              Modified title placeholder.
+     */
+    public function change_title_placeholder( $title ) {
+        $screen = get_current_screen();
+        
+        if ( $screen && $screen->post_type === $this->post_type ) {
+            return __( 'Enter artwork title', 'vortex-ai-marketplace' );
+        }
+        
+        return $title;
+    }
+
+    /**
+     * Register REST API fields for artwork post type.
+     *
+     * @since    1.0.0
+     */
+    public function register_rest_fields() {
+        register_rest_field(
+            $this->post_type,
+            'artwork_meta',
+            array(
+                'get_callback'    => array($this, 'get_artwork_meta_for_api'),
+                'update_callback' => null,
+                'schema'          => null,
+            )
+        );
+        
+        register_rest_field(
+            $this->post_type,
+            'artwork_stats',
+            array(
+                'get_callback'    => array($this, 'get_artwork_stats_for_api'),
+                'update_callback' => null,
+                'schema'          => null,
+            )
+        );
+        
+        register_rest_field(
+            $this->post_type,
+            'artwork_ai_data',
+            array(
+                'get_callback'    => array($this, 'get_artwork_ai_data_for_api'),
+                'update_callback' => null,
+                'schema'          => null,
+            )
+        );
+        
+        register_rest_field(
+            $this->post_type,
+            'artwork_blockchain',
+            array(
+                'get_callback'    => array($this, 'get_artwork_blockchain_for_api'),
+                'update_callback' => null,
+                'schema'          => null,
+            )
+        );
     }
 
     /**

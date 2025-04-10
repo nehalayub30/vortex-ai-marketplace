@@ -9,7 +9,32 @@ class Vortex_Thorius_Context {
     public function __construct() {
         global $wpdb;
         $this->context_table = $wpdb->prefix . 'vortex_thorius_user_context';
-        // $this->init_context_table();
+        $this->init_context_table();
+    }
+
+    /**
+     * Initialize context table
+     */
+    private function init_context_table() {
+        global $wpdb;
+        $charset_collate = $wpdb->get_charset_collate();
+        
+        $sql = "CREATE TABLE IF NOT EXISTS {$this->context_table} (
+            id bigint(20) NOT NULL AUTO_INCREMENT,
+            user_id bigint(20) NOT NULL,
+            session_id varchar(191) NOT NULL,
+            context_key varchar(191) NOT NULL,
+            context_value longtext NOT NULL,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            updated_at datetime DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY  (id),
+            UNIQUE KEY user_session_key (user_id, session_id, context_key),
+            KEY user_id (user_id),
+            KEY session_id (session_id)
+        ) $charset_collate;";
+        
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        dbDelta($sql);
     }
     
     /**

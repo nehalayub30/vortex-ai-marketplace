@@ -121,6 +121,7 @@ function vortex_create_core_schema() {
         id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
         artwork_id bigint(20) UNSIGNED NOT NULL,
         user_id bigint(20) UNSIGNED NOT NULL,
+        like_time datetime NOT NULL,
         date_created datetime DEFAULT CURRENT_TIMESTAMP,
         PRIMARY KEY  (id),
         UNIQUE KEY artwork_user (artwork_id, user_id),

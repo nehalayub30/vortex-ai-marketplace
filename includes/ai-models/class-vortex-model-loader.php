@@ -242,7 +242,7 @@ class VORTEX_Model_Loader {
      */
     private function setup_hooks() {
         // Admin interfaces
-        // add_action('admin_init', array($this, 'register_settings'));
+        add_action('admin_init', array($this, 'register_settings'));
         
         // AJAX handlers
         add_action('wp_ajax_vortex_model_status', array($this, 'ajax_model_status'));
@@ -255,12 +255,94 @@ class VORTEX_Model_Loader {
         add_action('vortex_model_execution_complete', array($this, 'track_model_execution'), 10, 3);
         
         // Save states on shutdown
-        // add_action('shutdown', array($this, 'save_states'));
+        add_action('shutdown', array($this, 'save_states'));
         
         // Schedule maintenance if not already scheduled
         if (!wp_next_scheduled('vortex_daily_model_maintenance')) {
             wp_schedule_event(time(), 'daily', 'vortex_daily_model_maintenance');
         }
+    }
+
+    /**
+     * Save agent learning states and registered models to the database
+     * 
+     * This method is called on the 'shutdown' action to ensure all changes
+     * to learning states and models are persisted between page loads.
+     *
+     * @since 1.0.0
+     * @return void
+     */
+    public function save_states() {
+        // Save agent learning states
+        if (!empty($this->agent_learning_states)) {
+            update_option('vortex_ai_agent_learning_states', $this->agent_learning_states);
+        }
+        
+        // Save registered models
+        if (!empty($this->registered_models)) {
+            update_option('vortex_registered_models', $this->registered_models);
+        }
+        
+        // Save API endpoints
+        if (!empty($this->api_endpoints)) {
+            update_option('vortex_ai_api_endpoints', $this->api_endpoints);
+        }
+        
+        // Save execution statistics
+        if (!empty($this->execution_stats)) {
+            // Limit the number of saved stats to 1000 entries to prevent database bloat
+            if (count($this->execution_stats) > 1000) {
+                $this->execution_stats = array_slice($this->execution_stats, -1000);
+            }
+            
+            update_option('vortex_ai_execution_stats', $this->execution_stats);
+        }
+    }
+
+    /**
+     * Register settings for the model loader
+     *
+     * @since 1.0.0
+     * @return void
+     */
+    public function register_settings() {
+        // Register settings group
+        register_setting('vortex_ai_models_settings', 'vortex_registered_models');
+        register_setting('vortex_ai_models_settings', 'vortex_ai_api_endpoints');
+        register_setting('vortex_ai_models_settings', 'vortex_ai_agent_learning_states');
+        
+        // Add settings section
+        add_settings_section(
+            'vortex_model_loader_section',
+            __('AI Model Settings', 'vortex-ai-marketplace'),
+            array($this, 'render_model_loader_section'),
+            'vortex-ai-models'
+        );
+        
+        // Add settings fields
+        add_settings_field(
+            'vortex_model_api_keys',
+            __('API Keys', 'vortex-ai-marketplace'),
+            array($this, 'render_api_keys_field'),
+            'vortex-ai-models',
+            'vortex_model_loader_section'
+        );
+        
+        add_settings_field(
+            'vortex_model_learning_settings',
+            __('Learning Settings', 'vortex-ai-marketplace'),
+            array($this, 'render_learning_settings_field'),
+            'vortex-ai-models',
+            'vortex_model_loader_section'
+        );
+        
+        add_settings_field(
+            'vortex_model_management',
+            __('Model Management', 'vortex-ai-marketplace'),
+            array($this, 'render_model_management_field'),
+            'vortex-ai-models',
+            'vortex_model_loader_section'
+        );
     }
     
     /**

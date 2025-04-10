@@ -29,6 +29,34 @@ class Vortex_AJAX_Handlers {
         
         // Swiping handler
         add_action('wp_ajax_vortex_handle_swipe', array(__CLASS__, 'handle_swipe'));
+
+        add_action('wp_ajax_vortex_update_database', array(__CLASS__, 'update_database'));
+    }
+    
+
+    /**
+     * Handle database update AJAX request
+     */
+    public static function update_database() {
+        // Check nonce
+        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'vortex_update_database_nonce')) {
+            wp_send_json_error(array('message' => __('Security check failed. Please refresh the page and try again.', 'vortex-ai-marketplace')));
+        }
+        
+        // Check if user has permission
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error(array('message' => __('You do not have permission to perform this action.', 'vortex-ai-marketplace')));
+        }
+        
+        // Run the database update
+        require_once VORTEX_PLUGIN_DIR . 'includes/class-vortex-db-migrations.php';
+        $db_migration = new \Vortex_DB_Migrations();
+        $db_migration->setup_database();
+        
+        // Update the database version
+        update_option('vortex_ai_db_version', VORTEX_VERSION);
+        
+        wp_send_json_success(array('message' => __('Database tables have been created or updated successfully.', 'vortex-ai-marketplace')));
     }
     
     /**

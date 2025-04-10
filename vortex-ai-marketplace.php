@@ -51,12 +51,33 @@ function deactivate_vortex_ai_marketplace() {
 
 register_activation_hook( __FILE__, 'activate_vortex_ai_marketplace' );
 register_deactivation_hook( __FILE__, 'deactivate_vortex_ai_marketplace' );
+// Initialize DAO and Gamification
+add_action('plugins_loaded', 'vortex_init_dao_and_gamification');
+function vortex_init_dao_and_gamification() {
+    global $vortex_dao_manager, $vortex_gamification;
+    
+    $vortex_dao_manager = new VORTEX_DAO_Manager();
+    $vortex_gamification = new VORTEX_Gamification();
+}
+
+// Install database tables for DAO and Gamification
+register_activation_hook(__FILE__, 'vortex_install_dao_and_gamification_db');
+function vortex_install_dao_and_gamification_db() {
+    require_once VORTEX_PLUGIN_DIR . 'includes/class-vortex-dao-manager.php';
+    require_once VORTEX_PLUGIN_DIR . 'includes/class-vortex-gamification.php';
+    require_once VORTEX_PLUGIN_DIR . 'includes/class-vortex-gamification-db.php';    
+    VORTEX_DAO_Manager::install();
+    VORTEX_Gamification::install();
+    VORTEX_Gamification_DB::init();
+} 
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
 require VORTEX_PLUGIN_DIR . 'includes/class-vortex-ai-marketplace.php';
+require VORTEX_PLUGIN_DIR . 'includes/class-vortex-db-migrations.php';
+require_once plugin_dir_path(__FILE__) . 'includes/ai/class-vortex-huraii-image-generator.php';
 require_once plugin_dir_path(__FILE__) . 'includes/class-vortex-shortcodes.php';
 require_once plugin_dir_path(__FILE__) . 'class-vortex-ai-coordinator.php';
 require_once plugin_dir_path(__FILE__) . 'includes/ai-models/class-vortex-model-loader.php';
@@ -70,7 +91,7 @@ require_once VORTEX_PLUGIN_DIR . 'includes/class-vortex-subscriptions.php';
 
 // Register HURAII Widgets
 require_once plugin_dir_path(__FILE__) . 'includes/class-vortex-huraii-widgets.php';
-// add_action('init', array('Vortex_HURAII_Widgets', 'init'));
+add_action('init', array('Vortex_HURAII_Widgets', 'init'));
 
 // Include the scheduler files
 require_once plugin_dir_path(__FILE__) . 'includes/class-vortex-scheduler-db.php';
@@ -88,6 +109,11 @@ require_once plugin_dir_path(__FILE__) . 'includes/class-vortex-ajax-handlers.ph
 
 
 require_once plugin_dir_path(__FILE__) . 'class-vortex-security.php';
+
+require_once VORTEX_PLUGIN_DIR . 'includes/class-vortex-db-migrations.php';
+
+// Register DB migration to run during activation
+// add_action('vortex_ai_activate', array('Vortex_DB_Migrations', 'setup_database'));
 
 
 /**
@@ -640,24 +666,5 @@ require_once VORTEX_PLUGIN_DIR . 'includes/class-vortex-dao-manager.php';
 require_once VORTEX_PLUGIN_DIR . 'includes/class-vortex-gamification.php';
 
 // Register marketplace shortcodes
-// require_once VORTEX_PLUGIN_DIR . 'includes/shortcodes/class-vortex-marketplace-shortcodes.php';
-// new VORTEX_Marketplace_Shortcodes();
-
-// Initialize DAO and Gamification
-add_action('plugins_loaded', 'vortex_init_dao_and_gamification');
-function vortex_init_dao_and_gamification() {
-    global $vortex_dao_manager, $vortex_gamification;
-    
-    $vortex_dao_manager = new VORTEX_DAO_Manager();
-    $vortex_gamification = new VORTEX_Gamification();
-}
-
-// Install database tables for DAO and Gamification
-register_activation_hook(__FILE__, 'vortex_install_dao_and_gamification_db');
-function vortex_install_dao_and_gamification_db() {
-    require_once VORTEX_PLUGIN_DIR . 'includes/class-vortex-dao-manager.php';
-    require_once VORTEX_PLUGIN_DIR . 'includes/class-vortex-gamification.php';
-    
-    VORTEX_DAO_Manager::install();
-    VORTEX_Gamification::install();
-} 
+require_once VORTEX_PLUGIN_DIR . 'includes/shortcodes/class-vortex-marketplace-shortcodes.php';
+new VORTEX_Marketplace_Shortcodes();

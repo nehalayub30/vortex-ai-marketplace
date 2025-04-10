@@ -8,7 +8,30 @@ class Vortex_Thorius_History {
     public function __construct() {
         global $wpdb;
         $this->history_table = $wpdb->prefix . 'vortex_thorius_interaction_history';
-        // $this->init_history_table();
+        $this->init_history_table();
+    }
+
+    /**
+     * Initialize history table
+     */
+    private function init_history_table() {
+        global $wpdb;
+        $charset_collate = $wpdb->get_charset_collate();
+        
+        $sql = "CREATE TABLE IF NOT EXISTS {$this->history_table} (
+            id bigint(20) NOT NULL AUTO_INCREMENT,
+            user_id bigint(20) NOT NULL,
+            session_id varchar(191) DEFAULT NULL,
+            interaction_type varchar(50) NOT NULL,
+            interaction_data longtext NOT NULL,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY  (id),
+            KEY user_id (user_id),
+            KEY session_id (session_id)
+        ) $charset_collate;";
+        
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        dbDelta($sql);
     }
     
     /**

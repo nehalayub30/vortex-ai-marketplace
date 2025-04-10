@@ -77,6 +77,17 @@ class VORTEX_HURAII_Widgets {
         add_shortcode('vortex_huraii_style_transfer', array($this, 'render_style_transfer_widget'));
         add_shortcode('vortex_huraii_analysis', array($this, 'render_analysis_widget'));
     }
+
+    /**
+     * Initializes the plugin by setting up hooks.
+     *
+     * @since 1.0.0
+     * @return void
+     */
+    public static function init() {
+        $instance = self::get_instance();
+        return $instance;
+    }
     
     /**
      * Register widgets
