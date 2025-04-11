@@ -546,6 +546,17 @@ class VORTEX_CLOE {
     }
 
     /**
+     * Check if a database table exists
+     * 
+     * @param string $table_name Full table name including prefix
+     * @return bool True if table exists, false otherwise
+     */
+    private function table_exists($table_name) {
+        global $wpdb;
+        return $wpdb->get_var("SHOW TABLES LIKE '$table_name'") === $table_name;
+    }
+    
+    /**
      * Start session tracking
      * 
      * @param string $user_login User login name
@@ -1994,15 +2005,15 @@ class VORTEX_CLOE {
             $time_constraint = $this->get_time_constraint($period);
             
             $avg_duration = 0;
-            $query = $wpdb->prepare(
-                "SELECT AVG(session_duration) as avg_duration
-                FROM {$wpdb->prefix}vortex_user_sessions
-                WHERE session_start >= %s
-                AND session_duration > 0",
-                $time_constraint
-            );
+            // $query = $wpdb->prepare(
+            //     "SELECT AVG(session_duration) as avg_duration
+            //     FROM {$wpdb->prefix}vortex_user_sessions
+            //     WHERE session_start >= %s
+            //     AND session_duration > 0",
+            //     $time_constraint
+            // );
             
-            $avg_duration = $wpdb->get_var($query);
+            // $avg_duration = $wpdb->get_var($query);
             
             // Convert to minutes and round to 2 decimal places
             $avg_duration_minutes = round($avg_duration / 60, 2);

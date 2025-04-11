@@ -96,8 +96,9 @@ class VORTEX_Support_Chat {
         
         // Initialize Business Strategist for business logic with deep learning
         // Initialize Business Strategist for business logic with deep learning
-        if (!class_exists('VORTEX_Business_Strategist')) {
-            require_once plugin_dir_path(dirname(__FILE__)) . 'class-vortex-business-strategist.php';
+        if (!class_exists('VORTEX_Business_Strategist')) {            
+            require_once VORTEX_PLUGIN_DIR . 'includes/ai-agents/class-vortex-ai-agent-base.php';
+            require_once VORTEX_PLUGIN_DIR . 'includes/ai-agents/class-vortex-business-strategist.php';
         }
         $this->ai_agents['business_strategist'] = new VORTEX_Business_Strategist();
         $this->ai_agents['business_strategist']->enable_deep_learning();

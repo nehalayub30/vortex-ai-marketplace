@@ -413,7 +413,7 @@ class Vortex_Activator {
             KEY is_unique (is_unique)
         ) $charset_collate;";        
         dbDelta($sql_vortex_artwork_views);
-        
+
         $table_vortex_art_styles = $wpdb->prefix . 'vortex_art_styles';
         $sql_vortex_art_styles = "CREATE TABLE IF NOT EXISTS $table_vortex_art_styles (
             id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -523,6 +523,28 @@ class Vortex_Activator {
             KEY recovered (recovered)
         ) $charset_collate;";        
         dbDelta($sql_vortex_carts);
+
+        $campaigns_table = $wpdb->prefix . 'vortex_campaigns';
+        $sql_campaigns_table = "CREATE TABLE $campaigns_table (
+            campaign_id bigint(20) NOT NULL AUTO_INCREMENT,
+            campaign_name varchar(255) NOT NULL,
+            campaign_type varchar(50) DEFAULT NULL,
+            start_date datetime DEFAULT CURRENT_TIMESTAMP,
+            end_date datetime DEFAULT NULL,
+            campaign_cost decimal(10,2) DEFAULT 0.00,
+            campaign_budget decimal(10,2) DEFAULT 0.00,
+            campaign_status varchar(20) DEFAULT 'active',
+            target_audience text,
+            utm_parameters text,
+            created_by bigint(20) NOT NULL,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY (campaign_id),
+            KEY campaign_status (campaign_status),
+            KEY created_by (created_by)
+        ) $charset_collate;";
+        
+        dbDelta($sql_campaigns_table);
     }
 
     /**

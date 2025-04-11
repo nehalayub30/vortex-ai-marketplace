@@ -458,7 +458,8 @@ function vortex_load_ai_agents() {
             isset($_REQUEST['action']) && 
             (strpos($_REQUEST['action'], 'vortex_business') !== false || has_shortcode(get_post()->post_content, 'vortex_business_plan'))
         ) {
-            require_once plugin_dir_path(__FILE__) . 'class-vortex-business-strategist.php';
+            require_once VORTEX_PLUGIN_DIR . 'includes/ai-agents/class-vortex-ai-agent-base.php';
+            require_once plugin_dir_path(__FILE__) . 'includes/ai-agents/class-vortex-business-strategist.php';
         }
     }
 }
