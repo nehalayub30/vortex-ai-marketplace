@@ -119,7 +119,7 @@ class VORTEX_Marketplace_Shortcodes {
         ob_start();
 
         // Include the marketplace template
-        include plugin_dir_path(dirname(dirname(__FILE__))) . 'public/partials/marketplace/marketplace.php';
+        include plugin_dir_path(dirname(dirname(__FILE__))) . 'public/partials/marketplace.php';
 
         return ob_get_clean();
     }

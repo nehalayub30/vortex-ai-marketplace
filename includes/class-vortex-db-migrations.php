@@ -472,19 +472,20 @@ class Vortex_DB_Migrations {
             platform varchar(50) NOT NULL,
             share_url varchar(255) DEFAULT NULL,
             share_message text,
-            share_date datetime DEFAULT CURRENT_TIMESTAMP,
+            share_time datetime DEFAULT CURRENT_TIMESTAMP,
             ip_address varchar(100) DEFAULT NULL,
             user_agent text,
             share_status varchar(20) DEFAULT 'completed',
             engagement_count int(11) DEFAULT '0',
             conversion_count int(11) DEFAULT '0',
+            click_count int(11) DEFAULT '0',
             last_updated datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             metadata longtext,
             PRIMARY KEY  (id),
             KEY user_id (user_id),
             KEY artwork_id (artwork_id),
             KEY platform (platform),
-            KEY share_date (share_date),
+            KEY share_time (share_time),
             KEY share_status (share_status)
         ) $charset_collate;";
         

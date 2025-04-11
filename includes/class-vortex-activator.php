@@ -137,12 +137,15 @@ class Vortex_Activator {
         $table_transactions = $wpdb->prefix . 'vortex_transactions';
         $sql_transactions = "CREATE TABLE $table_transactions (
             id bigint(20) NOT NULL AUTO_INCREMENT,
+            artwork_id mediumint(9) NOT NULL,
+            user_id bigint(20) NOT NULL,
             transaction_id varchar(100) NOT NULL,
             from_address varchar(255) NOT NULL,
             to_address varchar(255) NOT NULL,
             amount float NOT NULL,
             token_type varchar(20) DEFAULT 'TOLA',
             transaction_data text,
+            transaction_time datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
             status varchar(50) NOT NULL,
             blockchain_tx_hash varchar(100) DEFAULT '',
             created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -177,7 +180,9 @@ class Vortex_Activator {
         $sql_artworks = "CREATE TABLE IF NOT EXISTS $table_artworks (
             artwork_id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
             post_id bigint(20) UNSIGNED,
+            category_id bigint(20) UNSIGNED,
             artist_id bigint(20) UNSIGNED NOT NULL,
+            style_id bigint(20) UNSIGNED NOT NULL,
             title varchar(255) NOT NULL,
             description text,
             short_description text,
@@ -196,6 +201,7 @@ class Vortex_Activator {
             date_modified datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY  (artwork_id),
             KEY post_id (post_id),
+            KEY category_id (category_id),
             KEY artist_id (artist_id),
             KEY status (status),
             KEY is_for_sale (is_for_sale),
@@ -203,6 +209,29 @@ class Vortex_Activator {
             KEY date_created (date_created)
         ) $charset_collate;";
         dbDelta($sql_artworks);
+
+        $table_artist = $wpdb->prefix . 'vortex_artists';
+        $sql_artist = "CREATE TABLE IF NOT EXISTS $table_artist (
+            artist_id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+            user_id bigint(20) UNSIGNED NOT NULL,
+            display_name varchar(100) NOT NULL,
+            bio text,
+            profile_image varchar(255),
+            wallet_address varchar(255),
+            social_links text,
+            specialties text,
+            website varchar(255),
+            verified tinyint(1) DEFAULT 0,
+            status varchar(50) DEFAULT 'pending',
+            status_updated datetime,
+            date_created datetime DEFAULT CURRENT_TIMESTAMP,
+            date_modified datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY  (artist_id),
+            KEY user_id (user_id),
+            KEY status (status),
+            KEY date_created (date_created)
+        ) $charset_collate;";
+        dbDelta($sql_artist);
 
         $table_categories = $wpdb->prefix . 'vortex_categories';        
         $sql_categories = "CREATE TABLE IF NOT EXISTS $table_categories (
@@ -471,9 +500,9 @@ class Vortex_Activator {
             id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
             user_id bigint(20) unsigned DEFAULT NULL,
             session_id varchar(32) DEFAULT NULL,
-            search_query varchar(255) NOT NULL,
+            search_term varchar(255) NOT NULL,
             search_time datetime DEFAULT CURRENT_TIMESTAMP,
-            results_count int(11) DEFAULT 0,
+            result_count int(11) DEFAULT 0,
             result_clicked tinyint(1) DEFAULT 0,
             clicked_position int(11) DEFAULT NULL,
             clicked_result_id bigint(20) unsigned DEFAULT NULL,
@@ -484,10 +513,11 @@ class Vortex_Activator {
             user_agent text DEFAULT NULL,
             search_page varchar(100) DEFAULT 'main',
             conversion tinyint(1) DEFAULT 0,
+            converted tinyint(1) DEFAULT 0,
             PRIMARY KEY  (id),
             KEY user_id (user_id),
             KEY search_time (search_time),
-            KEY search_query (search_query(191)),
+            KEY search_term (search_term(191)),
             KEY search_category (search_category),
             KEY result_clicked (result_clicked),
             KEY conversion (conversion)
@@ -545,6 +575,61 @@ class Vortex_Activator {
         ) $charset_collate;";
         
         dbDelta($sql_campaigns_table);
+
+        $table_tags = $wpdb->prefix . 'vortex_tags';
+        $sql_tags = "CREATE TABLE IF NOT EXISTS $table_tags (
+            tag_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            tag_name varchar(100) NOT NULL,
+            tag_slug varchar(100) NOT NULL,
+            tag_description text DEFAULT NULL,
+            parent_tag_id bigint(20) unsigned DEFAULT NULL,
+            tag_type varchar(50) DEFAULT 'general',
+            count int(11) DEFAULT 0,
+            popularity_score decimal(10,2) DEFAULT 0.00,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY (tag_id),
+            UNIQUE KEY tag_slug (tag_slug),
+            KEY parent_tag_id (parent_tag_id),
+            KEY tag_type (tag_type),
+            KEY popularity_score (popularity_score),
+            KEY count (count)
+        ) $charset_collate;";
+        dbDelta($sql_tags);
+
+        $table_artwork_tags = $wpdb->prefix . 'vortex_artwork_tags';
+        $sql_artwork_tags = "CREATE TABLE IF NOT EXISTS $table_artwork_tags (
+            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            artwork_id bigint(20) unsigned NOT NULL,
+            tag_id bigint(20) unsigned NOT NULL,
+            confidence decimal(5,2) DEFAULT 1.00,
+            added_by bigint(20) unsigned DEFAULT NULL,
+            is_auto_generated tinyint(1) DEFAULT 0,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            UNIQUE KEY artwork_tag (artwork_id, tag_id),
+            KEY artwork_id (artwork_id),
+            KEY tag_id (tag_id),
+            KEY confidence (confidence),
+            KEY is_auto_generated (is_auto_generated)
+        ) $charset_collate;";
+        dbDelta($sql_artwork_tags);
+
+        $table_artwork_theme_mapping = $wpdb->prefix . 'vortex_artwork_theme_mapping';
+        $sql_artwork_theme_mapping = "CREATE TABLE IF NOT EXISTS $table_artwork_theme_mapping (
+            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            artwork_id bigint(20) unsigned NOT NULL,
+            theme_id bigint(20) unsigned NOT NULL,
+            relevance decimal(5,2) DEFAULT 1.00,
+            added_by bigint(20) unsigned DEFAULT NULL,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            UNIQUE KEY artwork_theme (artwork_id, theme_id),
+            KEY artwork_id (artwork_id),
+            KEY theme_id (theme_id),
+            KEY relevance (relevance)
+        ) $charset_collate;";
+        dbDelta($sql_artwork_theme_mapping);
     }
 
     /**
