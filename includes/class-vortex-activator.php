@@ -132,10 +132,154 @@ class Vortex_Activator {
             UNIQUE KEY user_id (user_id)
         ) $charset_collate;";
         dbDelta($sql_tola);
+
+        $table_vortex_cart_abandonment_feedback = $wpdb->prefix . 'vortex_cart_abandonment_feedback';
+        $sql_vortex_cart_abandonment_feedback = "CREATE TABLE IF NOT EXISTS $table_vortex_cart_abandonment_feedback (
+            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            cart_id bigint(20) unsigned NOT NULL,
+            user_id bigint(20) unsigned DEFAULT NULL,
+            session_id varchar(32) DEFAULT NULL,
+            abandonment_time datetime DEFAULT CURRENT_TIMESTAMP,
+            reason_category varchar(50) DEFAULT NULL,
+            abandonment_reason varchar(50) DEFAULT NULL,
+            reason_details text DEFAULT NULL,
+            feedback_time datetime DEFAULT NULL,
+            feedback_provided tinyint(1) DEFAULT 0,
+            items_in_cart int(11) DEFAULT 0,
+            cart_value decimal(10,2) DEFAULT 0.00,
+            resolved tinyint(1) DEFAULT 0,
+            resolution_notes text DEFAULT NULL,
+            PRIMARY KEY  (id),
+            KEY cart_id (cart_id),
+            KEY user_id (user_id),
+            KEY abandonment_time (abandonment_time),
+            KEY reason_category (reason_category),
+            KEY abandonment_reason (abandonment_reason),
+            KEY feedback_provided (feedback_provided)
+        ) $charset_collate;";
+        dbDelta($sql_vortex_cart_abandonment_feedback);
+
+        $table_search_transactions = $wpdb->prefix . 'vortex_search_transactions';
+        $sql_search_transactions = "CREATE TABLE IF NOT EXISTS $table_search_transactions (
+            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            search_id bigint(20) unsigned NOT NULL,
+            transaction_id bigint(20) unsigned NOT NULL,
+            relation_type varchar(50) DEFAULT 'direct',
+            time_between_search_transaction int(11) DEFAULT 0,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            metadata text DEFAULT NULL,
+            PRIMARY KEY (id),
+            UNIQUE KEY search_transaction (search_id, transaction_id),
+            KEY search_id (search_id),
+            KEY transaction_id (transaction_id),
+            KEY relation_type (relation_type)
+        ) $charset_collate;";
+        dbDelta($sql_search_transactions);
+
+        $table_search_artwork_clicks = $wpdb->prefix . 'vortex_search_artwork_clicks';
+        $sql_search_artwork_clicks = "CREATE TABLE IF NOT EXISTS $table_search_artwork_clicks (
+            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            search_id bigint(20) unsigned NOT NULL,
+            artwork_id bigint(20) unsigned NOT NULL,
+            user_id bigint(20) unsigned DEFAULT NULL,
+            session_id varchar(32) DEFAULT NULL,
+            click_time datetime DEFAULT CURRENT_TIMESTAMP,
+            click_position int(11) DEFAULT NULL,
+            search_page varchar(100) DEFAULT 'main',
+            result_type varchar(50) DEFAULT 'search',
+            time_spent_viewing int(11) DEFAULT NULL,
+            converted tinyint(1) DEFAULT 0,
+            conversion_type varchar(50) DEFAULT NULL,
+            conversion_value decimal(10,2) DEFAULT 0.00,
+            conversion_time datetime DEFAULT NULL,
+            ip_address varchar(45) DEFAULT NULL,
+            user_agent text DEFAULT NULL,
+            PRIMARY KEY  (id),
+            KEY search_id (search_id),
+            KEY artwork_id (artwork_id),
+            KEY user_id (user_id),
+            KEY click_time (click_time),
+            KEY converted (converted),
+            KEY click_position (click_position)
+        ) $charset_collate;";
+        dbDelta($sql_search_artwork_clicks);
+
+        $table_cart_items = $wpdb->prefix . 'vortex_cart_items';
+        $sql_cart_items = "CREATE TABLE $table_cart_items (
+            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            cart_id bigint(20) unsigned NOT NULL,
+            artwork_id bigint(20) unsigned NOT NULL,
+            quantity int(11) unsigned NOT NULL DEFAULT 1,
+            price decimal(20,8) unsigned NOT NULL DEFAULT 0.00000000,
+            variation_id bigint(20) unsigned DEFAULT NULL,
+            variation_data text DEFAULT NULL,
+            added_date datetime DEFAULT CURRENT_TIMESTAMP,
+            last_updated datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            custom_options text DEFAULT NULL,
+            user_id bigint(20) unsigned DEFAULT NULL,
+            metadata text DEFAULT NULL,
+            PRIMARY KEY (id),
+            KEY cart_id (cart_id),
+            KEY artwork_id (artwork_id),
+            KEY variation_id (variation_id)
+        ) $charset_collate;";
+        dbDelta($sql_cart_items);
+
+        $table_search_results = $wpdb->prefix . 'vortex_search_results';
+        $sql_search_results = "CREATE TABLE IF NOT EXISTS $table_search_results (
+            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            search_id bigint(20) unsigned NOT NULL,
+            result_type varchar(50) NOT NULL DEFAULT 'artwork',
+            result_id bigint(20) unsigned NOT NULL,
+            relevance_score decimal(5,2) DEFAULT 1.00,
+            display_position int(11) DEFAULT NULL,
+            style_id bigint(20) unsigned DEFAULT NULL,
+            theme_id bigint(20) unsigned DEFAULT NULL,
+            was_clicked tinyint(1) DEFAULT 0,
+            click_position int(11) DEFAULT NULL,
+            click_time datetime DEFAULT NULL,
+            impression_time datetime DEFAULT CURRENT_TIMESTAMP,
+            metadata text DEFAULT NULL,
+            PRIMARY KEY  (id),
+            KEY search_id (search_id),
+            KEY result_type (result_type),
+            KEY result_id (result_id),
+            KEY style_id (style_id),
+            KEY theme_id (theme_id),
+            KEY was_clicked (was_clicked),
+            KEY impression_time (impression_time)
+        ) $charset_collate;";
+        dbDelta($sql_search_results);
+
+        $table_social_hashtags = $wpdb->prefix . 'vortex_social_hashtags';
+        $sql_social_hashtags = "CREATE TABLE IF NOT EXISTS $table_social_hashtags (
+            hashtag_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            hashtag varchar(255) NOT NULL,
+            category varchar(50) DEFAULT 'general',
+            description text DEFAULT NULL,
+            usage_count int(11) DEFAULT 0,
+            engagement_score decimal(5,2) DEFAULT 0.00,
+            first_used datetime DEFAULT CURRENT_TIMESTAMP,
+            last_used datetime DEFAULT CURRENT_TIMESTAMP,
+            is_trending tinyint(1) DEFAULT 0,
+            is_featured tinyint(1) DEFAULT 0,
+            is_blocked tinyint(1) DEFAULT 0,
+            relevance_score decimal(5,2) DEFAULT 0.00,
+            created_by bigint(20) unsigned DEFAULT NULL,
+            PRIMARY KEY  (hashtag_id),
+            UNIQUE KEY hashtag (hashtag(191)),
+            KEY category (category),
+            KEY usage_count (usage_count),
+            KEY engagement_score (engagement_score),
+            KEY is_trending (is_trending),
+            KEY is_featured (is_featured),
+            KEY is_blocked (is_blocked)
+        ) $charset_collate;";
+        dbDelta($sql_social_hashtags);
         
         // Transactions table
         $table_transactions = $wpdb->prefix . 'vortex_transactions';
-        $sql_transactions = "CREATE TABLE $table_transactions (
+        $sql_transactions = "CREATE TABLE IF NOT EXISTS $table_transactions (
             id bigint(20) NOT NULL AUTO_INCREMENT,
             artwork_id mediumint(9) NOT NULL,
             user_id bigint(20) NOT NULL,
@@ -145,9 +289,9 @@ class Vortex_Activator {
             amount float NOT NULL,
             token_type varchar(20) DEFAULT 'TOLA',
             transaction_data text,
-            transaction_time datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
             status varchar(50) NOT NULL,
             blockchain_tx_hash varchar(100) DEFAULT '',
+            transaction_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
             created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY  (id),
@@ -160,7 +304,7 @@ class Vortex_Activator {
         
         // Artwork ownership table
         $table_ownership = $wpdb->prefix . 'vortex_artwork_ownership';
-        $sql_ownership = "CREATE TABLE $table_ownership (
+        $sql_ownership = "CREATE TABLE IF NOT EXISTS $table_ownership (
             id bigint(20) NOT NULL AUTO_INCREMENT,
             artwork_id bigint(20) NOT NULL,
             owner_id bigint(20) NOT NULL,
@@ -435,6 +579,8 @@ class Vortex_Activator {
             platform varchar(20) DEFAULT 'web',
             device_type varchar(20) DEFAULT NULL,
             engagement_score decimal(4,2) DEFAULT 0.00,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY  (id),
             KEY artwork_id (artwork_id),
             KEY user_id (user_id),
@@ -461,6 +607,8 @@ class Vortex_Activator {
             is_featured tinyint(1) DEFAULT 0,
             is_ai_generated tinyint(1) DEFAULT 0,
             thumbnail_url varchar(255) DEFAULT NULL,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY  (id),
             UNIQUE KEY style_slug (style_slug),
             KEY parent_style_id (parent_style_id),
@@ -486,6 +634,8 @@ class Vortex_Activator {
             cart_value decimal(10,2) DEFAULT 0.00,
             resolved tinyint(1) DEFAULT 0,
             resolution_notes text DEFAULT NULL,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY  (id),
             KEY cart_id (cart_id),
             KEY user_id (user_id),
@@ -494,6 +644,23 @@ class Vortex_Activator {
             KEY feedback_provided (feedback_provided)
         ) $charset_collate;";        
         dbDelta($sql_vortex_cart_abandonment_feedback);
+        
+        $table_hashtag_share_mapping = $wpdb->prefix . 'vortex_hashtag_share_mapping';
+        $sql_hashtag_share_mapping = "CREATE TABLE $table_hashtag_share_mapping (
+            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            hashtag_id bigint(20) unsigned NOT NULL,
+            share_id bigint(20) unsigned NOT NULL,
+            artwork_id bigint(20) unsigned DEFAULT NULL,
+            user_id bigint(20) unsigned DEFAULT NULL,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY  (id),
+            UNIQUE KEY hashtag_share (hashtag_id, share_id),
+            KEY hashtag_id (hashtag_id),
+            KEY share_id (share_id),
+            KEY artwork_id (artwork_id),
+            KEY user_id (user_id)
+        ) $charset_collate;";
+        dbDelta($sql_hashtag_share_mapping);
 
         $table_vortex_searches = $wpdb->prefix . 'vortex_searches';
         $sql_vortex_searches = "CREATE TABLE IF NOT EXISTS $table_vortex_searches (
@@ -514,6 +681,8 @@ class Vortex_Activator {
             search_page varchar(100) DEFAULT 'main',
             conversion tinyint(1) DEFAULT 0,
             converted tinyint(1) DEFAULT 0,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY  (id),
             KEY user_id (user_id),
             KEY search_time (search_time),
@@ -543,6 +712,8 @@ class Vortex_Activator {
             recovery_email_sent tinyint(1) DEFAULT 0,
             recovery_email_time datetime DEFAULT NULL,
             recovered tinyint(1) DEFAULT 0,
+            created_at datetime DEFAULT CURRENT_TIMESTAMP,
+            updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY  (id),
             UNIQUE KEY cart_token (cart_token),
             KEY user_id (user_id),

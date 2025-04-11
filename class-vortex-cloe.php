@@ -1049,21 +1049,21 @@ class VORTEX_CLOE {
             
             // Get overall stats
             $overall_stats = [];
-            // $query = $wpdb->prepare(
-            //     "SELECT 
-            //         COUNT(DISTINCT v.view_id) as total_views,
-            //         COUNT(DISTINCT l.id) as total_likes
-            //     FROM {$wpdb->prefix}vortex_artwork_views v
-            //     LEFT JOIN {$wpdb->prefix}vortex_artwork_likes l ON 
-            //         v.artwork_id = l.artwork_id AND 
-            //         v.user_id = l.user_id AND 
-            //         l.like_time >= v.view_time AND
-            //         l.like_time <= DATE_ADD(v.view_time, INTERVAL 24 HOUR)
-            //     WHERE v.view_time >= %s",
-            //     $time_constraint
-            // );
+            $query = $wpdb->prepare(
+                "SELECT 
+                    COUNT(DISTINCT v.view_id) as total_views,
+                    COUNT(DISTINCT l.id) as total_likes
+                FROM {$wpdb->prefix}vortex_artwork_views v
+                LEFT JOIN {$wpdb->prefix}vortex_artwork_likes l ON 
+                    v.artwork_id = l.artwork_id AND 
+                    v.user_id = l.user_id AND 
+                    l.like_time >= v.view_time AND
+                    l.like_time <= DATE_ADD(v.view_time, INTERVAL 24 HOUR)
+                WHERE v.view_time >= %s",
+                $time_constraint
+            );
             
-            // $overall_stats = $wpdb->get_row($query);
+            $overall_stats = $wpdb->get_row($query);
             
             // Calculate overall ratio
             $overall_ratio = 0;
@@ -1271,35 +1271,35 @@ class VORTEX_CLOE {
             
             // Get overall style popularity
             $style_popularity = [];
-            // $style_query = $wpdb->prepare(
-            //     "SELECT 
-            //         s.id,
-            //         s.style_name,
-            //         COUNT(DISTINCT a.artwork_id) as artwork_count,
-            //         COUNT(DISTINCT v.user_id) as viewer_count,
-            //         COUNT(DISTINCT l.user_id) as liker_count,
-            //         COUNT(DISTINCT p.transaction_id) as purchase_count
-            //     FROM {$wpdb->prefix}vortex_art_styles s
-            //     JOIN {$wpdb->prefix}vortex_artworks a ON s.id = a.style_id
-            //     LEFT JOIN {$wpdb->prefix}vortex_artwork_views v ON 
-            //         a.artwork_id = v.artwork_id AND 
-            //         v.view_time >= %s
-            //     LEFT JOIN {$wpdb->prefix}vortex_artwork_likes l ON 
-            //         a.artwork_id = l.artwork_id AND 
-            //         l.like_time >= %s
-            //     LEFT JOIN {$wpdb->prefix}vortex_transactions p ON 
-            //         a.artwork_id = p.artwork_id AND 
-            //         p.transaction_time >= %s AND
-            //         p.status = 'completed'
-            //     GROUP BY s.id
-            //     HAVING artwork_count > 0
-            //     ORDER BY viewer_count DESC",
-            //     $time_constraint,
-            //     $time_constraint,
-            //     $time_constraint
-            // );
+            $style_query = $wpdb->prepare(
+                "SELECT 
+                    s.id,
+                    s.style_name,
+                    COUNT(DISTINCT a.artwork_id) as artwork_count,
+                    COUNT(DISTINCT v.user_id) as viewer_count,
+                    COUNT(DISTINCT l.user_id) as liker_count,
+                    COUNT(DISTINCT p.transaction_id) as purchase_count
+                FROM {$wpdb->prefix}vortex_art_styles s
+                JOIN {$wpdb->prefix}vortex_artworks a ON s.id = a.style_id
+                LEFT JOIN {$wpdb->prefix}vortex_artwork_views v ON 
+                    a.artwork_id = v.artwork_id AND 
+                    v.view_time >= %s
+                LEFT JOIN {$wpdb->prefix}vortex_artwork_likes l ON 
+                    a.artwork_id = l.artwork_id AND 
+                    l.like_time >= %s
+                LEFT JOIN {$wpdb->prefix}vortex_transactions p ON 
+                    a.artwork_id = p.artwork_id AND 
+                    p.transaction_time >= %s AND
+                    p.status = 'completed'
+                GROUP BY s.id
+                HAVING artwork_count > 0
+                ORDER BY viewer_count DESC",
+                $time_constraint,
+                $time_constraint,
+                $time_constraint
+            );
             
-            // $style_popularity = $wpdb->get_results($style_query);
+            $style_popularity = $wpdb->get_results($style_query);
             
             // Calculate engagement scores for each style
             $styles_with_scores = array();
@@ -1457,34 +1457,34 @@ class VORTEX_CLOE {
             
             // Get overall funnel metrics
             $funnel_metrics = [];
-            // $query = $wpdb->prepare(
-            //     "SELECT 
-            //         COUNT(DISTINCT v.user_id) as unique_viewers,
-            //         COUNT(DISTINCT l.user_id) as users_who_liked,
-            //         COUNT(DISTINCT c.user_id) as users_who_added_to_cart,
-            //         COUNT(DISTINCT t.user_id) as users_who_purchased
-            //     FROM 
-            //         (SELECT DISTINCT user_id FROM {$wpdb->prefix}vortex_artwork_views 
-            //          WHERE view_time >= %s) as v
-            //         LEFT JOIN (
-            //             SELECT DISTINCT user_id FROM {$wpdb->prefix}vortex_artwork_likes 
-            //             WHERE like_time >= %s
-            //         ) as l ON v.user_id = l.user_id
-            //         LEFT JOIN (
-            //             SELECT DISTINCT user_id FROM {$wpdb->prefix}vortex_cart_items 
-            //             WHERE added_time >= %s
-            //         ) as c ON v.user_id = c.user_id
-            //         LEFT JOIN (
-            //             SELECT DISTINCT user_id FROM {$wpdb->prefix}vortex_transactions 
-            //             WHERE transaction_time >= %s AND status = 'completed'
-            //         ) as t ON v.user_id = t.user_id",
-            //     $time_constraint,
-            //     $time_constraint,
-            //     $time_constraint,
-            //     $time_constraint
-            // );
+            $query = $wpdb->prepare(
+                "SELECT 
+                    COUNT(DISTINCT v.user_id) as unique_viewers,
+                    COUNT(DISTINCT l.user_id) as users_who_liked,
+                    COUNT(DISTINCT c.user_id) as users_who_added_to_cart,
+                    COUNT(DISTINCT t.user_id) as users_who_purchased
+                FROM 
+                    (SELECT DISTINCT user_id FROM {$wpdb->prefix}vortex_artwork_views 
+                     WHERE view_time >= %s) as v
+                    LEFT JOIN (
+                        SELECT DISTINCT user_id FROM {$wpdb->prefix}vortex_artwork_likes 
+                        WHERE like_time >= %s
+                    ) as l ON v.user_id = l.user_id
+                    LEFT JOIN (
+                        SELECT DISTINCT user_id FROM {$wpdb->prefix}vortex_cart_items 
+                        WHERE added_date >= %s
+                    ) as c ON v.user_id = c.user_id
+                    LEFT JOIN (
+                        SELECT DISTINCT user_id FROM {$wpdb->prefix}vortex_transactions 
+                        WHERE transaction_time >= %s AND status = 'completed'
+                    ) as t ON v.user_id = t.user_id",
+                $time_constraint,
+                $time_constraint,
+                $time_constraint,
+                $time_constraint
+            );
             
-            // $funnel_metrics = $wpdb->get_row($query);
+            $funnel_metrics = $wpdb->get_row($query);
             
             // Calculate conversion rates
             $view_to_like_rate = 0;
@@ -1521,36 +1521,36 @@ class VORTEX_CLOE {
             
             foreach ($price_ranges as $range) {
                 $range_metrics = [];
-                // $range_query = $wpdb->prepare(
-                //     "SELECT 
-                //         COUNT(DISTINCT v.user_id) as unique_viewers,
-                //         COUNT(DISTINCT l.user_id) as users_who_liked,
-                //         COUNT(DISTINCT c.user_id) as users_who_added_to_cart,
-                //         COUNT(DISTINCT t.user_id) as users_who_purchased
-                //     FROM {$wpdb->prefix}vortex_artworks a
-                //     LEFT JOIN {$wpdb->prefix}vortex_artwork_views v ON 
-                //         a.artwork_id = v.artwork_id AND
-                //         v.view_time >= %s
-                //     LEFT JOIN {$wpdb->prefix}vortex_artwork_likes l ON 
-                //         a.artwork_id = l.artwork_id AND
-                //         l.like_time >= %s
-                //     LEFT JOIN {$wpdb->prefix}vortex_cart_items c ON 
-                //         a.artwork_id = c.artwork_id AND
-                //         c.added_time >= %s
-                //     LEFT JOIN {$wpdb->prefix}vortex_transactions t ON 
-                //         a.artwork_id = t.artwork_id AND
-                //         t.transaction_time >= %s AND
-                //         t.status = 'completed'
-                //     WHERE a.price > %f AND a.price <= %f",
-                //     $time_constraint,
-                //     $time_constraint,
-                //     $time_constraint,
-                //     $time_constraint,
-                //     $range['min'],
-                //     $range['max']
-                // );
+                $range_query = $wpdb->prepare(
+                    "SELECT 
+                        COUNT(DISTINCT v.user_id) as unique_viewers,
+                        COUNT(DISTINCT l.user_id) as users_who_liked,
+                        COUNT(DISTINCT c.user_id) as users_who_added_to_cart,
+                        COUNT(DISTINCT t.user_id) as users_who_purchased
+                    FROM {$wpdb->prefix}vortex_artworks a
+                    LEFT JOIN {$wpdb->prefix}vortex_artwork_views v ON 
+                        a.artwork_id = v.artwork_id AND
+                        v.view_time >= %s
+                    LEFT JOIN {$wpdb->prefix}vortex_artwork_likes l ON 
+                        a.artwork_id = l.artwork_id AND
+                        l.like_time >= %s
+                    LEFT JOIN {$wpdb->prefix}vortex_cart_items c ON 
+                        a.artwork_id = c.artwork_id AND
+                        c.added_date >= %s
+                    LEFT JOIN {$wpdb->prefix}vortex_transactions t ON 
+                        a.artwork_id = t.artwork_id AND
+                        t.transaction_time >= %s AND
+                        t.status = 'completed'
+                    WHERE a.price > %f AND a.price <= %f",
+                    $time_constraint,
+                    $time_constraint,
+                    $time_constraint,
+                    $time_constraint,
+                    $range['min'],
+                    $range['max']
+                );
                 
-                // $range_metrics = $wpdb->get_row($range_query);
+                $range_metrics = $wpdb->get_row($range_query);
                 
                 // Calculate conversion rate for this price range
                 $range_conversion = 0;
@@ -1638,24 +1638,24 @@ class VORTEX_CLOE {
             
             // Get overall abandoned cart stats
             $cart_stats = [];
-            // $query = $wpdb->prepare(
-            //     "SELECT 
-            //         COUNT(DISTINCT c.cart_id) as total_carts,
-            //         COUNT(DISTINCT CASE WHEN t.transaction_id IS NULL THEN c.cart_id ELSE NULL END) as abandoned_carts,
-            //         COUNT(DISTINCT CASE WHEN t.transaction_id IS NOT NULL THEN c.cart_id ELSE NULL END) as converted_carts,
-            //         SUM(c.total_amount) as total_cart_value,
-            //         SUM(CASE WHEN t.transaction_id IS NULL THEN c.total_amount ELSE 0 END) as abandoned_value
-            //     FROM {$wpdb->prefix}vortex_carts c
-            //     LEFT JOIN {$wpdb->prefix}vortex_transactions t ON 
-            //         c.user_id = t.user_id AND 
-            //         t.transaction_time >= c.last_updated AND
-            //         t.transaction_time <= DATE_ADD(c.last_updated, INTERVAL 24 HOUR) AND
-            //         t.status = 'completed'
-            //     WHERE c.created_at >= %s",
-            //     $time_constraint
-            // );
+            $query = $wpdb->prepare(
+                "SELECT 
+                    COUNT(DISTINCT c.id) as total_carts,
+                    COUNT(DISTINCT CASE WHEN t.transaction_id IS NULL THEN c.id ELSE NULL END) as abandoned_carts,
+                    COUNT(DISTINCT CASE WHEN t.transaction_id IS NOT NULL THEN c.id ELSE NULL END) as converted_carts,
+                    SUM(c.cart_total) as total_cart_value,
+                    SUM(CASE WHEN t.transaction_id IS NULL THEN c.cart_total ELSE 0 END) as abandoned_value
+                FROM {$wpdb->prefix}vortex_carts c
+                LEFT JOIN {$wpdb->prefix}vortex_transactions t ON 
+                    c.user_id = t.user_id AND 
+                    t.transaction_time >= c.last_updated AND
+                    t.transaction_time <= DATE_ADD(c.last_updated, INTERVAL 24 HOUR) AND
+                    t.status = 'completed'
+                WHERE c.created_at >= %s",
+                $time_constraint
+            );
             
-            // $cart_stats = $wpdb->get_row($query);
+            $cart_stats = $wpdb->get_row($query);
             
             // Calculate abandonment rate and recovery potential
             $abandonment_rate = 0;
@@ -1688,29 +1688,29 @@ class VORTEX_CLOE {
             
             foreach ($price_ranges as $range) {
                 $range_stats = [];
-                // $range_query = $wpdb->prepare(
-                //     "SELECT 
-                //         COUNT(DISTINCT c.cart_id) as total_carts,
-                //         COUNT(DISTINCT CASE WHEN t.transaction_id IS NULL THEN c.cart_id ELSE NULL END) as abandoned_carts
-                //     FROM {$wpdb->prefix}vortex_carts c
-                //     JOIN {$wpdb->prefix}vortex_cart_items i ON c.cart_id = i.cart_id
-                //     JOIN {$wpdb->prefix}vortex_artworks a ON i.artwork_id = a.artwork_id
-                //     LEFT JOIN {$wpdb->prefix}vortex_transactions t ON 
-                //         c.user_id = t.user_id AND 
-                //         t.transaction_time >= c.last_updated AND
-                //         t.transaction_time <= DATE_ADD(c.last_updated, INTERVAL 24 HOUR) AND
-                //         t.status = 'completed'
-                //     WHERE c.created_at >= %s
-                //     AND a.price > %f AND a.price <= %f
-                //     GROUP BY a.price > %f AND a.price <= %f",
-                //     $time_constraint,
-                //     $range['min'],
-                //     $range['max'],
-                //     $range['min'],
-                //     $range['max']
-                // );
+                $range_query = $wpdb->prepare(
+                    "SELECT 
+                        COUNT(DISTINCT c.id) as total_carts,
+                        COUNT(DISTINCT CASE WHEN t.transaction_id IS NULL THEN c.id ELSE NULL END) as abandoned_carts
+                    FROM {$wpdb->prefix}vortex_carts c
+                    JOIN {$wpdb->prefix}vortex_cart_items i ON c.id = i.cart_id
+                    JOIN {$wpdb->prefix}vortex_artworks a ON i.artwork_id = a.artwork_id
+                    LEFT JOIN {$wpdb->prefix}vortex_transactions t ON 
+                        c.user_id = t.user_id AND 
+                        t.transaction_time >= c.last_updated AND
+                        t.transaction_time <= DATE_ADD(c.last_updated, INTERVAL 24 HOUR) AND
+                        t.status = 'completed'
+                    WHERE c.created_at >= %s
+                    AND a.price > %f AND a.price <= %f
+                    GROUP BY a.price > %f AND a.price <= %f",
+                    $time_constraint,
+                    $range['min'],
+                    $range['max'],
+                    $range['min'],
+                    $range['max']
+                );
                 
-                // $range_stats = $wpdb->get_row($range_query);
+                $range_stats = $wpdb->get_row($range_query);
                 
                 // Calculate abandonment rate for this price range
                 $range_abandonment_rate = 0;
@@ -1797,37 +1797,37 @@ class VORTEX_CLOE {
             
             foreach ($price_ranges as $range) {
                 $range_stats = [];
-                // $range_query = $wpdb->prepare(
-                //     "SELECT 
-                //         COUNT(DISTINCT v.view_id) as view_count,
-                //         COUNT(DISTINCT l.id) as like_count,
-                //         COUNT(DISTINCT c.id) as cart_add_count,
-                //         COUNT(DISTINCT t.transaction_id) as purchase_count,
-                //         COALESCE(SUM(t.amount), 0) as total_revenue
-                //     FROM {$wpdb->prefix}vortex_artworks a
-                //     LEFT JOIN {$wpdb->prefix}vortex_artwork_views v ON 
-                //         a.artwork_id = v.artwork_id AND
-                //         v.view_time >= %s
-                //     LEFT JOIN {$wpdb->prefix}vortex_artwork_likes l ON 
-                //         a.artwork_id = l.artwork_id AND
-                //         l.like_time >= %s
-                //     LEFT JOIN {$wpdb->prefix}vortex_cart_items c ON 
-                //         a.artwork_id = c.artwork_id AND
-                //         c.added_time >= %s
-                //     LEFT JOIN {$wpdb->prefix}vortex_transactions t ON 
-                //         a.artwork_id = t.artwork_id AND
-                //         t.transaction_time >= %s AND
-                //         t.status = 'completed'
-                //     WHERE a.price > %f AND a.price <= %f",
-                //     $time_constraint,
-                //     $time_constraint,
-                //     $time_constraint,
-                //     $time_constraint,
-                //     $range['min'],
-                //     $range['max']
-                // );
+                $range_query = $wpdb->prepare(
+                    "SELECT 
+                        COUNT(DISTINCT v.view_id) as view_count,
+                        COUNT(DISTINCT l.id) as like_count,
+                        COUNT(DISTINCT c.id) as cart_add_count,
+                        COUNT(DISTINCT t.transaction_id) as purchase_count,
+                        COALESCE(SUM(t.amount), 0) as total_revenue
+                    FROM {$wpdb->prefix}vortex_artworks a
+                    LEFT JOIN {$wpdb->prefix}vortex_artwork_views v ON 
+                        a.artwork_id = v.artwork_id AND
+                        v.view_time >= %s
+                    LEFT JOIN {$wpdb->prefix}vortex_artwork_likes l ON 
+                        a.artwork_id = l.artwork_id AND
+                        l.like_time >= %s
+                    LEFT JOIN {$wpdb->prefix}vortex_cart_items c ON 
+                        a.artwork_id = c.artwork_id AND
+                        c.added_date >= %s
+                    LEFT JOIN {$wpdb->prefix}vortex_transactions t ON 
+                        a.artwork_id = t.artwork_id AND
+                        t.transaction_time >= %s AND
+                        t.status = 'completed'
+                    WHERE a.price > %f AND a.price <= %f",
+                    $time_constraint,
+                    $time_constraint,
+                    $time_constraint,
+                    $time_constraint,
+                    $range['min'],
+                    $range['max']
+                );
                 
-                // $range_stats = $wpdb->get_row($range_query);
+                $range_stats = $wpdb->get_row($range_query);
                 
                 // Calculate engagement metrics for this price range
                 $view_to_like_rate = 0;
@@ -2087,25 +2087,25 @@ class VORTEX_CLOE {
             
             // Get keywords associated with highest revenue
             $top_revenue_terms = [];
-            // $revenue_query = $wpdb->prepare(
-            //     "SELECT 
-            //         s.search_term,
-            //         COUNT(DISTINCT t.transaction_id) as purchases,
-            //         SUM(t.amount) as total_revenue,
-            //         SUM(t.amount) / COUNT(DISTINCT t.transaction_id) as avg_order_value
-            //     FROM {$wpdb->prefix}vortex_searches s
-            //     JOIN {$wpdb->prefix}vortex_search_transactions st ON s.search_id = st.search_id
-            //     JOIN {$wpdb->prefix}vortex_transactions t ON st.transaction_id = t.transaction_id
-            //     WHERE s.search_time >= %s
-            //     AND t.status = 'completed'
-            //     GROUP BY s.search_term
-            //     HAVING purchases > 2
-            //     ORDER BY total_revenue DESC
-            //     LIMIT 20",
-            //     $time_constraint
-            // );
+            $revenue_query = $wpdb->prepare(
+                "SELECT 
+                    s.search_term,
+                    COUNT(DISTINCT t.transaction_id) as purchases,
+                    SUM(t.amount) as total_revenue,
+                    SUM(t.amount) / COUNT(DISTINCT t.transaction_id) as avg_order_value
+                FROM {$wpdb->prefix}vortex_searches s
+                JOIN {$wpdb->prefix}vortex_search_transactions st ON s.id = st.search_id
+                JOIN {$wpdb->prefix}vortex_transactions t ON st.transaction_id = t.transaction_id
+                WHERE s.search_time >= %s
+                AND t.status = 'completed'
+                GROUP BY s.search_term
+                HAVING purchases > 2
+                ORDER BY total_revenue DESC
+                LIMIT 20",
+                $time_constraint
+            );
             
-            // $top_revenue_terms = $wpdb->get_results($revenue_query);
+            $top_revenue_terms = $wpdb->get_results($revenue_query);
             
             // Get keywords with low results but high search volume (content gap opportunities)
             $opportunity_terms = [];
@@ -2157,24 +2157,32 @@ class VORTEX_CLOE {
             
             // Get trending search terms (highest growth in searches)
             $trending_terms = [];
-            // $query = $wpdb->prepare(
-            //     "SELECT 
-            //         search_term,
-            //         COUNT(CASE WHEN search_time >= %s THEN 1 ELSE NULL END) as current_period_searches,
-            //         COUNT(CASE WHEN search_time >= %s AND search_time < %s THEN 1 ELSE NULL END) as previous_period_searches
-            //     FROM {$wpdb->prefix}vortex_searches
-            //     WHERE search_time >= %s
-            //     GROUP BY search_term
-            //     HAVING current_period_searches > 5 AND previous_period_searches > 0
-            //     ORDER BY (current_period_searches - previous_period_searches) DESC
-            //     LIMIT 30",
-            //     $current_period,
-            //     $previous_period,
-            //     $current_period,
-            //     $previous_period
-            // );
+            $query = $wpdb->prepare(
+                "SELECT 
+                    search_term,
+                    COUNT(CASE WHEN search_time >= %s THEN 1 ELSE NULL END) as current_period_searches,
+                    COUNT(CASE WHEN search_time >= %s AND search_time < %s THEN 1 ELSE NULL END) as previous_period_searches
+                FROM {$wpdb->prefix}vortex_searches
+                WHERE search_time >= %s
+                GROUP BY search_term
+                HAVING COUNT(CASE WHEN search_time >= %s THEN 1 ELSE NULL END) > 5 
+                AND COUNT(CASE WHEN search_time >= %s AND search_time < %s THEN 1 ELSE NULL END) > 0 
+                ORDER BY 
+                (COUNT(CASE WHEN search_time >= %s THEN 1 ELSE NULL END) - COUNT(CASE WHEN search_time >= %s AND search_time < %s THEN 1 ELSE NULL END)) DESC 
+                LIMIT 30",
+                $current_period,
+                $previous_period,
+                $current_period,
+                $previous_period,
+                $current_period,
+                $previous_period,
+                $current_period,
+                $current_period,
+                $previous_period,
+                $current_period,
+            );
             
-            // $trending_terms = $wpdb->get_results($query);
+            $trending_terms = $wpdb->get_results($query);
             
             // Calculate growth rates and add to results
             $processed_terms = array();
@@ -2218,23 +2226,23 @@ class VORTEX_CLOE {
             
             // Get trending terms by category
             $category_trends = [];
-            // $category_query = $wpdb->prepare(
-            //     "SELECT 
-            //         c.id,
-            //         c.category_name,
-            //         s.search_term,
-            //         COUNT(*) as search_count
-            //     FROM {$wpdb->prefix}vortex_searches s
-            //     JOIN {$wpdb->prefix}vortex_search_artwork_clicks sac ON s.search_id = sac.search_id
-            //     JOIN {$wpdb->prefix}vortex_artworks a ON sac.artwork_id = a.artwork_id
-            //     JOIN {$wpdb->prefix}vortex_categories c ON a.artwork_id = c.id
-            //     WHERE s.search_time >= %s
-            //     GROUP BY c.id, s.search_term
-            //     ORDER BY c.category_name, search_count DESC",
-            //     $current_period
-            // );
+            $category_query = $wpdb->prepare(
+                "SELECT 
+                    c.id,
+                    c.category_name,
+                    s.search_term,
+                    COUNT(*) as search_count
+                FROM {$wpdb->prefix}vortex_searches s
+                JOIN {$wpdb->prefix}vortex_search_artwork_clicks sac ON s.id = sac.search_id
+                JOIN {$wpdb->prefix}vortex_artworks a ON sac.artwork_id = a.artwork_id
+                JOIN {$wpdb->prefix}vortex_categories c ON a.artwork_id = c.id
+                WHERE s.search_time >= %s
+                GROUP BY c.id, s.search_term
+                ORDER BY c.category_name, search_count DESC",
+                $current_period
+            );
             
-            // $category_trends = $wpdb->get_results($category_query);
+            $category_trends = $wpdb->get_results($category_query);
             
             // Process category-specific trending terms
             $trending_by_category = array();
@@ -3580,25 +3588,31 @@ class VORTEX_CLOE {
             $current_period = $this->get_time_constraint($period);
             $previous_period = $this->get_time_constraint($period, true);
             
-            // $query = $wpdb->prepare(
-            //     "SELECT 
-            //         t.id,
-            //         t.theme_name,
-            //         COUNT(DISTINCT CASE WHEN tr.transaction_time >= %s THEN tr.transaction_id ELSE NULL END) as current_purchases,
-            //         COUNT(DISTINCT CASE WHEN tr.transaction_time >= %s AND tr.transaction_time < %s THEN tr.transaction_id ELSE NULL END) as previous_purchases
-            //     FROM {$wpdb->prefix}vortex_artwork_themes t
-            //     JOIN {$wpdb->prefix}vortex_artwork_theme_mapping tm ON t.id = tm.theme_id
-            //     JOIN {$wpdb->prefix}vortex_artworks a ON tm.artwork_id = a.artwork_id
-            //     LEFT JOIN {$wpdb->prefix}vortex_transactions tr ON a.artwork_id = tr.artwork_id AND tr.status = 'completed'
-            //     GROUP BY t.id
-            //     HAVING current_purchases > previous_purchases
-            //     ORDER BY (current_purchases - previous_purchases) DESC",
-            //     $current_period,
-            //     $previous_period,
-            //     $current_period
-            // );
+            $query = $wpdb->prepare(
+                "SELECT 
+                    t.id,
+                    t.theme_name,
+                    COUNT(DISTINCT CASE WHEN tr.transaction_time >= %s THEN tr.transaction_id ELSE NULL END) as current_purchases,
+                    COUNT(DISTINCT CASE WHEN tr.transaction_time >= %s AND tr.transaction_time < %s THEN tr.transaction_id ELSE NULL END) as previous_purchases
+                FROM {$wpdb->prefix}vortex_artwork_themes t
+                JOIN {$wpdb->prefix}vortex_artwork_theme_mapping tm ON t.id = tm.theme_id
+                JOIN {$wpdb->prefix}vortex_artworks a ON tm.artwork_id = a.artwork_id
+                LEFT JOIN {$wpdb->prefix}vortex_transactions tr ON a.artwork_id = tr.artwork_id AND tr.status = 'completed'
+                GROUP BY t.id
+                HAVING COUNT(DISTINCT CASE WHEN tr.transaction_time >= %s THEN tr.transaction_id ELSE NULL END) > COUNT(DISTINCT CASE WHEN tr.transaction_time >= %s AND tr.transaction_time < %s THEN tr.transaction_id ELSE NULL END)
+                ORDER BY (COUNT(DISTINCT CASE WHEN tr.transaction_time >= %s THEN tr.transaction_id ELSE NULL END) - COUNT(DISTINCT CASE WHEN tr.transaction_time >= %s AND tr.transaction_time < %s THEN tr.transaction_id ELSE NULL END)) DESC",
+                $current_period,
+                $previous_period,
+                $current_period,
+                $current_period,
+                $previous_period,
+                $current_period,
+                $current_period,
+                $previous_period,
+                $current_period
+            );
             
-            // $results = $wpdb->get_results($query);
+            $results = $wpdb->get_results($query);
             
             // Calculate growth percentage
             foreach ($results as &$theme) {
@@ -3630,36 +3644,36 @@ class VORTEX_CLOE {
             $content_gaps = [];
             $price_gaps = [];
             // Find styles/themes with high search volume but low inventory
-            // $query = "SELECT 
-            //             'style' as type,
-            //             s.id as id,
-            //             s.style_name as name,
-            //             COUNT(DISTINCT sr.search_id) as search_count,
-            //             COUNT(DISTINCT a.artwork_id) as artwork_count,
-            //             (COUNT(DISTINCT sr.search_id) / GREATEST(COUNT(DISTINCT a.artwork_id), 1)) as demand_supply_ratio
-            //           FROM {$wpdb->prefix}vortex_art_styles s
-            //           LEFT JOIN {$wpdb->prefix}vortex_search_results sr ON s.id = sr.style_id
-            //           LEFT JOIN {$wpdb->prefix}vortex_artworks a ON s.id = a.style_id
-            //           GROUP BY s.id
+            $query = "SELECT 
+                        'style' as type,
+                        s.id as id,
+                        s.style_name as name,
+                        COUNT(DISTINCT sr.search_id) as search_count,
+                        COUNT(DISTINCT a.artwork_id) as artwork_count,
+                        (COUNT(DISTINCT sr.search_id) / GREATEST(COUNT(DISTINCT a.artwork_id), 1)) as demand_supply_ratio
+                      FROM {$wpdb->prefix}vortex_art_styles s
+                      LEFT JOIN {$wpdb->prefix}vortex_search_results sr ON s.id = sr.style_id
+                      LEFT JOIN {$wpdb->prefix}vortex_artworks a ON s.id = a.style_id
+                      GROUP BY s.id
                       
-            //           UNION
+                      UNION
                       
-            //           SELECT 
-            //             'theme' as type,
-            //             t.id as id,
-            //             t.theme_name as name,
-            //             COUNT(DISTINCT sr.search_id) as search_count,
-            //             COUNT(DISTINCT tm.artwork_id) as artwork_count,
-            //             (COUNT(DISTINCT sr.search_id) / GREATEST(COUNT(DISTINCT tm.artwork_id), 1)) as demand_supply_ratio
-            //           FROM {$wpdb->prefix}vortex_artwork_themes t
-            //           LEFT JOIN {$wpdb->prefix}vortex_search_results sr ON t.id = sr.theme_id
-            //           LEFT JOIN {$wpdb->prefix}vortex_artwork_theme_mapping tm ON t.id = tm.theme_id
-            //           GROUP BY t.id
+                      SELECT 
+                        'theme' as type,
+                        t.id as id,
+                        t.theme_name as name,
+                        COUNT(DISTINCT sr.search_id) as search_count,
+                        COUNT(DISTINCT tm.artwork_id) as artwork_count,
+                        (COUNT(DISTINCT sr.search_id) / GREATEST(COUNT(DISTINCT tm.artwork_id), 1)) as demand_supply_ratio
+                      FROM {$wpdb->prefix}vortex_artwork_themes t
+                      LEFT JOIN {$wpdb->prefix}vortex_search_results sr ON t.id = sr.theme_id
+                      LEFT JOIN {$wpdb->prefix}vortex_artwork_theme_mapping tm ON t.id = tm.theme_id
+                      GROUP BY t.id
                       
-            //           ORDER BY demand_supply_ratio DESC
-            //           LIMIT 20";
+                      ORDER BY demand_supply_ratio DESC
+                      LIMIT 20";
             
-            // $content_gaps = $wpdb->get_results($query);
+            $content_gaps = $wpdb->get_results($query);
             
             // Find price range gaps
             $price_gap_query = "SELECT 
@@ -4024,26 +4038,26 @@ class VORTEX_CLOE {
             
             $time_constraint = $this->get_time_constraint($period);
             $results = [];
-            // $query = $wpdb->prepare(
-            //     "SELECT 
-            //         h.hashtag,
-            //         COUNT(DISTINCT s.id) as usage_count,
-            //         SUM(s.click_count) as click_count,
-            //         SUM(s.engagement_count) as engagement_count,
-            //         SUM(s.click_count) / COUNT(DISTINCT s.id) as clicks_per_share,
-            //         SUM(s.engagement_count) / COUNT(DISTINCT s.id) as engagement_per_share
-            //     FROM {$wpdb->prefix}vortex_social_hashtags h
-            //     JOIN {$wpdb->prefix}vortex_hashtag_share_mapping m ON h.hashtag_id = m.hashtag_id
-            //     JOIN {$wpdb->prefix}vortex_social_shares s ON m.share_id = s.id
-            //     WHERE s.share_time >= %s
-            //     GROUP BY h.hashtag
-            //     HAVING usage_count > 5
-            //     ORDER BY engagement_per_share DESC
-            //     LIMIT 20",
-            //     $time_constraint
-            // );
+            $query = $wpdb->prepare(
+                "SELECT 
+                    h.hashtag,
+                    COUNT(DISTINCT s.id) as usage_count,
+                    SUM(s.click_count) as click_count,
+                    SUM(s.engagement_count) as engagement_count,
+                    SUM(s.click_count) / COUNT(DISTINCT s.id) as clicks_per_share,
+                    SUM(s.engagement_count) / COUNT(DISTINCT s.id) as engagement_per_share
+                FROM {$wpdb->prefix}vortex_social_hashtags h
+                JOIN {$wpdb->prefix}vortex_hashtag_share_mapping m ON h.hashtag_id = m.hashtag_id
+                JOIN {$wpdb->prefix}vortex_social_shares s ON m.share_id = s.id
+                WHERE s.share_time >= %s
+                GROUP BY h.hashtag
+                HAVING usage_count > 5
+                ORDER BY engagement_per_share DESC
+                LIMIT 20",
+                $time_constraint
+            );
             
-            // $results = $wpdb->get_results($query);
+            $results = $wpdb->get_results($query);
             
             return array(
                 'status' => 'success',
