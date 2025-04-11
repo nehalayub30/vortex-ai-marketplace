@@ -417,13 +417,13 @@ class VORTEX_CLOE {
         add_action('vortex_swipe_action', array($this, 'track_swipe_action'), 10, 3);
         
         // Session tracking
-        // add_action('wp_login', array($this, 'start_session_tracking'), 10, 2);
-        // add_action('wp_logout', array($this, 'end_session_tracking'));
+        add_action('wp_login', array($this, 'start_session_tracking'), 10, 2);
+        add_action('wp_logout', array($this, 'end_session_tracking'));
         add_action('init', array($this, 'continue_session_tracking'));
         
         // Admin reporting
         add_action('admin_menu', array($this, 'add_admin_menu'));
-        // add_action('wp_dashboard_setup', array($this, 'add_dashboard_widgets'));
+        add_action('wp_dashboard_setup', array($this, 'add_dashboard_widgets'));
         
         // AJAX handlers
         add_action('wp_ajax_vortex_cloe_get_greeting', array($this, 'ajax_get_greeting'));
@@ -446,6 +446,164 @@ class VORTEX_CLOE {
         
         if (!wp_next_scheduled('vortex_monthly_analytics')) {
             wp_schedule_event(time(), 'monthly', 'vortex_monthly_analytics');
+        }
+    }
+
+    /**
+     * End session tracking
+     */
+    public function end_session_tracking() {
+        try {
+            // Check if user is logged in
+            if (!is_user_logged_in()) {
+                return;
+            }
+            
+            $user_id = get_current_user_id();
+            
+            // Get current session
+            $session_id = get_user_meta($user_id, 'vortex_current_session', true);
+            
+            if (empty($session_id)) {
+                return;
+            }
+            
+            // Get session start time
+            $start_time = (int)get_user_meta($user_id, 'vortex_session_start', true);
+            $end_time = time();
+            $duration = $end_time - $start_time;
+            
+            // Update session in database
+            global $wpdb;
+            $session_table = $wpdb->prefix . 'vortex_user_sessions';
+            
+            // Check if table exists before attempting update
+            if ($this->table_exists('vortex_user_sessions')) {
+                $result = $wpdb->update(
+                    $session_table,
+                    array(
+                        'end_time' => date('Y-m-d H:i:s', $end_time),
+                        'duration' => $duration,
+                        'active' => 0
+                    ),
+                    array('session_id' => $session_id),
+                    array('%s', '%d', '%d'),
+                    array('%s')
+                );
+                
+                if ($result === false) {
+                    // Log error but don't throw exception
+                    error_log('VORTEX_CLOE: Failed to update session in database. Session ID: ' . $session_id);
+                }
+            }
+            
+            // Record session end event
+            $this->record_user_event($user_id, 'session_end', array(
+                'session_id' => $session_id,
+                'start_time' => $start_time,
+                'end_time' => $end_time,
+                'duration' => $duration
+            ));
+            
+            // Clear session data
+            delete_user_meta($user_id, 'vortex_current_session');
+            delete_user_meta($user_id, 'vortex_session_start');
+        } catch (Exception $e) {
+            // Log error but prevent it from breaking the page
+            error_log('VORTEX_CLOE: Error in end_session_tracking: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Add dashboard widgets for CLOE analytics
+     */
+    public function add_dashboard_widgets() {
+        // Only add widgets for administrators
+        if (!current_user_can('manage_options')) {
+            return;
+        }
+        
+        // Add CLOE recommendations widget
+        wp_add_dashboard_widget(
+            'vortex_cloe_recommendations',
+            __('CLOE AI Recommendations', 'vortex-marketplace'),
+            array($this, 'render_recommendations_widget')
+        );
+        
+        // Add CLOE trends widget
+        wp_add_dashboard_widget(
+            'vortex_cloe_trends',
+            __('CLOE Market Trends', 'vortex-marketplace'),
+            array($this, 'render_trends_widget')
+        );
+        
+        // Add CLOE user insights widget
+        wp_add_dashboard_widget(
+            'vortex_cloe_user_insights',
+            __('CLOE User Insights', 'vortex-marketplace'),
+            array($this, 'render_user_insights_widget')
+        );
+    }
+
+    /**
+     * Start session tracking
+     * 
+     * @param string $user_login User login name
+     * @param WP_User $user User object
+     */
+    public function start_session_tracking($user_login, $user) {
+        try {
+            $user_id = $user->ID;
+            
+            // Generate unique session ID
+            $session_id = md5(uniqid($user_id . '_', true));
+            
+            // Store session info
+            update_user_meta($user_id, 'vortex_current_session', $session_id);
+            
+            // Record session start time
+            $start_time = time();
+            update_user_meta($user_id, 'vortex_session_start', $start_time);
+            
+            // Get user's IP and user agent
+            $ip_address = isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field($_SERVER['REMOTE_ADDR']) : '';
+            $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? sanitize_text_field($_SERVER['HTTP_USER_AGENT']) : '';
+            
+            // Store session data in the database
+            global $wpdb;
+            $session_table = $wpdb->prefix . 'vortex_user_sessions';
+            
+            // Check if the table exists before attempting to insert
+            if ($this->table_exists('vortex_user_sessions')) {
+                $current_time = date('Y-m-d H:i:s', $start_time);
+                
+                // Insert session record
+                $wpdb->insert(
+                    $session_table,
+                    array(
+                        'session_id' => $session_id,
+                        'user_id' => $user_id,
+                        'start_time' => $current_time,
+                        'last_activity' => $current_time,
+                        'activity_time' => $current_time,
+                        'ip_address' => $ip_address,
+                        'user_agent' => $user_agent,
+                        'active' => 1
+                    ),
+                    array('%s', '%d', '%s', '%s', '%s', '%s', '%s', '%d')
+                );
+            }
+            
+            // Record the session start event
+            $this->record_user_event($user_id, 'session_start', array(
+                'session_id' => $session_id,
+                'timestamp' => $start_time,
+                'ip_address' => $ip_address,
+                'user_agent' => $user_agent
+            ));
+        } catch (Exception $e) {
+            // Log error but prevent it from breaking the page
+            error_log('VORTEX_CLOE: Error in start_session_tracking: ' . $e->getMessage());
         }
     }
 
@@ -1836,15 +1994,15 @@ class VORTEX_CLOE {
             $time_constraint = $this->get_time_constraint($period);
             
             $avg_duration = 0;
-            // $query = $wpdb->prepare(
-            //     "SELECT AVG(session_duration) as avg_duration
-            //     FROM {$wpdb->prefix}vortex_user_sessions
-            //     WHERE session_start >= %s
-            //     AND session_duration > 0",
-            //     $time_constraint
-            // );
+            $query = $wpdb->prepare(
+                "SELECT AVG(session_duration) as avg_duration
+                FROM {$wpdb->prefix}vortex_user_sessions
+                WHERE session_start >= %s
+                AND session_duration > 0",
+                $time_constraint
+            );
             
-            // $avg_duration = $wpdb->get_var($query);
+            $avg_duration = $wpdb->get_var($query);
             
             // Convert to minutes and round to 2 decimal places
             $avg_duration_minutes = round($avg_duration / 60, 2);
@@ -2662,10 +2820,10 @@ class VORTEX_CLOE {
         update_user_meta($user_id, 'vortex_last_login', time());
         
         // Record login for trend analysis
-        // $this->record_user_event($user_id, 'login', array(
-        //     'timestamp' => time(),
-        //     'previous_login' => $last_login
-        // ));
+        $this->record_user_event($user_id, 'login', array(
+            'timestamp' => time(),
+            'previous_login' => $last_login
+        ));
         
         // Prepare for AI learning
         do_action('vortex_ai_agent_learn', 'CLOE', 'user_login', array(
@@ -2674,6 +2832,38 @@ class VORTEX_CLOE {
             'last_login' => $last_login,
             'timestamp' => time()
         ));
+    }
+
+    /**
+     * Record user event
+     *
+     * @param int $user_id User ID
+     * @param string $event_type Event type
+     * @param array $event_data Event data
+     * @return int|false The ID of the inserted record, or false on failure
+     */
+    public function record_user_event($user_id, $event_type, $event_data = array()) {
+        // Check if VORTEX_User_Events class exists
+        if (!class_exists('VORTEX_User_Events')) {
+            require_once plugin_dir_path(__FILE__) . 'includes/class-vortex-user-events.php';
+        }
+        
+        // Get user events instance
+        $user_events = VORTEX_User_Events::get_instance();
+        
+        // Record event
+        $event_id = $user_events->record_event($user_id, $event_type, $event_data);
+        
+        // Also send to AI learning system if event was recorded successfully
+        if ($event_id) {
+            do_action('vortex_ai_agent_learn', 'CLOE', $event_type, array(
+                'user_id' => $user_id,
+                'event_data' => $event_data,
+                'timestamp' => time()
+            ));
+        }
+        
+        return $event_id;
     }
     
     /**
@@ -3503,21 +3693,21 @@ class VORTEX_CLOE {
             
             $time_constraint = $this->get_time_constraint($period);
             $results = [];
-            // $query = $wpdb->prepare(
-            //     "SELECT 
-            //         referrer_domain,
-            //         COUNT(*) as visit_count,
-            //         COUNT(DISTINCT user_id) as unique_visitors,
-            //         SUM(CASE WHEN converted = 1 THEN 1 ELSE 0 END) as conversions,
-            //         SUM(CASE WHEN converted = 1 THEN 1 ELSE 0 END) / COUNT(*) * 100 as conversion_rate
-            //     FROM {$wpdb->prefix}vortex_referrers
-            //     WHERE visit_time >= %s
-            //     GROUP BY referrer_domain
-            //     ORDER BY conversions DESC, visit_count DESC",
-            //     $time_constraint
-            // );
+            $query = $wpdb->prepare(
+                "SELECT 
+                    referrer_domain,
+                    COUNT(*) as visit_count,
+                    COUNT(DISTINCT user_id) as unique_visitors,
+                    SUM(CASE WHEN converted = 1 THEN 1 ELSE 0 END) as conversions,
+                    SUM(CASE WHEN converted = 1 THEN 1 ELSE 0 END) / COUNT(*) * 100 as conversion_rate
+                FROM {$wpdb->prefix}vortex_referrers
+                WHERE visit_time >= %s
+                GROUP BY referrer_domain
+                ORDER BY conversions DESC, visit_count DESC",
+                $time_constraint
+            );
             
-            // $results = $wpdb->get_results($query);
+            $results = $wpdb->get_results($query);
             
             return array(
                 'status' => 'success',
@@ -3544,36 +3734,36 @@ class VORTEX_CLOE {
             $time_constraint = $this->get_time_constraint($period);
             
             $results = [];
-            // $query = $wpdb->prepare(
-            //     "SELECT 
-            //         c.campaign_id,
-            //         c.campaign_name,
-            //         c.campaign_type,
-            //         c.start_date,
-            //         c.end_date,
-            //         COUNT(r.visit_id) as total_clicks,
-            //         COUNT(DISTINCT r.user_id) as unique_visitors,
-            //         SUM(CASE WHEN r.converted = 1 THEN 1 ELSE 0 END) as conversions,
-            //         SUM(CASE WHEN r.converted = 1 THEN 1 ELSE 0 END) / COUNT(r.visit_id) * 100 as conversion_rate,
-            //         SUM(t.amount) as total_revenue,
-            //         SUM(t.amount) / SUM(CASE WHEN r.converted = 1 THEN 1 ELSE 0 END) as revenue_per_conversion,
-            //         c.campaign_cost,
-            //         CASE 
-            //             WHEN c.campaign_cost > 0 
-            //             THEN (SUM(t.amount) - c.campaign_cost) / c.campaign_cost * 100 
-            //             ELSE 0 
-            //         END as roi
-            //     FROM {$wpdb->prefix}vortex_campaigns c
-            //     LEFT JOIN {$wpdb->prefix}vortex_referrers r ON c.campaign_id = r.campaign_id AND r.visit_time >= %s
-            //     LEFT JOIN {$wpdb->prefix}vortex_transactions t ON r.user_id = t.user_id AND t.status = 'completed' AND t.transaction_time >= r.visit_time
-            //     WHERE (c.end_date IS NULL OR c.end_date >= %s)
-            //     GROUP BY c.campaign_id
-            //     ORDER BY roi DESC",
-            //     $time_constraint,
-            //     $time_constraint
-            // );
+            $query = $wpdb->prepare(
+                "SELECT 
+                    c.campaign_id,
+                    c.campaign_name,
+                    c.campaign_type,
+                    c.start_date,
+                    c.end_date,
+                    COUNT(r.visit_id) as total_clicks,
+                    COUNT(DISTINCT r.user_id) as unique_visitors,
+                    SUM(CASE WHEN r.converted = 1 THEN 1 ELSE 0 END) as conversions,
+                    SUM(CASE WHEN r.converted = 1 THEN 1 ELSE 0 END) / COUNT(r.visit_id) * 100 as conversion_rate,
+                    SUM(t.amount) as total_revenue,
+                    SUM(t.amount) / SUM(CASE WHEN r.converted = 1 THEN 1 ELSE 0 END) as revenue_per_conversion,
+                    c.campaign_cost,
+                    CASE 
+                        WHEN c.campaign_cost > 0 
+                        THEN (SUM(t.amount) - c.campaign_cost) / c.campaign_cost * 100 
+                        ELSE 0 
+                    END as roi
+                FROM {$wpdb->prefix}vortex_campaigns c
+                LEFT JOIN {$wpdb->prefix}vortex_referrers r ON c.campaign_id = r.campaign_id AND r.visit_time >= %s
+                LEFT JOIN {$wpdb->prefix}vortex_transactions t ON r.user_id = t.user_id AND t.status = 'completed' AND t.transaction_time >= r.visit_time
+                WHERE (c.end_date IS NULL OR c.end_date >= %s)
+                GROUP BY c.campaign_id
+                ORDER BY roi DESC",
+                $time_constraint,
+                $time_constraint
+            );
             
-            // $results = $wpdb->get_results($query);
+            $results = $wpdb->get_results($query);
             
             return array(
                 'status' => 'success',
