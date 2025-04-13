@@ -321,6 +321,27 @@ class Vortex_Thorius_Admin {
 	}
 
 	/**
+	 * Render Settings page
+	 */
+	public function render_settings_page() {
+	    require_once VORTEX_PLUGIN_DIR . 'admin/partials/thorius-settings.php';
+	}
+
+	/**
+	 * Render Analytics page
+	 */
+	public function render_analytics_page() {
+	    require_once VORTEX_PLUGIN_DIR . 'admin/partials/analytics-dashboard.php';
+	}
+
+	/**
+	 * Render Agents page
+	 */
+	public function render_agents_page() {
+	    require_once VORTEX_PLUGIN_DIR . 'admin/partials/agents-management.php';
+	}
+
+	/**
 	 * Render the main Thorius AI dashboard page
 	 */
 	public function render_dashboard_page() {
@@ -328,8 +349,9 @@ class Vortex_Thorius_Admin {
 	    $thorius = Vortex_Thorius::get_instance();
 	    
 	    // Get analytics data for dashboard
-	    require_once plugin_dir_path(dirname(__FILE__)) . 'class-vortex-thorius-analytics.php';
+	    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-vortex-thorius-analytics.php';
 	    $analytics = new Vortex_Thorius_Analytics();
+	    $stats = [];
 	    $stats = $analytics->get_dashboard_stats();
 	    
 	    // Start output buffering
@@ -586,19 +608,60 @@ class Vortex_Thorius_Admin {
 	    <?php
 	}
 
+	/**
+	 * Check if required database tables exist
+	 *
+	 * @return bool Whether all required tables exist
+	 */
+	private function check_database_tables() {
+	    global $wpdb;
+	    
+	    $required_tables = array(
+	        $wpdb->prefix . 'vortex_thorius_sessions',
+	        $wpdb->prefix . 'vortex_thorius_interaction_history',
+	        $wpdb->prefix . 'vortex_thorius_user_context'
+	    );
+	    
+	    foreach ($required_tables as $table) {
+	        $table_exists = $wpdb->get_var("SHOW TABLES LIKE '$table'") === $table;
+	        if (!$table_exists) {
+	            return false;
+	        }
+	    }
+	    
+	    return true;
+	}
 
 	/**
 	 * Render Synthesis Reports page
 	 */
 	public function render_synthesis_page() {
-	    require_once plugin_dir_path(dirname(dirname(__FILE__))) . 'admin/partials/synthesis-report.php';
+	    require_once VORTEX_PLUGIN_DIR . 'admin/partials/synthesis-report.php';
+	}
+
+	/**
+	 * Get suggested queries for the admin
+	 * 
+	 * @return array Suggested queries
+	 */
+	private function get_suggested_queries() {
+	    return array(
+	        __('What is the current platform usage overview?', 'vortex-ai-marketplace'),
+	        __('Show me the most popular agent in the last 30 days', 'vortex-ai-marketplace'),
+	        __('What are the current marketplace trends?', 'vortex-ai-marketplace'),
+	        __('Analyze user behavior patterns this month', 'vortex-ai-marketplace'),
+	        __('What are the most popular topics in CLOE conversations?', 'vortex-ai-marketplace'),
+	        __('How are NFT sales performing?', 'vortex-ai-marketplace'),
+	        __('What are the current AI market trends?', 'vortex-ai-marketplace'),
+	        __('Compare our platform performance to industry benchmarks', 'vortex-ai-marketplace')
+	    );
 	}
 
 	/**
 	 * Render Intelligence Dashboard page
 	 */
 	public function render_intelligence_page() {
-	    require_once plugin_dir_path(dirname(dirname(__FILE__))) . 'admin/partials/intelligence-dashboard.php';
+	    require_once VORTEX_PLUGIN_DIR . 'admin/partials/intelligence-dashboard.php';
 	}
 
 	/**
@@ -623,7 +686,7 @@ class Vortex_Thorius_Admin {
 	 */
 	public function render_overview_widget() {
 	    // Get analytics data
-	    require_once plugin_dir_path(dirname(__FILE__)) . 'class-vortex-thorius-analytics.php';
+	    require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-vortex-thorius-analytics.php';
 	    $analytics = new Vortex_Thorius_Analytics();
 	    $stats = $analytics->get_overview_stats();
 	    
@@ -854,7 +917,7 @@ class Vortex_Thorius_Admin {
 	 * Render Integration Test page
 	 */
 	public function render_integration_test_page() {
-	    require_once plugin_dir_path(dirname(dirname(__FILE__))) . 'admin/partials/integration-test.php';
+	    require_once VORTEX_PLUGIN_DIR . 'admin/partials/integration-test.php';
 	}
 
 	/**

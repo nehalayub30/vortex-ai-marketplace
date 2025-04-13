@@ -88,7 +88,7 @@ class Vortex_Thorius_Admin_Intelligence {
             'suggested_queries' => $this->get_suggested_queries()
         ));
         
-        include plugin_dir_path(dirname(dirname(__FILE__))) . 'admin/partials/intelligence-dashboard.php';
+        include VORTEX_PLUGIN_DIR . 'admin/partials/intelligence-dashboard.php';
     }
     
     /**

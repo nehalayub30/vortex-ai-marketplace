@@ -78,7 +78,7 @@ class Vortex_Thorius_Synthesis_Reports {
             )
         ));
         
-        include plugin_dir_path(dirname(dirname(__FILE__))) . 'admin/partials/synthesis-report.php';
+        include VORTEX_PLUGIN_DIR . 'admin/partials/synthesis-report.php';
     }
     
     /**
@@ -520,7 +520,7 @@ class Vortex_Thorius_Synthesis_Reports {
         );
         
         ob_start();
-        include plugin_dir_path(dirname(dirname(__FILE__))) . 'admin/partials/email-report-template.php';
+        include VORTEX_PLUGIN_DIR . 'admin/partials/email-report-template.php';
         $message = ob_get_clean();
         
         // Set content type for HTML email
