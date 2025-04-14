@@ -855,7 +855,7 @@ class Vortex_Thorius {
     }
 
     public function register_admin_assets() {
-        wp_enqueue_script('thorius-admin', plugin_dir_url(__FILE__) . 'assets/js/thorius-admin.js', array('jquery'), '1.0.0', true);
+        wp_enqueue_script('thorius-admin', VORTEX_PLUGIN_URL . 'assets/js/thorius-admin.js', array('jquery'), '1.0.0', true);
         
         wp_localize_script('thorius-admin', 'thorius_admin_data', array(
             'ajax_url' => admin_url('admin-ajax.php'),

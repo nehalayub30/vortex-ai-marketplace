@@ -93,7 +93,7 @@ class Vortex_Thorius_Admin_Tabs {
         // Styles
         wp_enqueue_style(
             'thorius-admin-tabs',
-            plugin_dir_url(dirname(dirname(__FILE__))) . 'assets/css/thorius-admin.css',
+            VORTEX_PLUGIN_URL . 'assets/css/thorius-admin.css',
             array(),
             '1.0.0'
         );
@@ -101,7 +101,7 @@ class Vortex_Thorius_Admin_Tabs {
         // Scripts
         wp_enqueue_script(
             'thorius-admin-tabs',
-            plugin_dir_url(dirname(dirname(__FILE__))) . 'assets/js/thorius-admin.js',
+            VORTEX_PLUGIN_URL . 'assets/js/thorius-admin.js',
             array('jquery'),
             '1.0.0',
             true
