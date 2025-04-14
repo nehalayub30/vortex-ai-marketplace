@@ -96,6 +96,7 @@ class Vortex_Activator {
             metric_value float NOT NULL,
             entity_id bigint(20) NOT NULL,
             entity_type varchar(50) NOT NULL,
+            user_id bigint(20) NOT NULL,
             metric_date datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
             timestamp datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY  (id),

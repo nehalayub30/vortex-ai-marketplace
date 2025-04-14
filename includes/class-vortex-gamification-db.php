@@ -191,7 +191,7 @@ class VORTEX_Gamification_DB {
         dbDelta($sql_swaps);
         dbDelta($sql_notifications);
         dbDelta($sql_ai_logs);
-        dbDelta($sql_artworks);
+        // dbDelta($sql_artworks);
     }
     
     /**
