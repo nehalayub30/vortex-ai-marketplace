@@ -68,6 +68,7 @@ class Vortex_Scheduler_DB {
             item_id bigint(20) NOT NULL,
             scheduled_time datetime NOT NULL,
             status varchar(20) NOT NULL DEFAULT 'pending',
+            notification_sent tinyint(1) NOT NULL DEFAULT 0,
             created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY  (id),
