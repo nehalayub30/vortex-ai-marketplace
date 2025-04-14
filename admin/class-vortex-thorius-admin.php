@@ -92,6 +92,172 @@ class Vortex_Thorius_Admin {
 	}
 
 	/**
+	 * Render AI analysis meta box
+	 *
+	 * @param WP_Post $post Current post object
+	 */
+	public function render_ai_analysis_meta_box($post) {
+	    // Security nonce for verification
+	    wp_nonce_field('vortex_thorius_ai_analysis_nonce', 'thorius_ai_analysis_nonce');
+	    
+	    // Get stored analysis data
+	    $analysis_data = get_post_meta($post->ID, '_vortex_thorius_ai_analysis', true);
+	    $last_updated = get_post_meta($post->ID, '_vortex_thorius_ai_analysis_updated', true);
+	    
+	    echo '<div class="thorius-meta-box thorius-analysis-box">';
+	    
+	    if (!empty($analysis_data)) {
+	        // Format the last updated date if available
+	        if (!empty($last_updated)) {
+	            echo '<p class="thorius-meta-date">' . sprintf(
+	                __('Last analyzed: %s', 'vortex-ai-marketplace'),
+	                date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($last_updated))
+	            ) . '</p>';
+	        }
+	        
+	        // Display readability score
+	        if (isset($analysis_data['readability'])) {
+	            $readability_class = $this->get_score_class($analysis_data['readability']['score']);
+	            echo '<div class="thorius-score-item">';
+	            echo '<h4>' . __('Readability', 'vortex-ai-marketplace') . '</h4>';
+	            echo '<div class="thorius-score-bar">';
+	            echo '<div class="thorius-score-value ' . $readability_class . '" style="width:' . $analysis_data['readability']['score'] . '%">';
+	            echo $analysis_data['readability']['score'] . '/100</div>';
+	            echo '</div>';
+	            echo '<p class="thorius-score-suggestion">' . esc_html($analysis_data['readability']['suggestion']) . '</p>';
+	            echo '</div>';
+	        }
+	        
+	        // Display engagement potential
+	        if (isset($analysis_data['engagement'])) {
+	            $engagement_class = $this->get_score_class($analysis_data['engagement']['score']);
+	            echo '<div class="thorius-score-item">';
+	            echo '<h4>' . __('Engagement Potential', 'vortex-ai-marketplace') . '</h4>';
+	            echo '<div class="thorius-score-bar">';
+	            echo '<div class="thorius-score-value ' . $engagement_class . '" style="width:' . $analysis_data['engagement']['score'] . '%">';
+	            echo $analysis_data['engagement']['score'] . '/100</div>';
+	            echo '</div>';
+	            echo '<p class="thorius-score-suggestion">' . esc_html($analysis_data['engagement']['suggestion']) . '</p>';
+	            echo '</div>';
+	        }
+	        
+	        // Display content quality
+	        if (isset($analysis_data['content_quality'])) {
+	            $quality_class = $this->get_score_class($analysis_data['content_quality']['score']);
+	            echo '<div class="thorius-score-item">';
+	            echo '<h4>' . __('Content Quality', 'vortex-ai-marketplace') . '</h4>';
+	            echo '<div class="thorius-score-bar">';
+	            echo '<div class="thorius-score-value ' . $quality_class . '" style="width:' . $analysis_data['content_quality']['score'] . '%">';
+	            echo $analysis_data['content_quality']['score'] . '/100</div>';
+	            echo '</div>';
+	            echo '<p class="thorius-score-suggestion">' . esc_html($analysis_data['content_quality']['suggestion']) . '</p>';
+	            echo '</div>';
+	        }
+	        
+	        // Display key improvement suggestions
+	        if (isset($analysis_data['suggestions']) && !empty($analysis_data['suggestions'])) {
+	            echo '<div class="thorius-suggestions">';
+	            echo '<h4>' . __('Key Improvement Suggestions', 'vortex-ai-marketplace') . '</h4>';
+	            echo '<ul>';
+	            foreach ($analysis_data['suggestions'] as $suggestion) {
+	                echo '<li>' . esc_html($suggestion) . '</li>';
+	            }
+	            echo '</ul>';
+	            echo '</div>';
+	        }
+	    } else {
+	        echo '<p class="thorius-empty-analysis">' . __('No AI analysis available for this content yet.', 'vortex-ai-marketplace') . '</p>';
+	    }
+	    
+	    echo '<div class="thorius-meta-actions">';
+	    echo '<button type="button" class="button thorius-analyze-button" data-post-id="' . esc_attr($post->ID) . '" data-nonce="' . esc_attr(wp_create_nonce('thorius_analyze_content')) . '">';
+	    echo '<span class="dashicons dashicons-search"></span> ' . __('Analyze Content', 'vortex-ai-marketplace');
+	    echo '</button>';
+	    echo '<span class="spinner thorius-spinner"></span>';
+	    echo '</div>';
+	    
+	    echo '</div>'; // End .thorius-meta-box
+	}
+
+	/**
+	 * Render AI SEO optimization meta box
+	 *
+	 * @param WP_Post $post Current post object
+	 */
+	public function render_ai_seo_meta_box($post) {
+	    // Security nonce for verification
+	    wp_nonce_field('vortex_thorius_ai_seo_nonce', 'thorius_ai_seo_nonce');
+	    
+	    // Get stored SEO data
+	    $seo_data = get_post_meta($post->ID, '_vortex_thorius_ai_seo', true);
+	    $last_updated = get_post_meta($post->ID, '_vortex_thorius_ai_seo_updated', true);
+	    
+	    echo '<div class="thorius-meta-box thorius-seo-box">';
+	    
+	    if (!empty($seo_data)) {
+	        // Format the last updated date if available
+	        if (!empty($last_updated)) {
+	            echo '<p class="thorius-meta-date">' . sprintf(
+	                __('Last analyzed: %s', 'vortex-ai-marketplace'),
+	                date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($last_updated))
+	            ) . '</p>';
+	        }
+	        
+	        // Display overall SEO score
+	        if (isset($seo_data['overall_score'])) {
+	            $overall_class = $this->get_score_class($seo_data['overall_score']);
+	            echo '<div class="thorius-seo-score">';
+	            echo '<div class="thorius-seo-score-circle ' . $overall_class . '">';
+	            echo '<span class="thorius-seo-score-value">' . $seo_data['overall_score'] . '</span>';
+	            echo '</div>';
+	            echo '<div class="thorius-seo-score-label">' . __('Overall SEO Score', 'vortex-ai-marketplace') . '</div>';
+	            echo '</div>';
+	        }
+	        
+	        // Display SEO factors
+	        if (isset($seo_data['factors']) && !empty($seo_data['factors'])) {
+	            echo '<div class="thorius-seo-factors">';
+	            foreach ($seo_data['factors'] as $factor => $data) {
+	                $factor_class = $this->get_score_class($data['score']);
+	                $factor_icon = $data['score'] >= 70 ? 'yes' : ($data['score'] >= 40 ? 'warning' : 'no');
+	                
+	                echo '<div class="thorius-seo-factor">';
+	                echo '<div class="thorius-seo-factor-header">';
+	                echo '<span class="dashicons dashicons-' . $factor_icon . ' ' . $factor_class . '"></span>';
+	                echo '<h4>' . esc_html($data['label']) . '</h4>';
+	                echo '</div>';
+	                echo '<p class="thorius-seo-factor-desc">' . esc_html($data['description']) . '</p>';
+	                echo '</div>';
+	            }
+	            echo '</div>';
+	            
+	            // Display keyword suggestions
+	            if (isset($seo_data['keyword_suggestions']) && !empty($seo_data['keyword_suggestions'])) {
+	                echo '<div class="thorius-keyword-suggestions">';
+	                echo '<h4>' . __('Keyword Suggestions', 'vortex-ai-marketplace') . '</h4>';
+	                echo '<div class="thorius-keyword-tags">';
+	                foreach ($seo_data['keyword_suggestions'] as $keyword) {
+	                    echo '<span class="thorius-keyword-tag">' . esc_html($keyword) . '</span>';
+	                }
+	                echo '</div>';
+	                echo '</div>';
+	            }
+	        }
+	    } else {
+	        echo '<p class="thorius-empty-seo">' . __('No SEO analysis available for this content yet.', 'vortex-ai-marketplace') . '</p>';
+	    }
+	    
+	    echo '<div class="thorius-meta-actions">';
+	    echo '<button type="button" class="button thorius-analyze-seo-button" data-post-id="' . esc_attr($post->ID) . '" data-nonce="' . esc_attr(wp_create_nonce('thorius_analyze_seo')) . '">';
+	    echo '<span class="dashicons dashicons-search"></span> ' . __('Analyze SEO', 'vortex-ai-marketplace');
+	    echo '</button>';
+	    echo '<span class="spinner thorius-spinner"></span>';
+	    echo '</div>';
+	    
+	    echo '</div>'; // End .thorius-meta-box
+	}
+
+	/**
 	 * Display admin notices related to Thorius AI
 	 */
 	public function display_admin_notices() {

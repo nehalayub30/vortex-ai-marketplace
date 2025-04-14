@@ -95,6 +95,7 @@ class VORTEX_HURAII {
     private $img_processor;
 
     private $cross_learning;
+    private $model_version;
     
     /**
      * Default generation parameters
