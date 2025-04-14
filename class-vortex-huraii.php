@@ -1702,12 +1702,13 @@ class VORTEX_HURAII {
         global $wpdb;
         
         // Get user interactions for training
-        $query = "SELECT * FROM {$wpdb->prefix}vortex_huraii_interactions 
-                  WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)
-                  ORDER BY created_at DESC
-                  LIMIT 5000";
+        $interactions = [];
+        // $query = "SELECT * FROM {$wpdb->prefix}vortex_huraii_interactions 
+        //           WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+        //           ORDER BY created_at DESC
+        //           LIMIT 5000";
                   
-        $interactions = $wpdb->get_results($query);
+        // $interactions = $wpdb->get_results($query);
         
         // Process raw data into training examples
         $training_examples = array();
@@ -1819,10 +1820,11 @@ class VORTEX_HURAII {
         
         // Get interaction data
         global $wpdb;
-        $interaction = $wpdb->get_row($wpdb->prepare(
-            "SELECT * FROM {$wpdb->prefix}vortex_huraii_interactions WHERE interaction_id = %s",
-            $interaction_id
-        ));
+        $interaction = [];
+        // $interaction = $wpdb->get_row($wpdb->prepare(
+        //     "SELECT * FROM {$wpdb->prefix}vortex_huraii_interactions WHERE interaction_id = %s",
+        //     $interaction_id
+        // ));
         
         if (!$interaction) {
             $this->log_error('Feedback processing failed: Interaction not found');
@@ -1830,14 +1832,14 @@ class VORTEX_HURAII {
         }
         
         // Store feedback for training
-        $wpdb->update(
-            $wpdb->prefix . 'vortex_huraii_interactions',
-            array(
-                'feedback_score' => $rating,
-                'feedback_time' => current_time('mysql')
-            ),
-            array('interaction_id' => $interaction_id)
-        );
+        // $wpdb->update(
+        //     $wpdb->prefix . 'vortex_huraii_interactions',
+        //     array(
+        //         'feedback_score' => $rating,
+        //         'feedback_time' => current_time('mysql')
+        //     ),
+        //     array('interaction_id' => $interaction_id)
+        // );
         
         // If high rating (4-5), add to positive examples
         if ($rating >= 4) {
