@@ -18,6 +18,8 @@
  */
 define( 'VORTEX_VERSION', '1.0.0' );
 define( 'VORTEX_THORIUS_VERSION', '1.0.0' );
+define( 'VORTEX_AI_MARKETPLACE_VERSION', '1.0.0' );
+
 
 
 /**
@@ -30,6 +32,7 @@ define( 'VORTEX_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'VORTEX_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'VORTEX_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'VORTEX_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+define( 'VORTEX_AI_MARKETPLACE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 /**
  * The code that runs during plugin activation.
@@ -75,6 +78,7 @@ function vortex_install_dao_and_gamification_db() {
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
+require 'vortex-license.php';
 require VORTEX_PLUGIN_DIR . 'includes/class-vortex-ai-marketplace.php';
 require VORTEX_PLUGIN_DIR . 'includes/class-vortex-db-migrations.php';
 require_once plugin_dir_path(__FILE__) . 'includes/ai/class-vortex-huraii-image-generator.php';

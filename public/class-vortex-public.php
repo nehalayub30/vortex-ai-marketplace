@@ -788,6 +788,19 @@ class Vortex_Public {
      * @since    1.0.0
      */
     public function enqueue_scripts() {
+
+        wp_enqueue_script( $this->plugin_name, VORTEX_AI_MARKETPLACE_PLUGIN_URL . 'assets/js/script.js', array( 'jquery' ), $this->version, false );
+
+        // Localize the script with data for AJAX requests
+        wp_localize_script(
+            $this->plugin_name,
+            'vortex_ai_marketplace',
+            array(
+                'ajax_url' => admin_url( 'admin-ajax.php' ),
+                'nonce'    => wp_create_nonce( 'vortex_ai_marketplace_nonce' ),
+            )
+        );
+        
         // Main script with core functionality
         wp_enqueue_script(
             $this->plugin_name,

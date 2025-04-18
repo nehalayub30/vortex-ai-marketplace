@@ -18,28 +18,18 @@
   display: flex;
   align-items: center;
   margin-bottom: 20px;
-  background: #fff;
-  padding: 15px 20px;
-  border-radius: 5px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ddd;
 }
 
-.vortex-admin-logo {
-  margin-right: 15px;
+.vortex-logo {
+  max-width: 100px;
+  height: auto;
+  margin-right: 20px;
 }
 
-.vortex-admin-logo img {
-  max-height: 40px;
-  width: auto;
-}
-
-.vortex-admin-header-content h1 {
-  font-size: 24px;
-  margin: 0 0 5px;
-}
-
-.vortex-admin-header-content p {
-  margin: 0;
+.vortex-description {
+  font-size: 14px;
   color: #666;
 }
 
@@ -64,6 +54,28 @@
   }
   
   .vortex-admin-sidebar {
+    width: 100%;
+  }
+  
+  .vortex-admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .vortex-logo {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+  
+  .vortex-settings-form .form-table th {
+    width: 100%;
+    padding-bottom: 0;
+  }
+  
+  .vortex-settings-form input[type="url"],
+  .vortex-settings-form input[type="text"],
+  .vortex-settings-form input[type="password"],
+  .vortex-settings-form .regular-text {
     width: 100%;
   }
 }
@@ -125,7 +137,23 @@
 
 /* Form Styling */
 .vortex-settings-form {
-  max-width: 100%;
+  max-width: 800px;
+  margin-top: 20px;
+}
+
+.vortex-settings-form .form-table th {
+  width: 200px;
+  padding: 20px 10px 20px 0;
+}
+
+.vortex-settings-form .regular-text {
+  width: 400px;
+}
+
+.vortex-settings-form input[type="url"],
+.vortex-settings-form input[type="text"],
+.vortex-settings-form input[type="password"] {
+  width: 400px;
 }
 
 .vortex-section {
@@ -383,28 +411,18 @@
 /* Status indicators */
 .vortex-status-indicator {
   display: inline-block;
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   margin-right: 5px;
 }
 
-.vortex-status-indicator.status-active,
-.vortex-status-indicator.status-success {
+.vortex-status-indicator.connected {
   background-color: #46b450;
 }
 
-.vortex-status-indicator.status-inactive,
-.vortex-status-indicator.status-error {
+.vortex-status-indicator.disconnected {
   background-color: #dc3232;
-}
-
-.vortex-status-indicator.status-warning {
-  background-color: #ffb900;
-}
-
-.vortex-status-indicator.status-info {
-  background-color: #00a0d2;
 }
 
 /* Admin footer customization */
@@ -467,4 +485,265 @@
     margin-left: 10px;
     margin-right: 10px;
   }
+}
+
+/* TinyMCE Shortcode Preview Modal */
+.vortex-modal {
+    display: none;
+    position: fixed;
+    z-index: 999999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.vortex-modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 800px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    animation-name: vortex-modal-animate;
+    animation-duration: 0.4s;
+}
+
+@keyframes vortex-modal-animate {
+    from {opacity: 0}
+    to {opacity: 1}
+}
+
+.vortex-modal-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    padding: 10px 20px;
+}
+
+.vortex-modal-close:hover,
+.vortex-modal-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.vortex-modal-body {
+    padding: 20px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+/* TinyMCE Shortcode Highlights */
+.mce-content-body .vortex-shortcode-highlight {
+    background-color: #f7f7f7;
+    border: 1px dashed #ccc;
+    padding: 5px;
+    margin: 5px 0;
+}
+
+.mce-content-body .vortex-shortcode-highlight-artwork {
+    border-left: 3px solid #0073aa;
+}
+
+.mce-content-body .vortex-shortcode-highlight-artist {
+    border-left: 3px solid #46b450;
+}
+
+/* TinyMCE Preview Buttons */
+.vortex-shortcode-preview-btn {
+    background-color: #f7f7f7;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.vortex-shortcode-preview-btn:hover {
+    background-color: #f0f0f0;
+    border-color: #999;
+}
+
+/* Artwork Preview Styles */
+.vortex-artwork-preview {
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.vortex-artwork-preview img {
+    max-width: 100%;
+    height: auto;
+}
+
+.vortex-artwork-preview-details {
+    margin-top: 15px;
+}
+
+.vortex-artwork-preview-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.vortex-artwork-preview-artist {
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+.vortex-artwork-preview-price {
+    font-weight: bold;
+    color: #0073aa;
+}
+
+/* Artist Preview Styles */
+.vortex-artist-preview {
+    display: flex;
+    align-items: center;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.vortex-artist-preview-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 20px;
+}
+
+.vortex-artist-preview-avatar img {
+    width: 100%;
+    height: auto;
+}
+
+.vortex-artist-preview-info {
+    flex: 1;
+}
+
+.vortex-artist-preview-name {
+    font-size: 1.4em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.vortex-artist-preview-bio {
+    margin-bottom: 10px;
+}
+
+.vortex-artist-preview-stats {
+    display: flex;
+    justify-content: space-between;
+    max-width: 300px;
+}
+
+.vortex-artist-preview-stat {
+    text-align: center;
+}
+
+.vortex-artist-preview-stat-value {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.vortex-artist-preview-stat-label {
+    font-size: 0.8em;
+    color: #666;
+}
+
+/* TOLA Pricing Meta Box Styles */
+.vortex-meta-field {
+    margin-bottom: 15px;
+}
+
+.vortex-meta-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.vortex-meta-field input[type="text"],
+.vortex-meta-field input[type="number"] {
+    width: 100%;
+    max-width: 300px;
+}
+
+.vortex-meta-field .description {
+    display: block;
+    color: #666;
+    margin-top: 5px;
+    font-style: italic;
+    font-size: 12px;
+}
+
+#vortex_tola_pricing .inside {
+    padding: 15px;
+}
+
+.vortex-tola-options {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+/* API Connection Tester */
+#vortex-test-api-connection {
+    margin-left: 10px;
+}
+
+#vortex-api-test-result {
+    margin-top: 10px;
+}
+
+.vortex-api-field {
+    position: relative;
+}
+
+.vortex-api-field input[type="password"],
+.vortex-api-field input[type="text"] {
+    padding-right: 40px;
+}
+
+.vortex-toggle-visibility {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #777;
+    padding: 0;
+}
+
+.vortex-toggle-visibility:hover {
+    color: #0073aa;
+}
+
+/* Help Section */
+.vortex-admin-help {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-left: 4px solid #0073aa;
+}
+
+.vortex-admin-help h2 {
+    margin-top: 0;
+    color: #0073aa;
+}
+
+.vortex-admin-help a {
+    color: #0073aa;
+    text-decoration: none;
+}
+
+.vortex-admin-help a:hover {
+    text-decoration: underline;
 } 
