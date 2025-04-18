@@ -186,10 +186,10 @@ class Vortex_AI_Marketplace {
     public function check_database_version() {
         $current_db_version = get_option('vortex_database_version', '0');
         
-        if (version_compare($current_db_version, $this->version, '<')) {
+        // if (version_compare($current_db_version, $this->version, '<')) {
             $this->create_database_tables();
             update_option('vortex_database_version', $this->version);
-        }
+        // }
     }
 
     /**
@@ -407,3 +407,5 @@ class Vortex_AI_Marketplace {
         return $this->version;
     }
 } 
+
+new Vortex_AI_Marketplace();

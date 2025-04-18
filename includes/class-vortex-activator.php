@@ -34,6 +34,7 @@ class Vortex_Activator {
 
         // Create necessary directories if they don't exist
         self::create_directories();
+        self::create_tables();
     }
 
     /**
@@ -138,11 +139,14 @@ class Vortex_Activator {
         $sql_transactions = "CREATE TABLE $table_transactions (
             id bigint(20) NOT NULL AUTO_INCREMENT,
             transaction_id varchar(100) NOT NULL,
+            artwork_id varchar(100) NOT NULL,
+            user_id bigint(20) UNSIGNED NOT NULL,
             from_address varchar(255) NOT NULL,
             to_address varchar(255) NOT NULL,
             amount float NOT NULL,
             token_type varchar(20) DEFAULT 'TOLA',
             transaction_data text,
+            transaction_time datetime DEFAULT NULL,
             status varchar(50) NOT NULL,
             blockchain_tx_hash varchar(100) DEFAULT '',
             created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -151,6 +155,7 @@ class Vortex_Activator {
             UNIQUE KEY transaction_id (transaction_id),
             KEY from_address (from_address),
             KEY to_address (to_address),
+            KEY user_id (user_id),
             KEY token_type (token_type)
         ) $charset_collate;";
         dbDelta($sql_transactions);
@@ -172,6 +177,50 @@ class Vortex_Activator {
             KEY is_current (is_current)
         ) $charset_collate;";
         dbDelta($sql_ownership);
+
+        $table_user_sessions = $wpdb->prefix . 'vortex_user_sessions';        
+        $sql_user_sessions = "CREATE TABLE IF NOT EXISTS $table_user_sessions (
+            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            user_id bigint(20) unsigned NOT NULL,
+            session_key varchar(64) NOT NULL,
+            session_start datetime DEFAULT CURRENT_TIMESTAMP,
+            session_end datetime DEFAULT NULL,
+            session_duration int(11) DEFAULT '0',
+            session_data longtext,
+            client_ip varchar(40) DEFAULT NULL,
+            user_agent text,
+            PRIMARY KEY  (id),
+            KEY user_id (user_id),
+            KEY session_key (session_key),
+            KEY session_start (session_start)
+        ) $charset_collate;";        
+        dbDelta($sql_user_sessions);
+
+        $table_categories = $wpdb->prefix . 'vortex_categories';        
+        $sql_categories = "CREATE TABLE IF NOT EXISTS $table_categories (
+            id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+            category_name varchar(191) NOT NULL,
+            category_slug varchar(191) NOT NULL,
+            category_description text,
+            parent_id bigint(20) unsigned DEFAULT NULL,
+            popularity_score decimal(10,2) DEFAULT '0.00',
+            category_icon varchar(100) DEFAULT NULL,
+            category_color varchar(20) DEFAULT NULL,
+            creation_date datetime DEFAULT CURRENT_TIMESTAMP,
+            last_updated datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            display_order int(11) DEFAULT '0',
+            is_featured tinyint(1) DEFAULT '0',
+            is_active tinyint(1) DEFAULT '1',
+            item_count int(11) DEFAULT '0',
+            PRIMARY KEY  (id),
+            UNIQUE KEY category_slug (category_slug),
+            KEY parent_id (parent_id),
+            KEY popularity_score (popularity_score),
+            KEY is_featured (is_featured),
+            KEY is_active (is_active),
+            KEY display_order (display_order)
+        ) $charset_collate;";
+        dbDelta($sql_categories);
     }
 
     /**

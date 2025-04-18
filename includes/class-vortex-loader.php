@@ -57,6 +57,15 @@ class Vortex_Loader {
     protected $shortcodes;
 
     /**
+     * The current version of the plugin.
+     *
+     * @since    1.0.0
+     * @access   protected
+     * @var      string    $version    The current version of the plugin.
+     */
+    protected $version;
+
+    /**
      * The theme compatibility instance.
      *
      * @since    1.0.0
@@ -71,6 +80,8 @@ class Vortex_Loader {
      * @since    1.0.0
      */
     public function __construct() {
+        $this->version = VORTEX_AI_MARKETPLACE_VERSION;
+        $this->plugin_name = 'vortex-ai-marketplace';
         $this->actions = array();
         $this->filters = array();
         $this->set_theme_compatibility();
@@ -95,6 +106,16 @@ class Vortex_Loader {
      */
     public function get_plugin_name() {
         return $this->plugin_name;
+    }
+
+    /**
+     * Retrieve the version number of the plugin.
+     *
+     * @since     1.0.0
+     * @return    string    The version number of the plugin.
+     */
+    public function get_version() {
+        return $this->version;
     }
 
     /**
@@ -177,8 +198,10 @@ class Vortex_Loader {
             add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
         }
 
-        foreach ( $this->shortcodes as $hook ) {
-            add_shortcode( $hook['hook'], array( $hook['component'], $hook['callback'] ) );
+        if ($this->shortcodes) {
+            foreach ( $this->shortcodes as $hook ) {
+                add_shortcode( $hook['hook'], array( $hook['component'], $hook['callback'] ) );
+            }            
         }
     }
 } 

@@ -51,10 +51,10 @@ class Vortex_DB_Migrations {
     public function check_update_database() {
         $current_version = VORTEX_VERSION;
         
-        if (version_compare($this->db_version, $current_version, '<')) {
+        // if (version_compare($this->db_version, $current_version, '<')) {
             $this->setup_database();
             update_option('vortex_ai_db_version', $current_version);
-        }
+        // }
     }
 
     /**

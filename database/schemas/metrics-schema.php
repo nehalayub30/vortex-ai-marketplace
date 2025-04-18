@@ -81,19 +81,19 @@ function vortex_create_metrics_schema() {
     ) $charset_collate;";
 
     // User activity logs
-    $table_name = $wpdb->prefix . 'vortex_user_activity';
-    $sql[] = "CREATE TABLE $table_name (
-        activity_id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-        user_id bigint(20) UNSIGNED NOT NULL,
-        activity_type varchar(50) NOT NULL,
-        activity_data text,
-        ip_address varchar(45),
-        date_created datetime DEFAULT CURRENT_TIMESTAMP,
-        PRIMARY KEY  (activity_id),
-        KEY user_id (user_id),
-        KEY activity_type (activity_type),
-        KEY date_created (date_created)
-    ) $charset_collate;";
+    // $table_name = $wpdb->prefix . 'vortex_user_activity';
+    // $sql[] = "CREATE TABLE $table_name (
+    //     activity_id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    //     user_id bigint(20) UNSIGNED NOT NULL,
+    //     activity_type varchar(50) NOT NULL,
+    //     activity_data text,
+    //     ip_address varchar(45),
+    //     date_created datetime DEFAULT CURRENT_TIMESTAMP,
+    //     PRIMARY KEY  (activity_id),
+    //     KEY user_id (user_id),
+    //     KEY activity_type (activity_type),
+    //     KEY date_created (date_created)
+    // ) $charset_collate;";
 
     // Daily metrics aggregation
     $table_name = $wpdb->prefix . 'vortex_daily_metrics';

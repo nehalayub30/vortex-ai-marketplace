@@ -42,28 +42,28 @@ function vortex_create_tola_schema() {
     ) $charset_collate;";
 
     // TOLA token transactions
-    $table_name = $wpdb->prefix . 'vortex_tola_transactions';
-    $sql[] = "CREATE TABLE $table_name (
-        transaction_id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-        wallet_address varchar(255) NOT NULL,
-        transaction_hash varchar(255),
-        transaction_type varchar(50) NOT NULL,
-        amount decimal(18,8) NOT NULL,
-        status varchar(50) DEFAULT 'pending',
-        related_entity_type varchar(50),
-        related_entity_id bigint(20) UNSIGNED,
-        blockchain_confirmations int DEFAULT 0,
-        transaction_fee decimal(18,8) DEFAULT 0,
-        notes text,
-        date_created datetime DEFAULT CURRENT_TIMESTAMP,
-        date_modified datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        PRIMARY KEY  (transaction_id),
-        KEY wallet_address (wallet_address),
-        KEY transaction_hash (transaction_hash),
-        KEY transaction_type (transaction_type),
-        KEY status (status),
-        KEY date_created (date_created)
-    ) $charset_collate;";
+    // $table_name = $wpdb->prefix . 'vortex_tola_transactions';
+    // $sql[] = "CREATE TABLE $table_name (
+    //     transaction_id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    //     wallet_address varchar(255) NOT NULL,
+    //     transaction_hash varchar(255),
+    //     transaction_type varchar(50) NOT NULL,
+    //     amount decimal(18,8) NOT NULL,
+    //     status varchar(50) DEFAULT 'pending',
+    //     related_entity_type varchar(50),
+    //     related_entity_id bigint(20) UNSIGNED,
+    //     blockchain_confirmations int DEFAULT 0,
+    //     transaction_fee decimal(18,8) DEFAULT 0,
+    //     notes text,
+    //     date_created datetime DEFAULT CURRENT_TIMESTAMP,
+    //     date_modified datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    //     PRIMARY KEY  (transaction_id),
+    //     KEY wallet_address (wallet_address),
+    //     KEY transaction_hash (transaction_hash),
+    //     KEY transaction_type (transaction_type),
+    //     KEY status (status),
+    //     KEY date_created (date_created)
+    // ) $charset_collate;";
 
     // TOLA token balances
     $table_name = $wpdb->prefix . 'vortex_tola_balances';
