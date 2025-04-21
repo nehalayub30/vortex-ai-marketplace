@@ -474,6 +474,26 @@ function vortex_create_core_schema() {
         KEY user_id (user_id)
     ) $charset_collate;";
 
+    $table_name = $wpdb->prefix . 'vortex_user_geo_data';
+    $sql[] = "CREATE TABLE IF NOT EXISTS $table_name (
+        id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+        user_id bigint(20) unsigned NOT NULL,
+        ip_address varchar(45) DEFAULT NULL,
+        country_code varchar(2) DEFAULT NULL,
+        country varchar(100) DEFAULT NULL,
+        region varchar(100) DEFAULT NULL,
+        city varchar(100) DEFAULT NULL,
+        postal_code varchar(20) DEFAULT NULL,
+        latitude decimal(10,8) DEFAULT NULL,
+        longitude decimal(11,8) DEFAULT NULL,
+        timezone varchar(50) DEFAULT NULL,
+        last_updated datetime DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY  (id),
+        UNIQUE KEY user_id (user_id),
+        KEY country_code (country_code),
+        KEY region (region(20)),
+        KEY city (city(20))
+    ) $charset_collate;";
 
     // Execute the SQL statements
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');

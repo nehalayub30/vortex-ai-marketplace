@@ -776,18 +776,18 @@ class VORTEX_CLOE {
             $time_constraint = $this->get_time_constraint($period);
             
             $results = [];
-            // $query = $wpdb->prepare(
-            //     "SELECT 
-            //         region,
-            //         COUNT(DISTINCT user_id) as user_count
-            //     FROM {$wpdb->prefix}vortex_user_geo_data
-            //     WHERE last_updated >= %s
-            //     GROUP BY region
-            //     ORDER BY user_count DESC",
-            //     $time_constraint
-            // );
+            $query = $wpdb->prepare(
+                "SELECT 
+                    region,
+                    COUNT(DISTINCT user_id) as user_count
+                FROM {$wpdb->prefix}vortex_user_geo_data
+                WHERE last_updated >= %s
+                GROUP BY region
+                ORDER BY user_count DESC",
+                $time_constraint
+            );
             
-            // $results = $wpdb->get_results($query);
+            $results = $wpdb->get_results($query);
             
             // Total users in the period
             $total_users = 0;

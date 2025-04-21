@@ -1014,6 +1014,34 @@ class Vortex_Thorius_Admin {
 	}
 
 	/**
+	 * Encrypt API key before storing in database
+	 *
+	 * @param string $api_key The API key to encrypt
+	 * @return string Encrypted API key
+	 */
+	public function encrypt_api_key($api_key) {
+	    if (empty($api_key)) {
+	        return '';
+	    }
+	    
+	    // If the WP Encryption plugin is active, use it
+	    if (function_exists('wp_encrypt')) {
+	        return wp_encrypt($api_key);
+	    }
+	    
+	    // Otherwise use a simple encryption method
+	    $encryption_key = wp_salt('auth');
+	    $encrypted = openssl_encrypt($api_key, 'AES-256-CBC', $encryption_key, 0, substr($encryption_key, 0, 16));
+	    
+	    if ($encrypted === false) {
+	        // Fallback if encryption fails
+	        return base64_encode($api_key);
+	    }
+	    
+	    return $encrypted;
+	}
+
+	/**
 	 * Render intelligence settings section
 	 */
 	public function render_intelligence_section() {
